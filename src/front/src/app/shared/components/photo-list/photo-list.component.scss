@@ -1,0 +1,72 @@
+.photo-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  padding: 10px;
+}
+
+.photo-item {
+  margin: 10px;
+  position: relative;
+}
+
+.photo-item img {
+  border-radius: 5px;
+}
+
+.action-buttons-img {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.button-delete {
+  background-color: red;
+  border: none;
+  border-radius: 10px;
+  padding: 5px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  @apply md:h-[50px] h-[35px] md:w-[50px] w-[35px]
+}
+
+.button-download {
+  background-image: linear-gradient(to right, #edc273, #9a754d);
+  border: none;
+  border-radius: 10px;
+  padding: 5px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  @apply md:h-[50px] h-[35px] md:w-[50px] w-[35px]
+}
+
+.button-add-favorite {
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  @apply md:h-[50px] h-[35px] md:w-[50px] w-[35px]
+}
+
+.button-delete img, .button-download img {
+  width: 80%;
+}
+
+.image-from-wedding {
+  @apply sm:h-[500px] h-auto w-auto
+}
+
+.loading {
+  width: 100%;
+  text-align: center;
+  padding: 20px;
+  font-size: 16px;
+  color: #888;
+}

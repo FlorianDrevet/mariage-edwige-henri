@@ -1,0 +1,7 @@
+organization=floriandrevet
+projectKey=FlorianDrevet_mariage-edwige-henri
+serverUrl=https://sonarcloud.io
+serverVersion=8.0.0.76752
+dashboardUrl=https://sonarcloud.io/dashboard?id=FlorianDrevet_mariage-edwige-henri
+ceTaskId=AZq3B_GckpemIkoLPwju
+ceTaskUrl=https://sonarcloud.io/api/ce/task?id=AZq3B_GckpemIkoLPwju

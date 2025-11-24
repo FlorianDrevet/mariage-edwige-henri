@@ -1,0 +1,43 @@
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+ul li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+ul li button {
+  position: relative;
+  text-decoration: none;
+  color: black;
+}
+
+ul li button::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 0;
+  height: 2px;
+  background-color: #c7aa74;
+  transition: width 0.3s;
+}
+
+ul li button:hover::after {
+  width: 100%;
+}
+
+.active-link::after {
+  width: 100% !important;
+}
+
+.gradient-text {
+  background-image: linear-gradient(to right, #edc273, #9a754d);
+
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}

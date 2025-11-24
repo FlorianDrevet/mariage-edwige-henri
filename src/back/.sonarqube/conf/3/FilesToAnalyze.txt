@@ -1,0 +1,16 @@
+﻿C:\Users\Utilisateur\Documents\ING-2\C#\mariage-edwige-henri\src\back\Mariage.Contracts\Authentication\AuthenticationResponse.cs
+C:\Users\Utilisateur\Documents\ING-2\C#\mariage-edwige-henri\src\back\Mariage.Contracts\Authentication\LoginRequest.cs
+C:\Users\Utilisateur\Documents\ING-2\C#\mariage-edwige-henri\src\back\Mariage.Contracts\Authentication\RegisterRequest.cs
+C:\Users\Utilisateur\Documents\ING-2\C#\mariage-edwige-henri\src\back\Mariage.Contracts\Gift\CreateGiftParticipationRequest.cs
+C:\Users\Utilisateur\Documents\ING-2\C#\mariage-edwige-henri\src\back\Mariage.Contracts\Gift\CreateGiftRequest.cs
+C:\Users\Utilisateur\Documents\ING-2\C#\mariage-edwige-henri\src\back\Mariage.Contracts\Gift\GiftResponse.cs
+C:\Users\Utilisateur\Documents\ING-2\C#\mariage-edwige-henri\src\back\Mariage.Contracts\Pictures\AddFavoritePictureRequest.cs
+C:\Users\Utilisateur\Documents\ING-2\C#\mariage-edwige-henri\src\back\Mariage.Contracts\Pictures\CreatePictureRequest.cs
+C:\Users\Utilisateur\Documents\ING-2\C#\mariage-edwige-henri\src\back\Mariage.Contracts\Pictures\GetFavoritePicturesPaginated.cs
+C:\Users\Utilisateur\Documents\ING-2\C#\mariage-edwige-henri\src\back\Mariage.Contracts\Pictures\GetPicturesPaginated.cs
+C:\Users\Utilisateur\Documents\ING-2\C#\mariage-edwige-henri\src\back\Mariage.Contracts\Pictures\PictureResponse.cs
+C:\Users\Utilisateur\Documents\ING-2\C#\mariage-edwige-henri\src\back\Mariage.Contracts\Pictures\RemovePictureFromFavoriteRequest.cs
+C:\Users\Utilisateur\Documents\ING-2\C#\mariage-edwige-henri\src\back\Mariage.Contracts\UserInfos\AddGuestsRequest.cs
+C:\Users\Utilisateur\Documents\ING-2\C#\mariage-edwige-henri\src\back\Mariage.Contracts\UserInfos\ChangeEmailRequest.cs
+C:\Users\Utilisateur\Documents\ING-2\C#\mariage-edwige-henri\src\back\Mariage.Contracts\UserInfos\ChangeIsComingRequest.cs
+C:\Users\Utilisateur\Documents\ING-2\C#\mariage-edwige-henri\src\back\Mariage.Contracts\UserInfos\UserInfosResponse.cs

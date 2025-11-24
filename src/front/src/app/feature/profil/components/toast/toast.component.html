@@ -1,0 +1,16 @@
+<c-toaster [placement]="position" class="p-3" position="fixed">
+  <c-toast
+    (timer)="onTimerChange($event)"
+    (visibleChange)="onVisibleChange($event)"
+    [visible]="visible">
+    <c-toast-header [closeButton]="true">
+      <h3 class="mr-auto">Succès</h3>
+    </c-toast-header>
+    <c-toast-body>
+      <p>Email modifié avec succès !</p>
+    </c-toast-body>
+  </c-toast>
+</c-toaster>
+
+<app-button (click)="toggleToast()" class="w-fit"><ng-content></ng-content></app-button>
+

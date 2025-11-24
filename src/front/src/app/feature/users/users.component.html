@@ -1,0 +1,94 @@
+<div class="w-screen flex flex-column items-center mt-10 mb-40">
+  <app-modal-add-user class="mb-10"></app-modal-add-user>
+  <div class="flex lg:flex-row flex-col mb-20">
+    <h1 class="font-librebaskerville text-3xl text-center">Nombre de personnes ayant répondu "oui": </h1>
+    <p class="font-librebaskerville text-3xl ml-5 text-center">{{ NbrOfYes() }} + 3</p>
+  </div>
+  <table class="w-2/3 ml-auto mr-auto" id="users">
+    <thead>
+    <tr>
+      <th>Identifiant</th>
+      <th>Email</th>
+    </tr>
+    </thead>
+    <tbody>
+      @for (user of users; track user) {
+        <tr>
+          <td class="flex flex-row justify-between">
+            {{ user.username }} <app-button (click)="onModalGuestClick(user.id)"
+            [cModalToggle]="verticallyCenteredModalGuests.id">+</app-button>
+          </td>
+          <td>{{ user.email }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+
+  <table class="w-2/3 ml-auto mr-auto mt-20" id="emailTable">
+    <thead>
+    <tr>
+      <th>Identifiant</th>
+      <th>Prénom</th>
+      <th>Nom</th>
+      <th>A confirmé</th>
+    </tr>
+    </thead>
+    <tbody>
+
+      @for (user of users; track user) {
+        @for (guest of user.guests; track guest) {
+          <tr>
+            <td>{{ user.username }}</td>
+            <td>{{ guest.firstName }}</td>
+            <td>{{ guest.lastName }}</td>
+            <td>
+              <app-tag [confirmed]="guest.isComing"></app-tag>
+            </td>
+          </tr>
+        }
+      }
+    </tbody>
+  </table>
+
+</div>
+
+
+
+<c-modal #verticallyCenteredModalGuests alignment="center" id="verticallyCenteredModalGuests" size="lg">
+  <c-modal-header>
+    <h5 cModalTitle class="font-librebaskerville text-4xl">Ajouter un nouvel invité</h5>
+  </c-modal-header>
+  <c-modal-body>
+    <form [formGroup]="registerForm">
+      <div class="h-10"></div>
+
+      <app-input
+        [form]="registerForm"
+        [icon]="icon.cilGroup"
+        [required]="true"
+        class="mt-10"
+        controlName="firstname"
+        placeholder="Prénom"
+      ></app-input>
+
+      <div class="h-10"></div>
+
+      <app-input
+        [form]="registerForm"
+        [icon]="icon.cilLockLocked"
+        [required]="true"
+        class="mt-24"
+        controlName="lastname"
+        placeholder="Nom"
+      ></app-input>
+    </form>
+  </c-modal-body>
+  <c-modal-footer>
+    <app-button [cModalToggle]="verticallyCenteredModalGuests.id">Annuler</app-button>
+    <app-button
+      (click)="onAddGuestClick()"
+      [cModalToggle]="verticallyCenteredModalGuests.id"
+    >Ajouter
+    </app-button>
+  </c-modal-footer>
+</c-modal>

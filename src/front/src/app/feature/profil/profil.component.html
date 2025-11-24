@@ -1,0 +1,36 @@
+@if (profils) {
+  <div class="flex flex-col items-center relative mt-10">
+    <app-title-wedding class="mt-10">Vos informations</app-title-wedding>
+    <form [formGroup]="profilForm" class="relative w-4/5 lg:w-2/5 flex flex-column">
+      <p class="mb-3 font-librebaskerville text-xl text-justify">Entrez votre Email afin de recevoir les dernières
+        informations sur notre mariage !</p>
+      <div class="flex flex-row items-center flex-wrap mt-10 lg:mt-0">
+        <app-input
+          class="ml-auto mr-auto lg:mr-0 lg:ml-0"
+          [form]="profilForm"
+          [icon]="icon.cilEnvelopeClosed"
+          [valueInput]="profils.email"
+          controlName="email"
+          placeholder="Email"
+        ></app-input>
+        <app-toast-mariage
+          class="ml-auto mr-auto lg:mr-0 w-fit mt-3 lg:-mt-10"
+          (click)="onUpdateClick()">
+          Modifier
+        </app-toast-mariage>
+      </div>
+    </form>
+
+    <app-title-wedding class="mt-20">Les personnes invitées</app-title-wedding>
+    <p class="font-librebaskerville text-xl w-4/5 text-center">Réponses des personnes invitées :</p>
+    <div class="flex flex-col w-4/5 lg:w-2/5 mt-10">
+      @for(guest of profils.guests; track profils.guests) {
+        <div class="flex flex-row justify-between items-center">
+          <p class="font-librebaskerville text-xl text-justify mt-3">{{guest.firstName}} {{guest.lastName}}</p>
+          <app-toggle-button [disabled]="false" [guest]="guest"></app-toggle-button>
+        </div>
+      }
+    </div>
+    <!--<p class="font-librebaskerville text-xl w-4/5 text-center mb-40 mt-20">Si une des réponses a changé, envoyer nous un mail à <a href="mailto:afdrevet@outlook.com">afdrevet&#64;outlook.com</a></p>-->
+  </div>
+}

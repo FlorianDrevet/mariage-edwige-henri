@@ -1,0 +1,45 @@
+nav ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+nav ul li {
+  display: inline-block;
+}
+
+nav ul li a {
+  position: relative;
+  text-decoration: none;
+  color: black;
+}
+
+nav ul li a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 0;
+  height: 2px;
+  background-color: #c7aa74;
+  transition: width 0.3s;
+}
+
+nav ul li a:hover::after {
+  width: 100%;
+}
+
+.active-link::after {
+  width: 100% !important;
+}
+
+img {
+  max-height: 520px;
+}
+
+.gradient-text {
+  background-image: linear-gradient(to right, #edc273, #9a754d);
+
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}

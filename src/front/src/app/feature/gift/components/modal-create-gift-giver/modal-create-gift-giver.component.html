@@ -1,0 +1,51 @@
+<app-button [disabled]="disabled" [cModalToggle]="verticallyCenteredModal.id"><ng-content></ng-content></app-button>
+<c-modal #verticallyCenteredModal alignment="center" id="verticallyCenteredModal" size="lg">
+  <c-modal-header>
+    <h5 cModalTitle class="font-librebaskerville text-4xl">Vos coordonnées</h5>
+  </c-modal-header>
+  <c-modal-body>
+    <form [formGroup]="createGiftGiverForm">
+      <div class="h-10"></div>
+
+      <app-input
+        [form]="createGiftGiverForm"
+        [icon]="icon.cilGift"
+        [required]="true"
+        class="mt-10"
+        controlName="firstName"
+        placeholder="Prénom"
+      ></app-input>
+
+      <div class="h-10"></div>
+
+      <app-input
+        [form]="createGiftGiverForm"
+        [icon]="icon.cilMoney"
+        [required]="true"
+        class="mt-24"
+        controlName="lastName"
+        placeholder="Nom"
+      ></app-input>
+
+      <div class="h-10"></div>
+
+      <app-input
+        [form]="createGiftGiverForm"
+        [icon]="icon.cilMoney"
+        [required]="true"
+        class="mt-24"
+        controlName="email"
+        placeholder="Email"
+      ></app-input>
+    </form>
+  </c-modal-body>
+  <c-modal-footer>
+    <app-button [cModalToggle]="verticallyCenteredModal.id">Annuler</app-button>
+    <app-button
+      (click)="onCreateGiftGiverClick()"
+      [attr.cModalToggle]="createGiftGiverForm.valid ? verticallyCenteredModal.id : null"
+    >Ajouter
+    </app-button>
+  </c-modal-footer>
+</c-modal>
+

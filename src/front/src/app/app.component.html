@@ -1,0 +1,9 @@
+<ng-container class="flex flex-col">
+  @if (!isLoginPage) {
+    <app-navigation></app-navigation>
+  }
+  <router-outlet></router-outlet>
+  @if (!isLoginPage) {
+    <app-footer></app-footer>
+  }
+</ng-container>

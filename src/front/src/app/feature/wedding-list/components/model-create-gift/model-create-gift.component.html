@@ -1,0 +1,64 @@
+<app-button [cModalToggle]="verticallyCenteredModal.id">Nouveau Cadeau</app-button>
+<c-modal #verticallyCenteredModal alignment="center" id="verticallyCenteredModal" size="lg">
+  <c-modal-header>
+    <h5 cModalTitle class="font-librebaskerville text-4xl">Ajouter un nouveau cadeau</h5>
+  </c-modal-header>
+  <c-modal-body>
+    <form [formGroup]="createGiftForm">
+      <div class="h-10"></div>
+
+      <app-input
+        [form]="createGiftForm"
+        [icon]="icon.cilGift"
+        [required]="true"
+        class="mt-10"
+        controlName="name"
+        placeholder="Nom"
+      ></app-input>
+
+      <div class="h-10"></div>
+
+      <app-input
+        [form]="createGiftForm"
+        [icon]="icon.cilMoney"
+        [required]="true"
+        class="mt-24"
+        controlName="price"
+        placeholder="Prix"
+      ></app-input>
+
+      <select aria-label="Category" cSelect formControlName="category" class="mt-24" [required]="true">
+        <option [value]="CategoryEnum.TableArts">Arts de la table</option>
+        <option [value]="CategoryEnum.HouseholdLinens">Linge de maison</option>
+        <option [value]="CategoryEnum.Decorations">Décorations</option>
+        <option [value]="CategoryEnum.HomeAppliances">Electroménager</option>
+        <option [value]="CategoryEnum.Kitchen">Cuisine</option>
+        <option [value]="CategoryEnum.Digestives">Digestifs</option>
+        <option [value]="CategoryEnum.Furniture">Meubles</option>
+        <option [value]="CategoryEnum.Santons">Santons</option>
+        <option [value]="CategoryEnum.HoneyMoon">Voyage de Noces</option>
+      </select>
+
+      <div class="h-10"></div>
+
+      @if (image !== undefined) {
+        <div class="preview-img-container">
+          <img [src]="image" alt="Image du produit">
+        </div>
+      }
+      <app-button (click)="fileInput.click()">Choisir une image</app-button>
+      <input #fileInput (change)="onFileSelected()" formControlName="imageFile"
+             hidden id="file" required type="file">
+    </form>
+  </c-modal-body>
+  <c-modal-footer>
+    <app-button [cModalToggle]="verticallyCenteredModal.id">Annuler</app-button>
+    <app-button
+      (click)="onCreateGiftClick()"
+      [cModalToggle]="verticallyCenteredModal.id"
+    >Ajouter
+    </app-button>
+  </c-modal-footer>
+</c-modal>
+
+

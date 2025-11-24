@@ -1,0 +1,41 @@
+<div class="sidenav flex flex-col" [ngClass]="{'open': isOpen}">
+  <button type="button"
+          (click)="onCloseNavClicked()"
+          class="bg-white rounded-md p-2 inline-flex items-center text-black m-2 mr-auto">
+    <span class="sr-only">Close menu</span>
+    <svg class="h-8 w-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+    </svg>
+  </button>
+
+  <nav class="w-screen h-screen mt-10">
+    <ul (click)="onCloseNavClicked()" class="w-full flex-column flex items-center">
+      <li><a routerLink="/accueil" routerLinkActive="active-link" class="font-librebaskerville">Accueil</a></li>
+      <li><a routerLink="/maries" routerLinkActive="active-link" class="font-librebaskerville">Les mariés</a></li>
+      <li><a routerLink="/mariage" routerLinkActive="active-link" class="font-librebaskerville">Le mariage</a></li>
+      <li><a routerLink="/photos" routerLinkActive="active-link" class="font-librebaskerville">Photos</a></li>
+      <li><a routerLink="/liste-de-mariage" routerLinkActive="active">Liste de mariage</a></li>
+      <li><a routerLink="/contact" routerLinkActive="active-link" class="font-librebaskerville">Contact</a></li>
+    </ul>
+  </nav>
+
+  <div (click)="onCloseNavClicked()" class="mt-auto mb-10 ml-auto mr-auto flex flex-col">
+    @if (authService.isAdmin$ | async) {
+      <app-button routerUrl="/utilisateurs" class="w-full">Invités</app-button>
+    }
+    @if (authService.isAuthenticated$ | async) {
+      <app-button routerUrl="/profils" class="w-full">Profil</app-button>
+      <app-button (click)="onLogoutClick()" class="w-full">Déconnexion</app-button>
+    }
+    @else {
+      <app-button routerUrl="/login" class="w-full">Connexion</app-button>
+    }
+  </div>
+
+</div>
+
+<div class="space-y-2 m-4" (click)="onOpenNavClicked()">
+  <div class="w-8 h-0.5 bg-black"></div>
+  <div class="w-8 h-0.5 bg-black"></div>
+  <div class="w-8 h-0.5 bg-black"></div>
+</div>

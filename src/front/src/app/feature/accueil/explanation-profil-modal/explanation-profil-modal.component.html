@@ -1,0 +1,14 @@
+@if(showModal) {
+  <div class="modal-explanation">
+    <div class="modal-content">
+      <span class="close ml-auto" (click)="closeModal()">&times;</span>
+      <app-title-wedding>Pour vous aider !</app-title-wedding>
+      <p class="text-xl lg:text-2xl text-center lg:w-4/5 ">
+        En vous connectant vous avez accès à votre profil. Sur celui-ci vous pourrez nous dire si vous serez
+        présent ou non pour la réception le soir. Vous avez jusqu'au 21 juin pour répondre.
+      </p>
+      <app-button (click)="goToProfil()" class="mt-10">Profil</app-button>
+    </div>
+  </div>
+}
+

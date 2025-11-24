@@ -1,0 +1,544 @@
+{
+  "$schema": "http://json.schemastore.org/sarif-1.0.0",
+  "version": "1.0.0",
+  "runs": [
+    {
+      "tool": {
+        "name": "Compilateur Microsoft (R) Visual C#",
+        "version": "5.0.0.0",
+        "fileVersion": "5.0.0-2.25451.107 (2db1f5ee)",
+        "semanticVersion": "5.0.0",
+        "language": "fr-FR"
+      },
+      "results": [
+        {
+          "ruleId": "S1192",
+          "level": "warning",
+          "message": "Define a constant instead of using this literal 'uniqueidentifier' 8 times.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/Utilisateur/Documents/ING-2/C%23/mariage-edwige-henri/src/back/Mariage.Infrastructure/Migrations/20240222203553_Initial.cs",
+                "region": {
+                  "startLine": 18,
+                  "startColumn": 51,
+                  "endLine": 18,
+                  "endColumn": 69
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/Utilisateur/Documents/ING-2/C%23/mariage-edwige-henri/src/back/Mariage.Infrastructure/Migrations/20240222203553_Initial.cs",
+                "region": {
+                  "startLine": 33,
+                  "startColumn": 51,
+                  "endLine": 33,
+                  "endColumn": 69
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/Utilisateur/Documents/ING-2/C%23/mariage-edwige-henri/src/back/Mariage.Infrastructure/Migrations/20240222203553_Initial.cs",
+                "region": {
+                  "startLine": 34,
+                  "startColumn": 55,
+                  "endLine": 34,
+                  "endColumn": 73
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/Utilisateur/Documents/ING-2/C%23/mariage-edwige-henri/src/back/Mariage.Infrastructure/Migrations/20240222203553_Initial.cs",
+                "region": {
+                  "startLine": 46,
+                  "startColumn": 51,
+                  "endLine": 46,
+                  "endColumn": 69
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/Utilisateur/Documents/ING-2/C%23/mariage-edwige-henri/src/back/Mariage.Infrastructure/Migrations/20240222203553_Initial.cs",
+                "region": {
+                  "startLine": 61,
+                  "startColumn": 60,
+                  "endLine": 61,
+                  "endColumn": 78
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/Utilisateur/Documents/ING-2/C%23/mariage-edwige-henri/src/back/Mariage.Infrastructure/Migrations/20240222203553_Initial.cs",
+                "region": {
+                  "startLine": 62,
+                  "startColumn": 55,
+                  "endLine": 62,
+                  "endColumn": 73
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/Utilisateur/Documents/ING-2/C%23/mariage-edwige-henri/src/back/Mariage.Infrastructure/Migrations/20240222203553_Initial.cs",
+                "region": {
+                  "startLine": 83,
+                  "startColumn": 56,
+                  "endLine": 83,
+                  "endColumn": 74
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/Utilisateur/Documents/ING-2/C%23/mariage-edwige-henri/src/back/Mariage.Infrastructure/Migrations/20240222203553_Initial.cs",
+                "region": {
+                  "startLine": 84,
+                  "startColumn": 55,
+                  "endLine": 84,
+                  "endColumn": 73
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "0": null,
+              "1": null,
+              "2": null,
+              "3": null,
+              "4": null,
+              "5": null,
+              "6": null
+            }
+          }
+        },
+        {
+          "ruleId": "S1192",
+          "level": "warning",
+          "message": "Define a constant instead of using this literal 'nvarchar(max)' 12 times.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/Utilisateur/Documents/ING-2/C%23/mariage-edwige-henri/src/back/Mariage.Infrastructure/Migrations/20240222203553_Initial.cs",
+                "region": {
+                  "startLine": 19,
+                  "startColumn": 55,
+                  "endLine": 19,
+                  "endColumn": 70
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/Utilisateur/Documents/ING-2/C%23/mariage-edwige-henri/src/back/Mariage.Infrastructure/Migrations/20240222203553_Initial.cs",
+                "region": {
+                  "startLine": 22,
+                  "startColumn": 59,
+                  "endLine": 22,
+                  "endColumn": 74
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/Utilisateur/Documents/ING-2/C%23/mariage-edwige-henri/src/back/Mariage.Infrastructure/Migrations/20240222203553_Initial.cs",
+                "region": {
+                  "startLine": 35,
+                  "startColumn": 59,
+                  "endLine": 35,
+                  "endColumn": 74
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/Utilisateur/Documents/ING-2/C%23/mariage-edwige-henri/src/back/Mariage.Infrastructure/Migrations/20240222203553_Initial.cs",
+                "region": {
+                  "startLine": 47,
+                  "startColumn": 59,
+                  "endLine": 47,
+                  "endColumn": 74
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/Utilisateur/Documents/ING-2/C%23/mariage-edwige-henri/src/back/Mariage.Infrastructure/Migrations/20240222203553_Initial.cs",
+                "region": {
+                  "startLine": 48,
+                  "startColumn": 56,
+                  "endLine": 48,
+                  "endColumn": 71
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/Utilisateur/Documents/ING-2/C%23/mariage-edwige-henri/src/back/Mariage.Infrastructure/Migrations/20240222203553_Initial.cs",
+                "region": {
+                  "startLine": 49,
+                  "startColumn": 59,
+                  "endLine": 49,
+                  "endColumn": 74
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/Utilisateur/Documents/ING-2/C%23/mariage-edwige-henri/src/back/Mariage.Infrastructure/Migrations/20240222203553_Initial.cs",
+                "region": {
+                  "startLine": 50,
+                  "startColumn": 55,
+                  "endLine": 50,
+                  "endColumn": 70
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/Utilisateur/Documents/ING-2/C%23/mariage-edwige-henri/src/back/Mariage.Infrastructure/Migrations/20240222203553_Initial.cs",
+                "region": {
+                  "startLine": 63,
+                  "startColumn": 60,
+                  "endLine": 63,
+                  "endColumn": 75
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/Utilisateur/Documents/ING-2/C%23/mariage-edwige-henri/src/back/Mariage.Infrastructure/Migrations/20240222203553_Initial.cs",
+                "region": {
+                  "startLine": 64,
+                  "startColumn": 59,
+                  "endLine": 64,
+                  "endColumn": 74
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/Utilisateur/Documents/ING-2/C%23/mariage-edwige-henri/src/back/Mariage.Infrastructure/Migrations/20240222203553_Initial.cs",
+                "region": {
+                  "startLine": 65,
+                  "startColumn": 56,
+                  "endLine": 65,
+                  "endColumn": 71
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/Utilisateur/Documents/ING-2/C%23/mariage-edwige-henri/src/back/Mariage.Infrastructure/Migrations/20240222203553_Initial.cs",
+                "region": {
+                  "startLine": 85,
+                  "startColumn": 60,
+                  "endLine": 85,
+                  "endColumn": 75
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/Utilisateur/Documents/ING-2/C%23/mariage-edwige-henri/src/back/Mariage.Infrastructure/Migrations/20240222203553_Initial.cs",
+                "region": {
+                  "startLine": 86,
+                  "startColumn": 59,
+                  "endLine": 86,
+                  "endColumn": 74
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "0": null,
+              "1": null,
+              "10": null,
+              "2": null,
+              "3": null,
+              "4": null,
+              "5": null,
+              "6": null,
+              "7": null,
+              "8": null,
+              "9": null
+            }
+          }
+        },
+        {
+          "ruleId": "S2325",
+          "level": "warning",
+          "message": "Make 'ConfigurePicturesTable' a static method.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/Utilisateur/Documents/ING-2/C%23/mariage-edwige-henri/src/back/Mariage.Infrastructure/Persistence/Configurations/PictureConfiguration.cs",
+                "region": {
+                  "startLine": 16,
+                  "startColumn": 18,
+                  "endLine": 16,
+                  "endColumn": 40
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2325",
+          "level": "warning",
+          "message": "Make 'ConfigureGiftGiver' a static method.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/Utilisateur/Documents/ING-2/C%23/mariage-edwige-henri/src/back/Mariage.Infrastructure/Persistence/Configurations/GiftConfiguration.cs",
+                "region": {
+                  "startLine": 16,
+                  "startColumn": 18,
+                  "endLine": 16,
+                  "endColumn": 36
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2325",
+          "level": "warning",
+          "message": "Make 'ConfigureUsersTable' a static method.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/Utilisateur/Documents/ING-2/C%23/mariage-edwige-henri/src/back/Mariage.Infrastructure/Persistence/Configurations/UserConfiguration.cs",
+                "region": {
+                  "startLine": 18,
+                  "startColumn": 18,
+                  "endLine": 18,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2325",
+          "level": "warning",
+          "message": "Make 'ConfigureGiftsTable' a static method.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/Utilisateur/Documents/ING-2/C%23/mariage-edwige-henri/src/back/Mariage.Infrastructure/Persistence/Configurations/GiftConfiguration.cs",
+                "region": {
+                  "startLine": 35,
+                  "startColumn": 18,
+                  "endLine": 35,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CA1822",
+          "level": "note",
+          "message": "Le membre 'ConfigurePicturesTable' n'accède pas aux données d'instance et peut être marqué comme étant static",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/Utilisateur/Documents/ING-2/C%23/mariage-edwige-henri/src/back/Mariage.Infrastructure/Persistence/Configurations/PictureConfiguration.cs",
+                "region": {
+                  "startLine": 16,
+                  "startColumn": 18,
+                  "endLine": 16,
+                  "endColumn": 40
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2325",
+          "level": "warning",
+          "message": "Make 'ConfigureGuest' a static method.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/Utilisateur/Documents/ING-2/C%23/mariage-edwige-henri/src/back/Mariage.Infrastructure/Persistence/Configurations/UserConfiguration.cs",
+                "region": {
+                  "startLine": 36,
+                  "startColumn": 18,
+                  "endLine": 36,
+                  "endColumn": 32
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CA1822",
+          "level": "note",
+          "message": "Le membre 'ConfigureGiftsTable' n'accède pas aux données d'instance et peut être marqué comme étant static",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/Utilisateur/Documents/ING-2/C%23/mariage-edwige-henri/src/back/Mariage.Infrastructure/Persistence/Configurations/GiftConfiguration.cs",
+                "region": {
+                  "startLine": 35,
+                  "startColumn": 18,
+                  "endLine": 35,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CA1822",
+          "level": "note",
+          "message": "Le membre 'ConfigureGiftGiver' n'accède pas aux données d'instance et peut être marqué comme étant static",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/Utilisateur/Documents/ING-2/C%23/mariage-edwige-henri/src/back/Mariage.Infrastructure/Persistence/Configurations/GiftConfiguration.cs",
+                "region": {
+                  "startLine": 16,
+                  "startColumn": 18,
+                  "endLine": 16,
+                  "endColumn": 36
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CA1822",
+          "level": "note",
+          "message": "Le membre 'ConfigureUsersTable' n'accède pas aux données d'instance et peut être marqué comme étant static",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/Utilisateur/Documents/ING-2/C%23/mariage-edwige-henri/src/back/Mariage.Infrastructure/Persistence/Configurations/UserConfiguration.cs",
+                "region": {
+                  "startLine": 18,
+                  "startColumn": 18,
+                  "endLine": 18,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CA1822",
+          "level": "note",
+          "message": "Le membre 'ConfigureGuest' n'accède pas aux données d'instance et peut être marqué comme étant static",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/Utilisateur/Documents/ING-2/C%23/mariage-edwige-henri/src/back/Mariage.Infrastructure/Persistence/Configurations/UserConfiguration.cs",
+                "region": {
+                  "startLine": 36,
+                  "startColumn": 18,
+                  "endLine": 36,
+                  "endColumn": 32
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        }
+      ],
+      "rules": {
+        "CA1822": {
+          "id": "CA1822",
+          "shortDescription": "Marquer les membres comme étant static",
+          "fullDescription": "Les membres qui n'accèdent pas aux données d'instance ou qui n'appellent pas de méthodes d'instance peuvent être marqués comme étant static. Une fois que vous avez marqué les méthodes comme étant static, le compilateur émet des sites d'appel non virtuels pour ces membres. Cela peut apporter un gain de performances mesurable pour le code qui en dépend.",
+          "defaultLevel": "note",
+          "helpUri": "https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1822",
+          "properties": {
+            "category": "Performance",
+            "isEnabledByDefault": true,
+            "tags": [
+              "PortedFromFxCop",
+              "Telemetry",
+              "EnabledRuleInAggressiveMode"
+            ]
+          }
+        },
+        "S1192": {
+          "id": "S1192",
+          "shortDescription": "String literals should not be duplicated",
+          "fullDescription": "Duplicated string literals make the process of refactoring complex and error-prone, as any change would need to be propagated on all occurrences.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-1192",
+          "properties": {
+            "category": "Minor Code Smell",
+            "isEnabledByDefault": false,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "SonarWay"
+            ]
+          }
+        },
+        "S2325": {
+          "id": "S2325",
+          "shortDescription": "Methods and properties that don't access instance data should be static",
+          "fullDescription": "Methods and properties that don’t access instance data should be marked as static for the following reasons:",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-2325",
+          "properties": {
+            "category": "Minor Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "TestSourceScope",
+              "SonarWay"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

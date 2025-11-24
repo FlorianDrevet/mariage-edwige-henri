@@ -1,0 +1,49 @@
+<div class="w-screen flex flex-row items-center mt-20">
+  <div class="w-full flex-row flex h-[50vh]">
+
+    <div class="flex flex-col w-fit ml-auto">
+      <div style="height: calc(20% - 32px)"></div>
+      <div class="flex flex-row items-center w-fit">
+        <a
+          (click)="getClicked()"
+          [routerLink]="['ceremonie-religieuse']" class="mr-3">
+          <img ngSrc="assets/icons/eglise.png" height="64" width="64" alt="Icon église"/>
+        </a>
+        <div class="horizontal-line-left"></div>
+      </div>
+      <div style="height: calc(40% - 64px)"></div>
+      <div class="flex flex-row items-center w-fit">
+        <a
+          (click)="getClicked()"
+          [routerLink]="['photos']" class="mr-3">
+          <img ngSrc="assets/icons/appareil-photo-reflex-numerique.png" height="64" width="64" alt="Icon appareil photo"/>
+        </a>
+        <div class="horizontal-line-left"></div>
+      </div>
+    </div>
+
+    <div class="main-line"></div>
+
+    <div class="flex flex-col w-fit mr-auto h-full">
+      <div style="height: calc(40% - 32px)"></div>
+      <div class="flex flex-row items-center w-fit">
+        <div class="horizontal-line-right"></div>
+        <a
+          (click)="getClicked()"
+          [routerLink]="['vin-honneur']" class="ml-3">
+          <img ngSrc="assets/icons/champagne.png" height="64" width="64" alt="Icon champagne"/>
+        </a>
+      </div>
+      <div style="height: calc(40% - 64px)"></div>
+      <div class="flex flex-row items-center w-fit">
+        <div class="horizontal-line-right"></div>
+        <a
+          (click)="getClicked()"
+          [routerLink]="['reception']" class="ml-3">
+          <img ngSrc="assets/icons/repas.png" height="64" width="64" alt="Icon repas"/>
+        </a>
+      </div>
+    </div>
+  </div>
+
+</div>

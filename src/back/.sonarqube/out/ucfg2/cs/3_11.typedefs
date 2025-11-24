@@ -1,0 +1,387 @@
+≥
+-Mariage.Contracts.UserInfos.UserInfosResponseobjectSystem.IEquatable<T>ß
+zUserInfosResponse(System.Guid, string, string, System.Collections.Generic.List<Mariage.Contracts.UserInfos.GuestResponse>)®Mariage.Contracts.UserInfos.UserInfosResponse.UserInfosResponse(System.Guid, string, string, System.Collections.Generic.List<Mariage.Contracts.UserInfos.GuestResponse>)F
+
+ToString()8Mariage.Contracts.UserInfos.UserInfosResponse.ToString()Ä
+'PrintMembers(System.Text.StringBuilder)UMariage.Contracts.UserInfos.UserInfosResponse.PrintMembers(System.Text.StringBuilder)L
+GetHashCode();Mariage.Contracts.UserInfos.UserInfosResponse.GetHashCode()P
+Equals(object?)=Mariage.Contracts.UserInfos.UserInfosResponse.Equals(object?)û
+6Equals(Mariage.Contracts.UserInfos.UserInfosResponse?)dMariage.Contracts.UserInfos.UserInfosResponse.Equals(Mariage.Contracts.UserInfos.UserInfosResponse?)F
+
+<Clone>$()8Mariage.Contracts.UserInfos.UserInfosResponse.<Clone>$()≤
+@UserInfosResponse(Mariage.Contracts.UserInfos.UserInfosResponse)nMariage.Contracts.UserInfos.UserInfosResponse.UserInfosResponse(Mariage.Contracts.UserInfos.UserInfosResponse)º
+ÑDeconstruct(out System.Guid, out string, out string, out System.Collections.Generic.List<Mariage.Contracts.UserInfos.GuestResponse>)≤Mariage.Contracts.UserInfos.UserInfosResponse.Deconstruct(out System.Guid, out string, out string, out System.Collections.Generic.List<Mariage.Contracts.UserInfos.GuestResponse>)Z
+EqualityContract.getBMariage.Contracts.UserInfos.UserInfosResponse.EqualityContract.getZ
+EqualityContract.setBMariage.Contracts.UserInfos.UserInfosResponse.EqualityContract.set>
+Id.get4Mariage.Contracts.UserInfos.UserInfosResponse.Id.get@
+Id.init5Mariage.Contracts.UserInfos.UserInfosResponse.Id.initJ
+Username.get:Mariage.Contracts.UserInfos.UserInfosResponse.Username.getL
+Username.init;Mariage.Contracts.UserInfos.UserInfosResponse.Username.initD
+	Email.get7Mariage.Contracts.UserInfos.UserInfosResponse.Email.getF
+
+Email.init8Mariage.Contracts.UserInfos.UserInfosResponse.Email.initF
+
+Guests.get8Mariage.Contracts.UserInfos.UserInfosResponse.Guests.getH
+Guests.init9Mariage.Contracts.UserInfos.UserInfosResponse.Guests.init≈
+
+#Mariage.Contracts.UserInfos.GestDtoobjectSystem.IEquatable<T>V
+GestDto(string, string);Mariage.Contracts.UserInfos.GestDto.GestDto(string, string)<
+
+ToString().Mariage.Contracts.UserInfos.GestDto.ToString()v
+'PrintMembers(System.Text.StringBuilder)KMariage.Contracts.UserInfos.GestDto.PrintMembers(System.Text.StringBuilder)B
+GetHashCode()1Mariage.Contracts.UserInfos.GestDto.GetHashCode()F
+Equals(object?)3Mariage.Contracts.UserInfos.GestDto.Equals(object?)Ä
+,Equals(Mariage.Contracts.UserInfos.GestDto?)PMariage.Contracts.UserInfos.GestDto.Equals(Mariage.Contracts.UserInfos.GestDto?)<
+
+<Clone>$().Mariage.Contracts.UserInfos.GestDto.<Clone>$()Ä
+,GestDto(Mariage.Contracts.UserInfos.GestDto)PMariage.Contracts.UserInfos.GestDto.GestDto(Mariage.Contracts.UserInfos.GestDto)n
+#Deconstruct(out string, out string)GMariage.Contracts.UserInfos.GestDto.Deconstruct(out string, out string)P
+EqualityContract.get8Mariage.Contracts.UserInfos.GestDto.EqualityContract.getP
+EqualityContract.set8Mariage.Contracts.UserInfos.GestDto.EqualityContract.setB
+FirstName.get1Mariage.Contracts.UserInfos.GestDto.FirstName.getD
+FirstName.init2Mariage.Contracts.UserInfos.GestDto.FirstName.init@
+LastName.get0Mariage.Contracts.UserInfos.GestDto.LastName.getB
+LastName.init1Mariage.Contracts.UserInfos.GestDto.LastName.init√
+;Mariage.Contracts.Pictures.RemovePictureFromFavoriteRequestobjectSystem.IEquatable<T>ö
+-RemovePictureFromFavoriteRequest(System.Guid)iMariage.Contracts.Pictures.RemovePictureFromFavoriteRequest.RemovePictureFromFavoriteRequest(System.Guid)T
+
+ToString()FMariage.Contracts.Pictures.RemovePictureFromFavoriteRequest.ToString()é
+'PrintMembers(System.Text.StringBuilder)cMariage.Contracts.Pictures.RemovePictureFromFavoriteRequest.PrintMembers(System.Text.StringBuilder)Z
+GetHashCode()IMariage.Contracts.Pictures.RemovePictureFromFavoriteRequest.GetHashCode()^
+Equals(object?)KMariage.Contracts.Pictures.RemovePictureFromFavoriteRequest.Equals(object?)…
+DEquals(Mariage.Contracts.Pictures.RemovePictureFromFavoriteRequest?)ÄMariage.Contracts.Pictures.RemovePictureFromFavoriteRequest.Equals(Mariage.Contracts.Pictures.RemovePictureFromFavoriteRequest?)T
+
+<Clone>$()FMariage.Contracts.Pictures.RemovePictureFromFavoriteRequest.<Clone>$()˚
+]RemovePictureFromFavoriteRequest(Mariage.Contracts.Pictures.RemovePictureFromFavoriteRequest)ôMariage.Contracts.Pictures.RemovePictureFromFavoriteRequest.RemovePictureFromFavoriteRequest(Mariage.Contracts.Pictures.RemovePictureFromFavoriteRequest)x
+Deconstruct(out System.Guid)XMariage.Contracts.Pictures.RemovePictureFromFavoriteRequest.Deconstruct(out System.Guid)h
+EqualityContract.getPMariage.Contracts.Pictures.RemovePictureFromFavoriteRequest.EqualityContract.geth
+EqualityContract.setPMariage.Contracts.Pictures.RemovePictureFromFavoriteRequest.EqualityContract.setZ
+PictureId.getIMariage.Contracts.Pictures.RemovePictureFromFavoriteRequest.PictureId.get\
+PictureId.initJMariage.Contracts.Pictures.RemovePictureFromFavoriteRequest.PictureId.initﬂ
+(Mariage.Contracts.Gift.GiftGiverResponseobjectSystem.IEquatable<T>ß
+=GiftGiverResponse(System.Guid, string, string, string, float)fMariage.Contracts.Gift.GiftGiverResponse.GiftGiverResponse(System.Guid, string, string, string, float)A
+
+ToString()3Mariage.Contracts.Gift.GiftGiverResponse.ToString(){
+'PrintMembers(System.Text.StringBuilder)PMariage.Contracts.Gift.GiftGiverResponse.PrintMembers(System.Text.StringBuilder)G
+GetHashCode()6Mariage.Contracts.Gift.GiftGiverResponse.GetHashCode()K
+Equals(object?)8Mariage.Contracts.Gift.GiftGiverResponse.Equals(object?)è
+1Equals(Mariage.Contracts.Gift.GiftGiverResponse?)ZMariage.Contracts.Gift.GiftGiverResponse.Equals(Mariage.Contracts.Gift.GiftGiverResponse?)A
+
+<Clone>$()3Mariage.Contracts.Gift.GiftGiverResponse.<Clone>$()£
+;GiftGiverResponse(Mariage.Contracts.Gift.GiftGiverResponse)dMariage.Contracts.Gift.GiftGiverResponse.GiftGiverResponse(Mariage.Contracts.Gift.GiftGiverResponse)√
+KDeconstruct(out System.Guid, out string, out string, out string, out float)tMariage.Contracts.Gift.GiftGiverResponse.Deconstruct(out System.Guid, out string, out string, out string, out float)U
+EqualityContract.get=Mariage.Contracts.Gift.GiftGiverResponse.EqualityContract.getU
+EqualityContract.set=Mariage.Contracts.Gift.GiftGiverResponse.EqualityContract.set9
+Id.get/Mariage.Contracts.Gift.GiftGiverResponse.Id.get;
+Id.init0Mariage.Contracts.Gift.GiftGiverResponse.Id.initG
+FirstName.get6Mariage.Contracts.Gift.GiftGiverResponse.FirstName.getI
+FirstName.init7Mariage.Contracts.Gift.GiftGiverResponse.FirstName.initE
+LastName.get5Mariage.Contracts.Gift.GiftGiverResponse.LastName.getG
+LastName.init6Mariage.Contracts.Gift.GiftGiverResponse.LastName.init?
+	Email.get2Mariage.Contracts.Gift.GiftGiverResponse.Email.getA
+
+Email.init3Mariage.Contracts.Gift.GiftGiverResponse.Email.initA
+
+Amount.get3Mariage.Contracts.Gift.GiftGiverResponse.Amount.getC
+Amount.init4Mariage.Contracts.Gift.GiftGiverResponse.Amount.init˛
+
+.Mariage.Contracts.UserInfos.ChangeEmailRequestobjectSystem.IEquatable<T>i
+ChangeEmailRequest(string?)JMariage.Contracts.UserInfos.ChangeEmailRequest.ChangeEmailRequest(string?)G
+
+ToString()9Mariage.Contracts.UserInfos.ChangeEmailRequest.ToString()Å
+'PrintMembers(System.Text.StringBuilder)VMariage.Contracts.UserInfos.ChangeEmailRequest.PrintMembers(System.Text.StringBuilder)M
+GetHashCode()<Mariage.Contracts.UserInfos.ChangeEmailRequest.GetHashCode()Q
+Equals(object?)>Mariage.Contracts.UserInfos.ChangeEmailRequest.Equals(object?)°
+7Equals(Mariage.Contracts.UserInfos.ChangeEmailRequest?)fMariage.Contracts.UserInfos.ChangeEmailRequest.Equals(Mariage.Contracts.UserInfos.ChangeEmailRequest?)G
+
+<Clone>$()9Mariage.Contracts.UserInfos.ChangeEmailRequest.<Clone>$()∑
+BChangeEmailRequest(Mariage.Contracts.UserInfos.ChangeEmailRequest)qMariage.Contracts.UserInfos.ChangeEmailRequest.ChangeEmailRequest(Mariage.Contracts.UserInfos.ChangeEmailRequest)c
+Deconstruct(out string?)GMariage.Contracts.UserInfos.ChangeEmailRequest.Deconstruct(out string?)[
+EqualityContract.getCMariage.Contracts.UserInfos.ChangeEmailRequest.EqualityContract.get[
+EqualityContract.setCMariage.Contracts.UserInfos.ChangeEmailRequest.EqualityContract.setE
+	Email.get8Mariage.Contracts.UserInfos.ChangeEmailRequest.Email.getG
+
+Email.init9Mariage.Contracts.UserInfos.ChangeEmailRequest.Email.initû
+-Mariage.Contracts.Authentication.LoginRequestobjectSystem.IEquatable<T>j
+LoginRequest(string, string)JMariage.Contracts.Authentication.LoginRequest.LoginRequest(string, string)F
+
+ToString()8Mariage.Contracts.Authentication.LoginRequest.ToString()Ä
+'PrintMembers(System.Text.StringBuilder)UMariage.Contracts.Authentication.LoginRequest.PrintMembers(System.Text.StringBuilder)L
+GetHashCode();Mariage.Contracts.Authentication.LoginRequest.GetHashCode()P
+Equals(object?)=Mariage.Contracts.Authentication.LoginRequest.Equals(object?)û
+6Equals(Mariage.Contracts.Authentication.LoginRequest?)dMariage.Contracts.Authentication.LoginRequest.Equals(Mariage.Contracts.Authentication.LoginRequest?)F
+
+<Clone>$()8Mariage.Contracts.Authentication.LoginRequest.<Clone>$()®
+;LoginRequest(Mariage.Contracts.Authentication.LoginRequest)iMariage.Contracts.Authentication.LoginRequest.LoginRequest(Mariage.Contracts.Authentication.LoginRequest)x
+#Deconstruct(out string, out string)QMariage.Contracts.Authentication.LoginRequest.Deconstruct(out string, out string)Z
+EqualityContract.getBMariage.Contracts.Authentication.LoginRequest.EqualityContract.getZ
+EqualityContract.setBMariage.Contracts.Authentication.LoginRequest.EqualityContract.setJ
+Username.get:Mariage.Contracts.Authentication.LoginRequest.Username.getL
+Username.init;Mariage.Contracts.Authentication.LoginRequest.Username.initJ
+Password.get:Mariage.Contracts.Authentication.LoginRequest.Password.getL
+Password.init;Mariage.Contracts.Authentication.LoginRequest.Password.initö
+/Mariage.Contracts.Pictures.CreatePictureRequestobjectSystem.IEquatable<T>¶
+9CreatePictureRequest(Microsoft.AspNetCore.Http.IFormFile)iMariage.Contracts.Pictures.CreatePictureRequest.CreatePictureRequest(Microsoft.AspNetCore.Http.IFormFile)H
+
+ToString():Mariage.Contracts.Pictures.CreatePictureRequest.ToString()Ç
+'PrintMembers(System.Text.StringBuilder)WMariage.Contracts.Pictures.CreatePictureRequest.PrintMembers(System.Text.StringBuilder)N
+GetHashCode()=Mariage.Contracts.Pictures.CreatePictureRequest.GetHashCode()R
+Equals(object?)?Mariage.Contracts.Pictures.CreatePictureRequest.Equals(object?)§
+8Equals(Mariage.Contracts.Pictures.CreatePictureRequest?)hMariage.Contracts.Pictures.CreatePictureRequest.Equals(Mariage.Contracts.Pictures.CreatePictureRequest?)H
+
+<Clone>$():Mariage.Contracts.Pictures.CreatePictureRequest.<Clone>$()æ
+ECreatePictureRequest(Mariage.Contracts.Pictures.CreatePictureRequest)uMariage.Contracts.Pictures.CreatePictureRequest.CreatePictureRequest(Mariage.Contracts.Pictures.CreatePictureRequest)ú
+4Deconstruct(out Microsoft.AspNetCore.Http.IFormFile)dMariage.Contracts.Pictures.CreatePictureRequest.Deconstruct(out Microsoft.AspNetCore.Http.IFormFile)\
+EqualityContract.getDMariage.Contracts.Pictures.CreatePictureRequest.EqualityContract.get\
+EqualityContract.setDMariage.Contracts.Pictures.CreatePictureRequest.EqualityContract.setN
+ImageFile.get=Mariage.Contracts.Pictures.CreatePictureRequest.ImageFile.getP
+ImageFile.init>Mariage.Contracts.Pictures.CreatePictureRequest.ImageFile.initÜ
+1Mariage.Contracts.UserInfos.ChangeIsComingRequestobjectSystem.IEquatable<T>|
+#ChangeIsComingRequest(string, bool)UMariage.Contracts.UserInfos.ChangeIsComingRequest.ChangeIsComingRequest(string, bool)J
+
+ToString()<Mariage.Contracts.UserInfos.ChangeIsComingRequest.ToString()Ñ
+'PrintMembers(System.Text.StringBuilder)YMariage.Contracts.UserInfos.ChangeIsComingRequest.PrintMembers(System.Text.StringBuilder)P
+GetHashCode()?Mariage.Contracts.UserInfos.ChangeIsComingRequest.GetHashCode()T
+Equals(object?)AMariage.Contracts.UserInfos.ChangeIsComingRequest.Equals(object?)™
+:Equals(Mariage.Contracts.UserInfos.ChangeIsComingRequest?)lMariage.Contracts.UserInfos.ChangeIsComingRequest.Equals(Mariage.Contracts.UserInfos.ChangeIsComingRequest?)J
+
+<Clone>$()<Mariage.Contracts.UserInfos.ChangeIsComingRequest.<Clone>$()∆
+HChangeIsComingRequest(Mariage.Contracts.UserInfos.ChangeIsComingRequest)zMariage.Contracts.UserInfos.ChangeIsComingRequest.ChangeIsComingRequest(Mariage.Contracts.UserInfos.ChangeIsComingRequest)x
+!Deconstruct(out string, out bool)SMariage.Contracts.UserInfos.ChangeIsComingRequest.Deconstruct(out string, out bool)^
+EqualityContract.getFMariage.Contracts.UserInfos.ChangeIsComingRequest.EqualityContract.get^
+EqualityContract.setFMariage.Contracts.UserInfos.ChangeIsComingRequest.EqualityContract.setL
+GuestId.get=Mariage.Contracts.UserInfos.ChangeIsComingRequest.GuestId.getN
+GuestId.init>Mariage.Contracts.UserInfos.ChangeIsComingRequest.GuestId.initN
+IsComing.get>Mariage.Contracts.UserInfos.ChangeIsComingRequest.IsComing.getP
+IsComing.init?Mariage.Contracts.UserInfos.ChangeIsComingRequest.IsComing.init®
+4Mariage.Contracts.Pictures.AddFavoritePictureRequestobjectSystem.IEquatable<T>Ö
+&AddFavoritePictureRequest(System.Guid)[Mariage.Contracts.Pictures.AddFavoritePictureRequest.AddFavoritePictureRequest(System.Guid)M
+
+ToString()?Mariage.Contracts.Pictures.AddFavoritePictureRequest.ToString()á
+'PrintMembers(System.Text.StringBuilder)\Mariage.Contracts.Pictures.AddFavoritePictureRequest.PrintMembers(System.Text.StringBuilder)S
+GetHashCode()BMariage.Contracts.Pictures.AddFavoritePictureRequest.GetHashCode()W
+Equals(object?)DMariage.Contracts.Pictures.AddFavoritePictureRequest.Equals(object?)≥
+=Equals(Mariage.Contracts.Pictures.AddFavoritePictureRequest?)rMariage.Contracts.Pictures.AddFavoritePictureRequest.Equals(Mariage.Contracts.Pictures.AddFavoritePictureRequest?)M
+
+<Clone>$()?Mariage.Contracts.Pictures.AddFavoritePictureRequest.<Clone>$()ÿ
+OAddFavoritePictureRequest(Mariage.Contracts.Pictures.AddFavoritePictureRequest)ÑMariage.Contracts.Pictures.AddFavoritePictureRequest.AddFavoritePictureRequest(Mariage.Contracts.Pictures.AddFavoritePictureRequest)q
+Deconstruct(out System.Guid)QMariage.Contracts.Pictures.AddFavoritePictureRequest.Deconstruct(out System.Guid)a
+EqualityContract.getIMariage.Contracts.Pictures.AddFavoritePictureRequest.EqualityContract.geta
+EqualityContract.setIMariage.Contracts.Pictures.AddFavoritePictureRequest.EqualityContract.setS
+PictureId.getBMariage.Contracts.Pictures.AddFavoritePictureRequest.PictureId.getU
+PictureId.initCMariage.Contracts.Pictures.AddFavoritePictureRequest.PictureId.initÄ
+7Mariage.Contracts.Pictures.GetFavoritePicturesPaginatedobjectSystem.IEquatable<T>à
+&GetFavoritePicturesPaginated(int, int)^Mariage.Contracts.Pictures.GetFavoritePicturesPaginated.GetFavoritePicturesPaginated(int, int)P
+
+ToString()BMariage.Contracts.Pictures.GetFavoritePicturesPaginated.ToString()ä
+'PrintMembers(System.Text.StringBuilder)_Mariage.Contracts.Pictures.GetFavoritePicturesPaginated.PrintMembers(System.Text.StringBuilder)V
+GetHashCode()EMariage.Contracts.Pictures.GetFavoritePicturesPaginated.GetHashCode()Z
+Equals(object?)GMariage.Contracts.Pictures.GetFavoritePicturesPaginated.Equals(object?)º
+@Equals(Mariage.Contracts.Pictures.GetFavoritePicturesPaginated?)xMariage.Contracts.Pictures.GetFavoritePicturesPaginated.Equals(Mariage.Contracts.Pictures.GetFavoritePicturesPaginated?)P
+
+<Clone>$()BMariage.Contracts.Pictures.GetFavoritePicturesPaginated.<Clone>$()Á
+UGetFavoritePicturesPaginated(Mariage.Contracts.Pictures.GetFavoritePicturesPaginated)çMariage.Contracts.Pictures.GetFavoritePicturesPaginated.GetFavoritePicturesPaginated(Mariage.Contracts.Pictures.GetFavoritePicturesPaginated)v
+Deconstruct(out int, out int)UMariage.Contracts.Pictures.GetFavoritePicturesPaginated.Deconstruct(out int, out int)d
+EqualityContract.getLMariage.Contracts.Pictures.GetFavoritePicturesPaginated.EqualityContract.getd
+EqualityContract.setLMariage.Contracts.Pictures.GetFavoritePicturesPaginated.EqualityContract.setL
+Page.get@Mariage.Contracts.Pictures.GetFavoritePicturesPaginated.Page.getN
+	Page.initAMariage.Contracts.Pictures.GetFavoritePicturesPaginated.Page.initT
+PageSize.getDMariage.Contracts.Pictures.GetFavoritePicturesPaginated.PageSize.getV
+PageSize.initEMariage.Contracts.Pictures.GetFavoritePicturesPaginated.PageSize.initô
+,Mariage.Contracts.UserInfos.AddGuestsRequestobjectSystem.IEquatable<T>¯
+cAddGuestsRequest(System.Guid, System.Collections.Generic.List<Mariage.Contracts.UserInfos.GestDto>)êMariage.Contracts.UserInfos.AddGuestsRequest.AddGuestsRequest(System.Guid, System.Collections.Generic.List<Mariage.Contracts.UserInfos.GestDto>)E
+
+ToString()7Mariage.Contracts.UserInfos.AddGuestsRequest.ToString()
+'PrintMembers(System.Text.StringBuilder)TMariage.Contracts.UserInfos.AddGuestsRequest.PrintMembers(System.Text.StringBuilder)K
+GetHashCode():Mariage.Contracts.UserInfos.AddGuestsRequest.GetHashCode()O
+Equals(object?)<Mariage.Contracts.UserInfos.AddGuestsRequest.Equals(object?)õ
+5Equals(Mariage.Contracts.UserInfos.AddGuestsRequest?)bMariage.Contracts.UserInfos.AddGuestsRequest.Equals(Mariage.Contracts.UserInfos.AddGuestsRequest?)E
+
+<Clone>$()7Mariage.Contracts.UserInfos.AddGuestsRequest.<Clone>$()≠
+>AddGuestsRequest(Mariage.Contracts.UserInfos.AddGuestsRequest)kMariage.Contracts.UserInfos.AddGuestsRequest.AddGuestsRequest(Mariage.Contracts.UserInfos.AddGuestsRequest)˛
+fDeconstruct(out System.Guid, out System.Collections.Generic.List<Mariage.Contracts.UserInfos.GestDto>)ìMariage.Contracts.UserInfos.AddGuestsRequest.Deconstruct(out System.Guid, out System.Collections.Generic.List<Mariage.Contracts.UserInfos.GestDto>)Y
+EqualityContract.getAMariage.Contracts.UserInfos.AddGuestsRequest.EqualityContract.getY
+EqualityContract.setAMariage.Contracts.UserInfos.AddGuestsRequest.EqualityContract.setE
+
+UserId.get7Mariage.Contracts.UserInfos.AddGuestsRequest.UserId.getG
+UserId.init8Mariage.Contracts.UserInfos.AddGuestsRequest.UserId.initE
+
+Guests.get7Mariage.Contracts.UserInfos.AddGuestsRequest.Guests.getG
+Guests.init8Mariage.Contracts.UserInfos.AddGuestsRequest.Guests.initæ
+/Mariage.Contracts.Pictures.GetPicturesPaginatedobjectSystem.IEquatable<T>p
+GetPicturesPaginated(int, int)NMariage.Contracts.Pictures.GetPicturesPaginated.GetPicturesPaginated(int, int)H
+
+ToString():Mariage.Contracts.Pictures.GetPicturesPaginated.ToString()Ç
+'PrintMembers(System.Text.StringBuilder)WMariage.Contracts.Pictures.GetPicturesPaginated.PrintMembers(System.Text.StringBuilder)N
+GetHashCode()=Mariage.Contracts.Pictures.GetPicturesPaginated.GetHashCode()R
+Equals(object?)?Mariage.Contracts.Pictures.GetPicturesPaginated.Equals(object?)§
+8Equals(Mariage.Contracts.Pictures.GetPicturesPaginated?)hMariage.Contracts.Pictures.GetPicturesPaginated.Equals(Mariage.Contracts.Pictures.GetPicturesPaginated?)H
+
+<Clone>$():Mariage.Contracts.Pictures.GetPicturesPaginated.<Clone>$()æ
+EGetPicturesPaginated(Mariage.Contracts.Pictures.GetPicturesPaginated)uMariage.Contracts.Pictures.GetPicturesPaginated.GetPicturesPaginated(Mariage.Contracts.Pictures.GetPicturesPaginated)n
+Deconstruct(out int, out int)MMariage.Contracts.Pictures.GetPicturesPaginated.Deconstruct(out int, out int)\
+EqualityContract.getDMariage.Contracts.Pictures.GetPicturesPaginated.EqualityContract.get\
+EqualityContract.setDMariage.Contracts.Pictures.GetPicturesPaginated.EqualityContract.setD
+Page.get8Mariage.Contracts.Pictures.GetPicturesPaginated.Page.getF
+	Page.init9Mariage.Contracts.Pictures.GetPicturesPaginated.Page.initL
+PageSize.get<Mariage.Contracts.Pictures.GetPicturesPaginated.PageSize.getN
+PageSize.init=Mariage.Contracts.Pictures.GetPicturesPaginated.PageSize.init„
+*Mariage.Contracts.Pictures.PictureResponseobjectSystem.IEquatable<T>ì
+2PictureResponse(System.Guid, bool, string, string)]Mariage.Contracts.Pictures.PictureResponse.PictureResponse(System.Guid, bool, string, string)C
+
+ToString()5Mariage.Contracts.Pictures.PictureResponse.ToString()}
+'PrintMembers(System.Text.StringBuilder)RMariage.Contracts.Pictures.PictureResponse.PrintMembers(System.Text.StringBuilder)I
+GetHashCode()8Mariage.Contracts.Pictures.PictureResponse.GetHashCode()M
+Equals(object?):Mariage.Contracts.Pictures.PictureResponse.Equals(object?)ï
+3Equals(Mariage.Contracts.Pictures.PictureResponse?)^Mariage.Contracts.Pictures.PictureResponse.Equals(Mariage.Contracts.Pictures.PictureResponse?)C
+
+<Clone>$()5Mariage.Contracts.Pictures.PictureResponse.<Clone>$()•
+;PictureResponse(Mariage.Contracts.Pictures.PictureResponse)fMariage.Contracts.Pictures.PictureResponse.PictureResponse(Mariage.Contracts.Pictures.PictureResponse)´
+>Deconstruct(out System.Guid, out bool, out string, out string)iMariage.Contracts.Pictures.PictureResponse.Deconstruct(out System.Guid, out bool, out string, out string)W
+EqualityContract.get?Mariage.Contracts.Pictures.PictureResponse.EqualityContract.getW
+EqualityContract.set?Mariage.Contracts.Pictures.PictureResponse.EqualityContract.set;
+Id.get1Mariage.Contracts.Pictures.PictureResponse.Id.get=
+Id.init2Mariage.Contracts.Pictures.PictureResponse.Id.initK
+IsFavorite.get9Mariage.Contracts.Pictures.PictureResponse.IsFavorite.getM
+IsFavorite.init:Mariage.Contracts.Pictures.PictureResponse.IsFavorite.initG
+UrlImage.get7Mariage.Contracts.Pictures.PictureResponse.UrlImage.getI
+UrlImage.init8Mariage.Contracts.Pictures.PictureResponse.UrlImage.initG
+Username.get7Mariage.Contracts.Pictures.PictureResponse.Username.getI
+Username.init8Mariage.Contracts.Pictures.PictureResponse.Username.init◊
+7Mariage.Contracts.Authentication.AuthenticationResponseobjectSystem.IEquatable<T>¢
+3AuthenticationResponse(System.Guid, string, string)kMariage.Contracts.Authentication.AuthenticationResponse.AuthenticationResponse(System.Guid, string, string)P
+
+ToString()BMariage.Contracts.Authentication.AuthenticationResponse.ToString()ä
+'PrintMembers(System.Text.StringBuilder)_Mariage.Contracts.Authentication.AuthenticationResponse.PrintMembers(System.Text.StringBuilder)V
+GetHashCode()EMariage.Contracts.Authentication.AuthenticationResponse.GetHashCode()Z
+Equals(object?)GMariage.Contracts.Authentication.AuthenticationResponse.Equals(object?)º
+@Equals(Mariage.Contracts.Authentication.AuthenticationResponse?)xMariage.Contracts.Authentication.AuthenticationResponse.Equals(Mariage.Contracts.Authentication.AuthenticationResponse?)P
+
+<Clone>$()BMariage.Contracts.Authentication.AuthenticationResponse.<Clone>$()€
+OAuthenticationResponse(Mariage.Contracts.Authentication.AuthenticationResponse)áMariage.Contracts.Authentication.AuthenticationResponse.AuthenticationResponse(Mariage.Contracts.Authentication.AuthenticationResponse)§
+4Deconstruct(out System.Guid, out string, out string)lMariage.Contracts.Authentication.AuthenticationResponse.Deconstruct(out System.Guid, out string, out string)d
+EqualityContract.getLMariage.Contracts.Authentication.AuthenticationResponse.EqualityContract.getd
+EqualityContract.setLMariage.Contracts.Authentication.AuthenticationResponse.EqualityContract.setH
+Id.get>Mariage.Contracts.Authentication.AuthenticationResponse.Id.getJ
+Id.init?Mariage.Contracts.Authentication.AuthenticationResponse.Id.initT
+Username.getDMariage.Contracts.Authentication.AuthenticationResponse.Username.getV
+Username.initEMariage.Contracts.Authentication.AuthenticationResponse.Username.initN
+	Token.getAMariage.Contracts.Authentication.AuthenticationResponse.Token.getP
+
+Token.initBMariage.Contracts.Authentication.AuthenticationResponse.Token.initµ
+#Mariage.Contracts.Gift.GiftResponseobjectSystem.IEquatable<T>∏
+áGiftResponse(System.Guid, string, float, float, string, int, System.Collections.Generic.List<Mariage.Contracts.Gift.GiftGiverResponse>)´Mariage.Contracts.Gift.GiftResponse.GiftResponse(System.Guid, string, float, float, string, int, System.Collections.Generic.List<Mariage.Contracts.Gift.GiftGiverResponse>)<
+
+ToString().Mariage.Contracts.Gift.GiftResponse.ToString()v
+'PrintMembers(System.Text.StringBuilder)KMariage.Contracts.Gift.GiftResponse.PrintMembers(System.Text.StringBuilder)B
+GetHashCode()1Mariage.Contracts.Gift.GiftResponse.GetHashCode()F
+Equals(object?)3Mariage.Contracts.Gift.GiftResponse.Equals(object?)Ä
+,Equals(Mariage.Contracts.Gift.GiftResponse?)PMariage.Contracts.Gift.GiftResponse.Equals(Mariage.Contracts.Gift.GiftResponse?)<
+
+<Clone>$().Mariage.Contracts.Gift.GiftResponse.<Clone>$()ä
+1GiftResponse(Mariage.Contracts.Gift.GiftResponse)UMariage.Contracts.Gift.GiftResponse.GiftResponse(Mariage.Contracts.Gift.GiftResponse)Ó
+¢Deconstruct(out System.Guid, out string, out float, out float, out string, out int, out System.Collections.Generic.List<Mariage.Contracts.Gift.GiftGiverResponse>)∆Mariage.Contracts.Gift.GiftResponse.Deconstruct(out System.Guid, out string, out float, out float, out string, out int, out System.Collections.Generic.List<Mariage.Contracts.Gift.GiftGiverResponse>)P
+EqualityContract.get8Mariage.Contracts.Gift.GiftResponse.EqualityContract.getP
+EqualityContract.set8Mariage.Contracts.Gift.GiftResponse.EqualityContract.set4
+Id.get*Mariage.Contracts.Gift.GiftResponse.Id.get6
+Id.init+Mariage.Contracts.Gift.GiftResponse.Id.init8
+Name.get,Mariage.Contracts.Gift.GiftResponse.Name.get:
+	Name.init-Mariage.Contracts.Gift.GiftResponse.Name.init:
+	Price.get-Mariage.Contracts.Gift.GiftResponse.Price.get<
+
+Price.init.Mariage.Contracts.Gift.GiftResponse.Price.initJ
+Participation.get5Mariage.Contracts.Gift.GiftResponse.Participation.getL
+Participation.init6Mariage.Contracts.Gift.GiftResponse.Participation.init@
+UrlImage.get0Mariage.Contracts.Gift.GiftResponse.UrlImage.getB
+UrlImage.init1Mariage.Contracts.Gift.GiftResponse.UrlImage.init@
+Category.get0Mariage.Contracts.Gift.GiftResponse.Category.getB
+Category.init1Mariage.Contracts.Gift.GiftResponse.Category.initD
+GiftGivers.get2Mariage.Contracts.Gift.GiftResponse.GiftGivers.getF
+GiftGivers.init3Mariage.Contracts.Gift.GiftResponse.GiftGivers.initÊ
+0Mariage.Contracts.Authentication.RegisterRequestobjectSystem.IEquatable<T>s
+RegisterRequest(string, string)PMariage.Contracts.Authentication.RegisterRequest.RegisterRequest(string, string)I
+
+ToString();Mariage.Contracts.Authentication.RegisterRequest.ToString()É
+'PrintMembers(System.Text.StringBuilder)XMariage.Contracts.Authentication.RegisterRequest.PrintMembers(System.Text.StringBuilder)O
+GetHashCode()>Mariage.Contracts.Authentication.RegisterRequest.GetHashCode()S
+Equals(object?)@Mariage.Contracts.Authentication.RegisterRequest.Equals(object?)ß
+9Equals(Mariage.Contracts.Authentication.RegisterRequest?)jMariage.Contracts.Authentication.RegisterRequest.Equals(Mariage.Contracts.Authentication.RegisterRequest?)I
+
+<Clone>$();Mariage.Contracts.Authentication.RegisterRequest.<Clone>$()∑
+ARegisterRequest(Mariage.Contracts.Authentication.RegisterRequest)rMariage.Contracts.Authentication.RegisterRequest.RegisterRequest(Mariage.Contracts.Authentication.RegisterRequest){
+#Deconstruct(out string, out string)TMariage.Contracts.Authentication.RegisterRequest.Deconstruct(out string, out string)]
+EqualityContract.getEMariage.Contracts.Authentication.RegisterRequest.EqualityContract.get]
+EqualityContract.setEMariage.Contracts.Authentication.RegisterRequest.EqualityContract.setM
+Username.get=Mariage.Contracts.Authentication.RegisterRequest.Username.getO
+Username.init>Mariage.Contracts.Authentication.RegisterRequest.Username.initM
+Password.get=Mariage.Contracts.Authentication.RegisterRequest.Password.getO
+Password.init>Mariage.Contracts.Authentication.RegisterRequest.Password.initø
+)Mariage.Contracts.UserInfos.GuestResponseobjectSystem.IEquatable<T>é
+0GuestResponse(System.Guid, string, string, bool)ZMariage.Contracts.UserInfos.GuestResponse.GuestResponse(System.Guid, string, string, bool)B
+
+ToString()4Mariage.Contracts.UserInfos.GuestResponse.ToString()|
+'PrintMembers(System.Text.StringBuilder)QMariage.Contracts.UserInfos.GuestResponse.PrintMembers(System.Text.StringBuilder)H
+GetHashCode()7Mariage.Contracts.UserInfos.GuestResponse.GetHashCode()L
+Equals(object?)9Mariage.Contracts.UserInfos.GuestResponse.Equals(object?)í
+2Equals(Mariage.Contracts.UserInfos.GuestResponse?)\Mariage.Contracts.UserInfos.GuestResponse.Equals(Mariage.Contracts.UserInfos.GuestResponse?)B
+
+<Clone>$()4Mariage.Contracts.UserInfos.GuestResponse.<Clone>$()û
+8GuestResponse(Mariage.Contracts.UserInfos.GuestResponse)bMariage.Contracts.UserInfos.GuestResponse.GuestResponse(Mariage.Contracts.UserInfos.GuestResponse)™
+>Deconstruct(out System.Guid, out string, out string, out bool)hMariage.Contracts.UserInfos.GuestResponse.Deconstruct(out System.Guid, out string, out string, out bool)V
+EqualityContract.get>Mariage.Contracts.UserInfos.GuestResponse.EqualityContract.getV
+EqualityContract.set>Mariage.Contracts.UserInfos.GuestResponse.EqualityContract.set:
+Id.get0Mariage.Contracts.UserInfos.GuestResponse.Id.get<
+Id.init1Mariage.Contracts.UserInfos.GuestResponse.Id.initH
+FirstName.get7Mariage.Contracts.UserInfos.GuestResponse.FirstName.getJ
+FirstName.init8Mariage.Contracts.UserInfos.GuestResponse.FirstName.initF
+LastName.get6Mariage.Contracts.UserInfos.GuestResponse.LastName.getH
+LastName.init7Mariage.Contracts.UserInfos.GuestResponse.LastName.initF
+IsComing.get6Mariage.Contracts.UserInfos.GuestResponse.IsComing.getH
+IsComing.init7Mariage.Contracts.UserInfos.GuestResponse.IsComing.initã
+(Mariage.Contracts.Gift.CreateGiftRequestobjectSystem.IEquatable<T>¡
+JCreateGiftRequest(string, float, Microsoft.AspNetCore.Http.IFormFile, int)sMariage.Contracts.Gift.CreateGiftRequest.CreateGiftRequest(string, float, Microsoft.AspNetCore.Http.IFormFile, int)A
+
+ToString()3Mariage.Contracts.Gift.CreateGiftRequest.ToString(){
+'PrintMembers(System.Text.StringBuilder)PMariage.Contracts.Gift.CreateGiftRequest.PrintMembers(System.Text.StringBuilder)G
+GetHashCode()6Mariage.Contracts.Gift.CreateGiftRequest.GetHashCode()K
+Equals(object?)8Mariage.Contracts.Gift.CreateGiftRequest.Equals(object?)è
+1Equals(Mariage.Contracts.Gift.CreateGiftRequest?)ZMariage.Contracts.Gift.CreateGiftRequest.Equals(Mariage.Contracts.Gift.CreateGiftRequest?)A
+
+<Clone>$()3Mariage.Contracts.Gift.CreateGiftRequest.<Clone>$()£
+;CreateGiftRequest(Mariage.Contracts.Gift.CreateGiftRequest)dMariage.Contracts.Gift.CreateGiftRequest.CreateGiftRequest(Mariage.Contracts.Gift.CreateGiftRequest)’
+TDeconstruct(out string, out float, out Microsoft.AspNetCore.Http.IFormFile, out int)}Mariage.Contracts.Gift.CreateGiftRequest.Deconstruct(out string, out float, out Microsoft.AspNetCore.Http.IFormFile, out int)U
+EqualityContract.get=Mariage.Contracts.Gift.CreateGiftRequest.EqualityContract.getU
+EqualityContract.set=Mariage.Contracts.Gift.CreateGiftRequest.EqualityContract.set=
+Name.get1Mariage.Contracts.Gift.CreateGiftRequest.Name.get?
+	Name.init2Mariage.Contracts.Gift.CreateGiftRequest.Name.init?
+	Price.get2Mariage.Contracts.Gift.CreateGiftRequest.Price.getA
+
+Price.init3Mariage.Contracts.Gift.CreateGiftRequest.Price.initG
+ImageFile.get6Mariage.Contracts.Gift.CreateGiftRequest.ImageFile.getI
+ImageFile.init7Mariage.Contracts.Gift.CreateGiftRequest.ImageFile.initE
+Category.get5Mariage.Contracts.Gift.CreateGiftRequest.Category.getG
+Category.init6Mariage.Contracts.Gift.CreateGiftRequest.Category.initô
+5Mariage.Contracts.Gift.CreateGiftParticipationRequestobjectSystem.IEquatable<T>¥
+=CreateGiftParticipationRequest(string, string, string, float)sMariage.Contracts.Gift.CreateGiftParticipationRequest.CreateGiftParticipationRequest(string, string, string, float)N
+
+ToString()@Mariage.Contracts.Gift.CreateGiftParticipationRequest.ToString()à
+'PrintMembers(System.Text.StringBuilder)]Mariage.Contracts.Gift.CreateGiftParticipationRequest.PrintMembers(System.Text.StringBuilder)T
+GetHashCode()CMariage.Contracts.Gift.CreateGiftParticipationRequest.GetHashCode()X
+Equals(object?)EMariage.Contracts.Gift.CreateGiftParticipationRequest.Equals(object?)∂
+>Equals(Mariage.Contracts.Gift.CreateGiftParticipationRequest?)tMariage.Contracts.Gift.CreateGiftParticipationRequest.Equals(Mariage.Contracts.Gift.CreateGiftParticipationRequest?)N
+
+<Clone>$()@Mariage.Contracts.Gift.CreateGiftParticipationRequest.<Clone>$()Â
+UCreateGiftParticipationRequest(Mariage.Contracts.Gift.CreateGiftParticipationRequest)ãMariage.Contracts.Gift.CreateGiftParticipationRequest.CreateGiftParticipationRequest(Mariage.Contracts.Gift.CreateGiftParticipationRequest)Æ
+:Deconstruct(out string, out string, out string, out float)pMariage.Contracts.Gift.CreateGiftParticipationRequest.Deconstruct(out string, out string, out string, out float)b
+EqualityContract.getJMariage.Contracts.Gift.CreateGiftParticipationRequest.EqualityContract.getb
+EqualityContract.setJMariage.Contracts.Gift.CreateGiftParticipationRequest.EqualityContract.setT
+FirstName.getCMariage.Contracts.Gift.CreateGiftParticipationRequest.FirstName.getV
+FirstName.initDMariage.Contracts.Gift.CreateGiftParticipationRequest.FirstName.initR
+LastName.getBMariage.Contracts.Gift.CreateGiftParticipationRequest.LastName.getT
+LastName.initCMariage.Contracts.Gift.CreateGiftParticipationRequest.LastName.initL
+	Email.get?Mariage.Contracts.Gift.CreateGiftParticipationRequest.Email.getN
+
+Email.init@Mariage.Contracts.Gift.CreateGiftParticipationRequest.Email.initN
+
+Amount.get@Mariage.Contracts.Gift.CreateGiftParticipationRequest.Amount.getP
+Amount.initAMariage.Contracts.Gift.CreateGiftParticipationRequest.Amount.init

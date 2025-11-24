@@ -1,0 +1,13 @@
+<div
+  [formGroup]="form"
+  class="flex flex-row gradient-box items-center">
+  <svg [cIcon]="icon" size="xl" title="Shield Icon"></svg>
+  <input
+    [formControlName]="controlName"
+    [placeholder]="placeholder"
+    [required]="required"
+    [type]="isPassword ? 'password' : 'text'"
+    [value]="valueInput"
+  >
+</div>
+

@@ -1,0 +1,20 @@
+<div class="photo-list" >
+  <div *ngFor="let photo of photos" class="photo-item">
+    <img [src]="photo.urlImage" alt="Photo" class="image-from-wedding">
+    <div class="action-buttons-img">
+      <button class="button-download" (click)="downloadPicture(photo)">
+        <img src="assets/icons/telecharger.png">
+      </button>
+      @if ((AuthService.isAdmin$ | async) || AuthService.Name === photo.username) {
+        <button class="button-delete" (click)="deletePicture(photo)">
+          <img src="assets/icons/poubelle-de-recyclage.png">
+        </button>
+      }
+    </div>
+  </div>
+  @if (isLoading) {
+    <div class="mt-5">
+      <mat-spinner></mat-spinner>
+    </div>
+  }
+</div>

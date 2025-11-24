@@ -1,0 +1,49 @@
+.sidenav {
+  height: 0;
+  width: 100%;
+  position: fixed;
+  z-index: 100;
+  top: 0;
+  left: 0;
+  background-color: white;
+  overflow-x: hidden;
+  transition: 0.5s;
+}
+
+.open {
+  height: 100%;
+}
+
+nav ul {
+  list-style-type: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+nav ul li {
+  display: inline-block;
+  margin-bottom: 2em;
+}
+
+nav ul li a {
+  position: relative;
+  text-decoration: none;
+  font-family: LibreBaskerville, serif;
+  font-size: 1.5em;
+}
+
+nav ul li a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 0;
+  height: 2px;
+  background-color: #c7aa74;
+  transition: width 0.3s;
+}
+
+.active-link::after {
+  width: 100% !important;
+}

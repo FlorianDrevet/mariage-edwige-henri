@@ -1,0 +1,68 @@
+<div class="bg-white">
+  <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8 flex flex-column">
+
+    <app-title-wedding>Notre liste de mariage</app-title-wedding>
+
+    <app-category-gift
+      [title]="'Voyage de Noces'"
+      [category]="CategoryEnum.HoneyMoon"
+      [products]="allProducts"
+    ></app-category-gift>
+
+    <app-category-gift
+      [title]="'Arts de la table'"
+      [category]="CategoryEnum.TableArts"
+      [products]="allProducts"
+    ></app-category-gift>
+
+    <app-category-gift
+      class="mt-20"
+      [title]="'Cuisine'"
+      [category]="CategoryEnum.Kitchen"
+      [products]="allProducts"
+    ></app-category-gift>
+
+    <app-category-gift
+      class="mt-20"
+      [title]="'Electroménager'"
+      [category]="CategoryEnum.HomeAppliances"
+      [products]="allProducts"
+    ></app-category-gift>
+
+    <app-category-gift
+      class="mt-20"
+      [title]="'Ameublement'"
+      [category]="CategoryEnum.Furniture"
+      [products]="allProducts"
+    ></app-category-gift>
+
+    <app-category-gift
+      class="mt-20"
+      [title]="'Décorations'"
+      [category]="CategoryEnum.Decorations"
+      [products]="allProducts"
+    ></app-category-gift>
+
+    <app-category-gift
+      class="mt-20"
+      [title]="'Linge de maison'"
+      [category]="CategoryEnum.HouseholdLinens"
+      [products]="allProducts"
+    ></app-category-gift>
+
+    <app-category-gift
+      class="mt-20"
+      [title]="'Digestifs'"
+      [category]="CategoryEnum.Digestives"
+      [products]="allProducts"
+    ></app-category-gift>
+
+    <app-category-gift
+      class="mt-20"
+      [title]="'Santons'"
+      [category]="CategoryEnum.Santons"
+      [products]="allProducts"
+    ></app-category-gift>
+  </div>
+</div>
+

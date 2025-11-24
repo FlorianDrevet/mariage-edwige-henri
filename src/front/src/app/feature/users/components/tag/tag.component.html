@@ -1,0 +1,9 @@
+<div [ngClass]="{'refused': isRefused, 'confirmed': isConfirmed, 'waiting': isWaiting}"
+     class="flex flex-row tag"
+>
+  <div class="round"></div>
+  <p>{{ tagText(confirmed) }}</p>
+</div>
+
+
+

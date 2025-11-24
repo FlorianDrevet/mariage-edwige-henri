@@ -1,0 +1,11 @@
+html, body::-webkit-scrollbar {
+  display: none !important;
+  overflow-x: hidden !important;
+}
+
+/* For IE, Edge and Firefox */
+body, html {
+  -ms-overflow-style: none !important;  /* IE and Edge */
+  scrollbar-width: none !important;  /* Firefox */
+  overflow-x: hidden !important;
+}

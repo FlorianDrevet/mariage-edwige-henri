@@ -1,0 +1,75 @@
+@if (ScreenService.isSmallScreen$ | async) {
+  <app-hamburger-navigation class=""></app-hamburger-navigation>
+  <img
+    alt="image de fleurs gold"
+    class="mr-auto ml-auto -mt-5"
+    height="150" ngSrc="assets/layout/gold_flowers_straight.webp" priority width="480">
+
+  <div class="flex flex-col items-center w-screen -mt-5">
+
+    <h1 class="font-librebaskerville text-5xl uppercase gradient-text" id="title">Astrid</h1>
+    <h1 class="font-librebaskerville text-5xl uppercase gradient-text mt-2 mb-2">&</h1>
+    <h1 class="font-librebaskerville text-5xl uppercase gradient-text">Florian</h1>
+
+    <h3 class="font-librebaskerville text-2xl relative z-1 mt-10 uppercase">7 SEPTEMBRE 2024</h3>
+    <h3 class="font-librebaskerville text-xl relative z-1 mt-2 uppercase">
+      @if (daysLeft === 0) {
+        C'est aujourd'hui !
+      } @else if (daysLeft < 0) {
+        C'était il y a {{-daysLeft}} jour{{-daysLeft !== 1 ? 's' : ''}} !
+      }
+      @else {
+        Encore {{daysLeft}} jour{{daysLeft !== 1 ? 's' : ''}} !
+      }
+    </h3>
+  </div>
+}
+@else {
+  <header class="flex flex-col items-center w-screen relative container h-[30rem]	">
+    <div class="w-screen flex flex-row">
+      <img
+        priority
+        ngSrc="assets/layout/gold_flowers.webp"
+        class="inset-0 w-2/3 mr-auto"
+        alt="decoration doré"
+        width="1024"
+        height="469">
+      <div class="flex flex-col">
+        @if (AuthService.isAuthenticated$ | async) {
+          <app-button class="m-20 mb-0" routerUrl="/profils">Profil</app-button>
+          <app-button class="m-20 mb-0 mt-0" (click)="onLogoutClick()">Déconnexion</app-button>
+        } @else {
+          <app-button class="m-20 mb-0" routerUrl="/login">Connexion</app-button>
+        }
+        @if (AuthService.isAdmin$ | async) {
+          <app-model-create-gift class="m-20 mt-0 mb-0"></app-model-create-gift>
+          <app-button class="m-20 mt-0" routerUrl="/utilisateurs">Invités</app-button>
+        }
+      </div>
+    </div>
+    <div class="absolute top-48 flex flex-col items-center">
+      <h1 class="font-librebaskerville text-[70px] flex items-center uppercase gradient-text" id="title">Astrid & Florian</h1>
+      <h3 class="font-librebaskerville text-4xl relative z-1 mt-10 uppercase">7 SEPTEMBRE 2024</h3>
+      <h3 class="font-librebaskerville text-2xl relative z-1 mt-2 uppercase">
+        @if (daysLeft === 0) {
+          C'est aujourd'hui !
+        } @else if (daysLeft < 0) {
+          C'était il y a {{-daysLeft}} jour{{-daysLeft !== 1 ? 's' : ''}} !
+        }
+        @else {
+          Encore {{daysLeft}} jour{{daysLeft !== 1 ? 's' : ''}} !
+        }
+      </h3>
+      <nav>
+        <ul class="flex flex-row justify-around space-x-10 mt-10">
+          <li><a routerLink="/accueil" routerLinkActive="active-link" class="font-librebaskerville">Accueil</a></li>
+          <li><a routerLink="/maries" routerLinkActive="active-link" class="font-librebaskerville">Les mariés</a></li>
+          <li><a routerLink="/mariage" routerLinkActive="active-link" class="font-librebaskerville">Le mariage</a></li>
+          <li><a routerLink="/photos" routerLinkActive="active-link" class="font-librebaskerville">Photos</a></li>
+          <li><a routerLink="/liste-de-mariage" routerLinkActive="active-link" class="font-librebaskerville">Liste de mariage</a></li>
+          <li><a routerLink="/contact" routerLinkActive="active-link" class="font-librebaskerville">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+}

@@ -1,0 +1,40 @@
+<app-button [cModalToggle]="verticallyCenteredModalUsers.id">Nouvel Identifiant</app-button>
+<c-modal #verticallyCenteredModalUsers alignment="center" id="verticallyCenteredModalUsers" size="lg">
+  <c-modal-header>
+    <h5 cModalTitle class="font-librebaskerville text-4xl">Ajouter un nouvel Identifiant</h5>
+  </c-modal-header>
+  <c-modal-body>
+    <form [formGroup]="registerForm">
+      <div class="h-10"></div>
+
+      <app-input
+        [form]="registerForm"
+        [icon]="icon.cilGroup"
+        [required]="true"
+        class="mt-10"
+        controlName="username"
+        placeholder="Identifiant"
+      ></app-input>
+
+      <div class="h-10"></div>
+
+      <app-input
+        [form]="registerForm"
+        [icon]="icon.cilLockLocked"
+        [required]="true"
+        class="mt-24"
+        controlName="password"
+        placeholder="Mot de passe"
+      ></app-input>
+    </form>
+  </c-modal-body>
+  <c-modal-footer>
+    <app-button [cModalToggle]="verticallyCenteredModalUsers.id">Annuler</app-button>
+    <app-button
+      (click)="onAddGuestClick()"
+      [cModalToggle]="verticallyCenteredModalUsers.id"
+    >Ajouter
+    </app-button>
+  </c-modal-footer>
+</c-modal>
+

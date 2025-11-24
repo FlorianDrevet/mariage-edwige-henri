@@ -1,0 +1,36 @@
+<div class="w-screen flex-col flex items-center mt-24">
+  <div class="flex flex-row w-2/3">
+    <a
+      (click)="getClicked()"
+      [routerLink]="['ceremonie-religieuse']"  style="margin-left: calc(20% - 64px); margin-bottom: 15px">
+      <img ngSrc="assets/icons/eglise.png" height="128" width="128" alt="Icon église"/>
+    </a>
+    <a
+      (click)="getClicked()"
+      [routerLink]="['photos']" style="margin-left: calc(40% - 128px)">
+      <img ngSrc="assets/icons/appareil-photo-reflex-numerique.png" height="128" width="128" alt="Icon appareil photo"/>
+    </a>
+  </div>
+  <div class="w-2/3 flex flex-row">
+    <div class="vertical-line-top" style="margin-left: 20%"></div>
+    <div class="vertical-line-top" style="margin-left: 40%"></div>
+  </div>
+  <div class="main-line w-2/3"></div>
+  <div class="w-2/3 flex flex-row">
+    <div class="vertical-line-bot" style="margin-left: 40%"></div>
+    <div class="vertical-line-bot" style="margin-left: 40%"></div>
+  </div>
+  <div class="flex flex-row w-2/3">
+    <a
+      (click)="getClicked()"
+      [routerLink]="['vin-honneur']" style="margin-left: calc(40% - 64px); margin-top: 15px">
+      <img ngSrc="assets/icons/champagne.png" height="128" width="128" alt="Icon champagne"/>
+    </a>
+    <a
+      (click)="getClicked()"
+      [routerLink]="['reception']" style="margin-left: calc(40% - 128px)">
+      <img ngSrc="assets/icons/repas.png" height="128" width="128" alt="Icon repas"/>
+    </a>
+  </div>
+</div>
+

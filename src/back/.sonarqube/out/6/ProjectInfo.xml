@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ProjectInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.sonarsource.com/msbuild/integration/2015/1">
+  <ProjectName>Mariage.Api</ProjectName>
+  <ProjectLanguage>C#</ProjectLanguage>
+  <ProjectType>Product</ProjectType>
+  <ProjectGuid>e7ca156e-7d06-d232-b2ff-f719421b1822</ProjectGuid>
+  <FullPath>C:\Users\Utilisateur\Documents\ING-2\C#\mariage-edwige-henri\src\back\Mariage.Api\Mariage.Api.csproj</FullPath>
+  <IsExcluded>false</IsExcluded>
+  <AnalysisResultFiles>
+    <AnalysisResultFile Id="FilesToAnalyze" Location="C:\Users\Utilisateur\Documents\ING-2\C#\mariage-edwige-henri\src\back\.sonarqube\conf\6\FilesToAnalyze.txt" />
+  </AnalysisResultFiles>
+  <AnalysisSettings>
+    <Property Name="sonar.cs.roslyn.reportFilePaths">C:\Users\Utilisateur\Documents\ING-2\C#\mariage-edwige-henri\src\back\.sonarqube\out\6\Issues.json</Property>
+    <Property Name="sonar.cs.analyzer.projectOutPaths">C:\Users\Utilisateur\Documents\ING-2\C#\mariage-edwige-henri\src\back\.sonarqube\out\6</Property>
+    <Property Name="sonar.cs.scanner.telemetry">C:\Users\Utilisateur\Documents\ING-2\C#\mariage-edwige-henri\src\back\.sonarqube\out\6\Telemetry.json</Property>
+  </AnalysisSettings>
+  <Configuration>Debug</Configuration>
+  <Platform>AnyCPU</Platform>
+  <TargetFramework>net10.0</TargetFramework>
+</ProjectInfo>

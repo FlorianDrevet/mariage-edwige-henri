@@ -40,6 +40,8 @@ builder.Services
         });
     });
 
+builder.AddServiceDefaults();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -47,6 +49,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.MapDefaultEndpoints();
 }
 
 //Middleware

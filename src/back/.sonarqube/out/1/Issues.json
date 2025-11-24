@@ -1,0 +1,266 @@
+{
+  "$schema": "http://json.schemastore.org/sarif-1.0.0",
+  "version": "1.0.0",
+  "runs": [
+    {
+      "tool": {
+        "name": "Compilateur Microsoft (R) Visual C#",
+        "version": "5.0.0.0",
+        "fileVersion": "5.0.0-2.25451.107 (2db1f5ee)",
+        "semanticVersion": "5.0.0",
+        "language": "fr-FR"
+      },
+      "results": [
+        {
+          "ruleId": "CS0628",
+          "level": "warning",
+          "message": "'GiftCategory.Value.set' : nouveau membre protégé déclaré dans le type sealed",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/Utilisateur/Documents/ING-2/C%23/mariage-edwige-henri/src/back/Mariage.Domain/GiftAggregate/ValueObjects/GiftCategory.cs",
+                "region": {
+                  "startLine": 28,
+                  "startColumn": 48,
+                  "endLine": 28,
+                  "endColumn": 51
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 4
+          }
+        },
+        {
+          "ruleId": "CS0628",
+          "level": "warning",
+          "message": "'GiftId.Value.set' : nouveau membre protégé déclaré dans le type sealed",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/Utilisateur/Documents/ING-2/C%23/mariage-edwige-henri/src/back/Mariage.Domain/GiftAggregate/ValueObjects/GiftId.cs",
+                "region": {
+                  "startLine": 7,
+                  "startColumn": 40,
+                  "endLine": 7,
+                  "endColumn": 43
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 4
+          }
+        },
+        {
+          "ruleId": "CS0628",
+          "level": "warning",
+          "message": "'PictureId.Value.set' : nouveau membre protégé déclaré dans le type sealed",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/Utilisateur/Documents/ING-2/C%23/mariage-edwige-henri/src/back/Mariage.Domain/PictureAggregate/ValueObject/PictureId.cs",
+                "region": {
+                  "startLine": 7,
+                  "startColumn": 40,
+                  "endLine": 7,
+                  "endColumn": 43
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 4
+          }
+        },
+        {
+          "ruleId": "CS0628",
+          "level": "warning",
+          "message": "'GuestId.Value.set' : nouveau membre protégé déclaré dans le type sealed",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/Utilisateur/Documents/ING-2/C%23/mariage-edwige-henri/src/back/Mariage.Domain/UserAggregate/ValueObjects/GuestId.cs",
+                "region": {
+                  "startLine": 7,
+                  "startColumn": 40,
+                  "endLine": 7,
+                  "endColumn": 43
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 4
+          }
+        },
+        {
+          "ruleId": "CS0628",
+          "level": "warning",
+          "message": "'UserId.Value.set' : nouveau membre protégé déclaré dans le type sealed",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/Utilisateur/Documents/ING-2/C%23/mariage-edwige-henri/src/back/Mariage.Domain/UserAggregate/ValueObjects/UserId.cs",
+                "region": {
+                  "startLine": 7,
+                  "startColumn": 40,
+                  "endLine": 7,
+                  "endColumn": 43
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 4
+          }
+        },
+        {
+          "ruleId": "CS0628",
+          "level": "warning",
+          "message": "'GiftGiverId.Value.set' : nouveau membre protégé déclaré dans le type sealed",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/Utilisateur/Documents/ING-2/C%23/mariage-edwige-henri/src/back/Mariage.Domain/GiftAggregate/ValueObjects/GiftGiverId.cs",
+                "region": {
+                  "startLine": 7,
+                  "startColumn": 40,
+                  "endLine": 7,
+                  "endColumn": 43
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 4
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Le propriété « Id » non-nullable doit contenir une valeur autre que Null lors de la fermeture du constructeur. Envisagez d’ajouter le modificateur « required » ou de déclarer le propriété comme pouvant accepter la valeur Null.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/Utilisateur/Documents/ING-2/C%23/mariage-edwige-henri/src/back/Mariage.Domain/Common/Models/Entity.cs",
+                "region": {
+                  "startLine": 12,
+                  "startColumn": 15,
+                  "endLine": 12,
+                  "endColumn": 21
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/Utilisateur/Documents/ING-2/C%23/mariage-edwige-henri/src/back/Mariage.Domain/Common/Models/Entity.cs",
+                "region": {
+                  "startLine": 6,
+                  "startColumn": 16,
+                  "endLine": 6,
+                  "endColumn": 18
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S4035",
+          "level": "warning",
+          "message": "Seal class 'Entity' or implement 'IEqualityComparer<T>' instead.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/Utilisateur/Documents/ING-2/C%23/mariage-edwige-henri/src/back/Mariage.Domain/Common/Models/Entity.cs",
+                "region": {
+                  "startLine": 3,
+                  "startColumn": 23,
+                  "endLine": 3,
+                  "endColumn": 29
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S4035",
+          "level": "warning",
+          "message": "Seal class 'ValueObject' or implement 'IEqualityComparer<T>' instead.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/Utilisateur/Documents/ING-2/C%23/mariage-edwige-henri/src/back/Mariage.Domain/Common/Models/ValueObject.cs",
+                "region": {
+                  "startLine": 3,
+                  "startColumn": 23,
+                  "endLine": 3,
+                  "endColumn": 34
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        }
+      ],
+      "rules": {
+        "CS0628": {
+          "id": "CS0628",
+          "shortDescription": "Nouveau membre protégé déclaré dans le type sealed",
+          "defaultLevel": "warning",
+          "helpUri": "https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS0628)",
+          "properties": {
+            "category": "Compiler",
+            "isEnabledByDefault": true,
+            "tags": [
+              "Compiler",
+              "Telemetry"
+            ]
+          }
+        },
+        "CS8618": {
+          "id": "CS8618",
+          "shortDescription": "Un champ non-nullable doit contenir une valeur autre que Null lors de la fermeture du constructeur. Envisagez d’ajouter le modificateur « required » ou de déclarer le champ comme pouvant accepter la valeur Null.",
+          "defaultLevel": "warning",
+          "helpUri": "https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS8618)",
+          "properties": {
+            "category": "Compiler",
+            "isEnabledByDefault": true,
+            "tags": [
+              "Compiler",
+              "Telemetry"
+            ]
+          }
+        },
+        "S4035": {
+          "id": "S4035",
+          "shortDescription": "Classes implementing \"IEquatable<T>\" should be sealed",
+          "fullDescription": "When a class implements the IEquatable<T> interface, it enters a contract that, in effect, states \"I know how to compare two instances of type T or any type derived from T for equality.\". However if that class is derived, it is very unlikely that the base class will know how to make a meaningful comparison. Therefore that implicit contract is now broken.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-4035",
+          "properties": {
+            "category": "Major Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "TestSourceScope",
+              "SonarWay"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

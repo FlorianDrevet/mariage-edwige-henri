@@ -1,0 +1,70 @@
+@if (gift) {
+  <div class="flex flex-col mb-20">
+    <app-title-wedding class="mt-10">Le cadeau : {{gift.name}}</app-title-wedding>
+    <div class="flex flex-row w-screen justify-evenly flex-wrap">
+      <app-product [product]="gift" class="w-4/5 lg:w-fit"></app-product>
+      <div class="flex flex-col justify-between w-4/5 lg:w-2/5">
+        @if(authService.isAdmin$ | async) {
+          <div>
+            <h1 class="font-librebaskerville">Les personnes participants à ce cadeau :</h1>
+            @if (gift.giftGivers.length === 0) {
+              <p class="font-librebaskerville">Personne ne participe à ce cadeau pour l'instant</p>
+            } @else {
+              @for (giver of gift.giftGivers; track gift.id) {
+                <div class="flex flex-row w-100 justify-between">
+                  <p class="font-librebaskerville">{{giver.firstName}} {{giver.lastName}}</p>
+                  <p class="font-librebaskerville">{{giver.amount | price}}</p>
+                </div>
+              }
+            }
+          </div>
+        }
+        <div class="flex flex-col justify-evenly h-full items-center w-fit">
+          @if (choosingAmount) {
+            <h1 class="font-librebaskerville text-2xl lg:text-3xl mt-20 lg:mt-0">
+              A quelle hauteur souhaitez vous participer ?
+            </h1>
+            <div class="flex flex-col items-center mt-10 lg:mt-0 w-4/5">
+              <div class="stepper-input">
+                <button class="btn btn-left" (click)="onDownClick()">-</button>
+                <input type="number" placeholder="Participation" [value]="value" class="input-box"
+                       appNoCommaInput appNumberInput [(ngModel)]="value"/>
+                <button class="btn btn-right" (click)="onUpClick()">+</button>
+              </div>
+              @if(gift.category != CategoryEnum.HoneyMoon) {
+                <p class="font-wedding mt-3 text-xl" [ngClass]="{
+                  'error' : value > (gift.price - gift.participation) || value < 0
+                }">
+                  Maximum: {{(gift.price - gift.participation) | price}}
+                </p>
+              }
+            </div>
+            <app-button (click)="onParticipateClick()" class="mt-10 lg:mt-0">Participer</app-button>
+          }
+          @else {
+            <p class="font-librebaskerville text-2xl text-justify mt-20 lg:mt-0">
+              Afin de sécuriser la participation nous avons ouvert une cagnotte lydia. <br>
+              Une fois que vous avez validé la participation, revenez sur cette page et cliquez sur le bouton
+              valider afin que nous puissions vous envoyer un remerciement une fois que nous aurons acheté le cadeau.
+            </p>
+            <div class="flex flex-row flex-wrap">
+              <a target="_blank" href="https://lydia-app.com/pots?id=77282-mariage-astrid-florian" class="mt-4 lg:mt-0 mr-20">
+                <app-button (click)="onClickedLydia()">Lydia</app-button>
+              </a>
+
+              <app-modal-create-gift-giver
+                (close)="onCloseModal()"
+                [amount]="value"
+                [id]="gift.id"
+                class="mt-4 lg:mt-0"
+                [disabled]="!clickedLydia"
+              >
+                Valider
+              </app-modal-create-gift-giver>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+}

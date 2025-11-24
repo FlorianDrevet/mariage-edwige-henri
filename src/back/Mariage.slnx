@@ -1,7 +1,16 @@
 <Solution>
+  <Folder Name="/solution/">
+    <File Path=".dockerignore" />
+    <File Path=".gitignore" />
+    <File Path="Directory.Packages.props" />
+    <File Path="Dockerfile" />
+    <File Path="global.json" />
+  </Folder>
   <Project Path="Mariage.Api/Mariage.Api.csproj" />
+  <Project Path="Mariage.AppHost/Mariage.AppHost.csproj" />
   <Project Path="Mariage.Application/Mariage.Application.csproj" />
   <Project Path="Mariage.Contracts/Mariage.Contracts.csproj" />
   <Project Path="Mariage.Domain/Mariage.Domain.csproj" />
   <Project Path="Mariage.Infrastructure/Mariage.Infrastructure.csproj" />
+  <Project Path="Mariage.ServiceDefaults/Mariage.ServiceDefaults.csproj" />
 </Solution>

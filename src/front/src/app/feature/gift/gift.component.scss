@@ -1,0 +1,50 @@
+.stepper-input {
+  display: flex;
+  font-size: 1.5em;
+  justify-content: center;
+  background:  linear-gradient(to right, #edc273 0%, #9a754d 100%);
+  width: fit-content;
+  height: fit-content;
+  border-radius: 10px;
+}
+
+.btn {
+  cursor: pointer;
+  padding: 1em;
+  color: #fff;
+  background: transparent;
+  border: 1px solid transparent;
+}
+
+.btn-left {
+  border-radius: 10px 0 0 10px;
+}
+
+.btn-right {
+  border-radius: 0 10px 10px 0;
+}
+
+.input-box {
+  text-align: center;
+  background: linear-gradient(white, white) padding-box,
+  transparent border-box;
+  border: 1px solid transparent;
+  width: 80%;
+}
+
+.error {
+  color: red;
+  @apply text-3xl;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}

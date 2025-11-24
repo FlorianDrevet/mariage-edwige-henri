@@ -1,0 +1,5 @@
+﻿C:\Users\Utilisateur\Documents\ING-2\C#\mariage-edwige-henri\src\back\Mariage.AppHost\AppHost.cs
+C:\Users\Utilisateur\Documents\ING-2\C#\mariage-edwige-henri\src\back\Mariage.AppHost\appsettings.Development.json
+C:\Users\Utilisateur\Documents\ING-2\C#\mariage-edwige-henri\src\back\Mariage.AppHost\appsettings.json
+C:\Users\Utilisateur\Documents\ING-2\C#\mariage-edwige-henri\src\back\Mariage.AppHost\Properties\launchSettings.json
+C:\Users\Utilisateur\Documents\ING-2\C#\mariage-edwige-henri\src\back\Mariage.AppHost\obj\Debug\net9.0\apphost.exe

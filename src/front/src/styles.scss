@@ -1,0 +1,23 @@
+@import "@coreui/coreui/scss/coreui";
+@import "scss/main";
+
+@tailwind base;
+@layer base {
+  html {
+    overflow-x: initial !important;
+    min-height: 120vh !important;
+    height: 100% !important;
+  }
+  body {
+    overflow-x: initial !important;
+    min-height: 120vh !important;
+    height: 100% !important;
+    @apply m-0 p-0
+  }
+  body.modal-open, body.login {
+    overflow: hidden;
+  }
+}
+
+@tailwind components;
+@tailwind utilities;

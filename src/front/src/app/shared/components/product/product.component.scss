@@ -1,0 +1,22 @@
+::ng-deep .bg-warning {
+  background-color: #e9be71 !important;
+  color: #725333 !important;
+  border-color: #775837 !important;
+}
+
+.gradient-box {
+  background: linear-gradient(white, white) padding-box,
+  linear-gradient(to right, #edc273 0%, #9a754d 63%, #edc273 100%) border-box;
+  transition: 0.5s;
+  background-size: 200% auto;
+  color: white;
+  box-shadow: 0 0 20px #eee;
+  display: block;
+  border: 4px solid transparent;
+  border-radius: 40px;
+}
+
+.gradient-box:hover {
+  background-position: right center;
+  text-decoration: none;
+}

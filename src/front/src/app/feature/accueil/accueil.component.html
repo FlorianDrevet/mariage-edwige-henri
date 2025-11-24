@@ -1,0 +1,23 @@
+@if(displayExplanations) {
+  <app-explanation-profil-modal></app-explanation-profil-modal>
+}
+
+<div class="flex flex-col w-screen items-center relative">
+  <app-carousel-nav class="w-full lg:w-2/5 p-10 z-50 "></app-carousel-nav>
+  @if(screenService.isSmallScreen$ | async) {
+    <img
+      alt="image de fleurs gold"
+      class="mr-auto ml-auto rotate-180 -mt-16"
+      height="150" ngSrc="assets/layout/gold_flowers_straight.webp" priority width="480">
+  }
+  @else {
+    <img
+      priority
+      ngSrc="assets/layout/gold_flowers.webp"
+      class="ml-auto w-2/3 rotate-180 absolute -bottom-40 right-0 mt-10"
+      alt="decoration doré"
+      width="1024"
+      height="469">
+  }
+</div>
+

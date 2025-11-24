@@ -1,0 +1,28 @@
+.main-line {
+  background-image: linear-gradient(to bottom, #edc273 0%, #9a754d 63%, #edc273 100%);
+  width: 5px;
+  border-radius: 15px;
+}
+
+.horizontal-line {
+  height: 5px;
+  background-image: linear-gradient(to bottom, #edc273 0%, #9a754d 63%, #edc273 100%);
+  width: 50px;
+}
+
+.horizontal-line-right {
+  @extend .horizontal-line;
+  border-bottom-right-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.horizontal-line-left {
+  @extend .horizontal-line;
+  border-bottom-left-radius: 10px;
+  border-top-left-radius: 10px;
+}
+
+img:hover {
+  transform: scale(1.1);
+  transition: 0.1s;
+}
