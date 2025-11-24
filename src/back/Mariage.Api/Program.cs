@@ -41,6 +41,7 @@ builder.Services
     });
 
 builder.AddServiceDefaults();
+builder.AddNpgsqlDataSource(connectionName: "postgresdb");
 
 var app = builder.Build();
 

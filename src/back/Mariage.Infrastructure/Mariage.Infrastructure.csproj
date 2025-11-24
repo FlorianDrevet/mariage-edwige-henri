@@ -5,6 +5,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="Aspire.Npgsql" />
       <PackageReference Include="Azure.Storage.Blobs" />
       <PackageReference Include="Mapster" />
       <PackageReference Include="Mapster.DependencyInjection" />
