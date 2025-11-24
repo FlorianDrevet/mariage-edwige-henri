@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="Mariage.Api/Mariage.Api.csproj" />
+  <Project Path="Mariage.Application/Mariage.Application.csproj" />
+  <Project Path="Mariage.Contracts/Mariage.Contracts.csproj" />
+  <Project Path="Mariage.Domain/Mariage.Domain.csproj" />
+  <Project Path="Mariage.Infrastructure/Mariage.Infrastructure.csproj" />
+</Solution>
