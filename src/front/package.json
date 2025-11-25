@@ -7,6 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
+    "dev": "ng serve --configuration=development",
     "serve:ssr:mariage-astrid-florian": "node dist/mariage-astrid-florian/server/server.mjs"
   },
   "private": true,

@@ -12,7 +12,7 @@ var api = builder.AddProject<Projects.Mariage_Api>("api")
     .WithReference(postgresdb)
     .WaitFor(postgresdb);
 
-var frontend = builder.AddJavaScriptApp("frontend", "./../front")
+var frontend = builder.AddJavaScriptApp("frontend", "./../../front")
     .WithReference(api)
     .WaitFor(api);
 
