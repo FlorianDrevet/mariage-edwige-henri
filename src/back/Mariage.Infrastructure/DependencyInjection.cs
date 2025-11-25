@@ -1,4 +1,5 @@
 using System.Text;
+using InfraFlowSculptor.Infrastructure.Extensions;
 using Mariage.Application.Common.Interfaces.Authentication;
 using Mariage.Application.Common.Interfaces.Persistence;
 using Mariage.Application.Common.Interfaces.Services;
@@ -28,13 +29,9 @@ public static class DependencyInjection
                 .AddAuth(builderConfiguration)
                 .AddBlob(builderConfiguration)
                 .AddDiscordWebhook(builderConfiguration)
-                .AddDbContext<MariageDbContext>((sp, options) =>
-                    {
-                        var dataSource = sp.GetServices<NpgsqlDataSource>();
-                        options.UseSqlServer(dataSource.First().ConnectionString);
-                    }
-                )
                 .AddRepositories();
+            
+            services.AddMigration<MariageDbContext>();
         
             services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
         

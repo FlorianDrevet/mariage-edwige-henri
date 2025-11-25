@@ -6,6 +6,7 @@
 
     <ItemGroup>
       <PackageReference Include="Aspire.Npgsql" />
+      <PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" />
       <PackageReference Include="Azure.Storage.Blobs" />
       <PackageReference Include="Mapster" />
       <PackageReference Include="Mapster.DependencyInjection" />
@@ -23,10 +24,6 @@
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.Design" />
       <PackageReference Include="System.IdentityModel.Tokens.Jwt" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Migrations\" />
     </ItemGroup>
 
     <PropertyGroup>

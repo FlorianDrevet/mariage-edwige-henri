@@ -3,7 +3,9 @@ using Mariage.Api.Controllers;
 using Mariage.Api.Errors;
 using Mariage.Application;
 using Mariage.Infrastructure;
+using Mariage.Infrastructure.Persistence;
 using Microsoft.AspNetCore.RateLimiting;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,6 +44,7 @@ builder.Services
 
 builder.AddServiceDefaults();
 builder.AddNpgsqlDataSource(connectionName: "postgresdb");
+builder.AddNpgsqlDbContext<MariageDbContext>(connectionName: "postgresdb");
 
 var app = builder.Build();
 
