@@ -1,5 +1,10 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
+var acr = builder.AddAzureContainerRegistry("wedding-acr");
+
+var acaEnv = builder.AddAzureContainerAppEnvironment("aca-wedding-env")
+    .WithAzureContainerRegistry(acr);
+
 var postgres = builder.AddPostgres("postgres")
     .WithDbGate()
     .WithDataVolume(isReadOnly: false)
