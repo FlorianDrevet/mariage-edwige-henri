@@ -166,21 +166,219 @@ description: 'Expert {Framework} {Version} frontend developer. Use this agent fo
 ---
 ```
 
-Contenu adapté au framework :
-- **Angular** → Standalone components, Signals, inject(), @if/@for, Angular Material, etc.
+Contenu adapté au framework. Les templates ci-dessous sont **des guides de génération**, pas des fichiers à copier-coller. **Adapter chaque section au projet réel** en lisant le code source.
+
+- **Angular** → Voir le template Angular détaillé ci-dessous
 - **React** → Hooks, functional components, JSX, state management (Redux/Zustand/Context), etc.
 - **Vue** → Composition API, `<script setup>`, Pinia, etc.
 - **Blazor** → Components, @inject, @bind, etc.
 - **Svelte** → Stores, reactivity, $: syntax, etc.
 
-Inclure dans l'agent :
-1. Protocole de démarrage (lire MEMORY.md, explorer la structure)
-2. Conventions de fichiers du projet (extension, structure, nommage)
-3. Pattern de state management utilisé
-4. Pattern d'appel API utilisé
-5. Règles de routing
-6. Design system / CSS framework utilisé
-7. Conventions TypeScript/JavaScript du projet
+---
+
+### Template de génération — Agent Angular (toutes versions)
+
+> Ce template guide la génération de l'agent `front-dev.agent.md` pour un projet Angular.
+> **Lire le code source réel** pour détecter les conventions et adapter chaque section.
+
+**Étape 1 — Détecter la version et les patterns du projet**
+
+Lire `package.json` → `@angular/core` version. Puis :
+
+| Détection | Critère |
+|-----------|---------|
+| Version Angular | `@angular/core` dans `package.json` |
+| Standalone vs NgModules | Présence de `standalone: true` dans les composants OU de `@NgModule` |
+| Signals | Présence de `signal(`, `computed(`, `input(`, `model(` dans les composants |
+| Zoneless | `provideExperimentalZonelessChangeDetection()` dans `app.config.ts` ou `main.ts` |
+| inject() vs constructor | Présence de `inject(Service)` vs `constructor(private service: Service)` |
+| Control flow syntax | Présence de `@if`, `@for` vs `*ngIf`, `*ngFor` |
+| CSS framework | Tailwind (`tailwind.config`), Bootstrap, Material (`@angular/material`), PrimeNG, etc. |
+| UI component library | CoreUI, Angular Material, PrimeNG, Ng-Zorro, etc. |
+| HTTP client | HttpClient vs Axios vs fetch |
+| Auth library | @auth0/angular-jwt, @angular/fire, MSAL, oidc-client, custom |
+| State management | NgRx, Signals, BehaviorSubject, Zustand (ngx-zustand), custom |
+| i18n | ngx-translate, @angular/localize, pas d'i18n |
+| SSR | @angular/ssr, @nguniversal/express-engine |
+| Testing | Jest, Karma, Vitest, Cypress, Playwright |
+
+**Étape 2 — Lire 2 à 3 composants existants** pour extraire :
+- Le pattern d'injection (constructor vs inject)
+- Le pattern de template (inline vs templateUrl, 3 fichiers ou inline)
+- Le pattern de visibilité (private/protected/public pour les services et propriétés)
+- Le pattern de formulaires (Reactive Forms, Template-driven, pas de formulaires)
+- Le cycle de vie utilisé (OnInit, AfterViewInit, OnDestroy, etc.)
+- Le pattern d'appel API (service → composant, direct, via resolver)
+
+**Étape 3 — Générer l'agent avec les sections suivantes** (TOUTES obligatoires) :
+
+```
+## Sections obligatoires de l'agent front-dev
+
+1. DESCRIPTION (header YAML)
+   → description: 'Expert {Framework} {Version} frontend developer. Use this agent for ALL frontend tasks.'
+
+2. RÔLE
+   → Résumé en 2 lignes du rôle de l'agent et des technologies maîtrisées.
+
+3. PROTOCOLE OBLIGATOIRE AU DÉMARRAGE
+   → 6 étapes : lire MEMORY.md, lire ce fichier, lire package.json, lire environments,
+     explorer la feature folder si pertinent, lire le service API le plus proche.
+
+4. PROJECT CONTEXT
+   → Lister : version Angular, standalone/NgModules, CSS framework,
+     UI library, HTTP client, Auth method, langue de l'UI.
+
+5. STRUCTURE DES FICHIERS — RÈGLE ABSOLUE
+   → Documenter le nombre de fichiers par composant (2 ou 3 : .ts, .html, .scss/.css)
+   → Exemple réel de l'arborescence d'un composant du projet
+   → Inline template permis ou non (détecter via les composants existants)
+   → templateUrl + styleUrl (ou styleUrls) selon ce qui est utilisé
+
+6. ARBORESCENCE DES DOSSIERS
+   → Scanner `src/app/` et documenter l'arbre réel sur 3 niveaux
+   → Identifier : core/, features/, shared/, pages/, layouts/, etc.
+   → Documenter le rôle de chaque dossier
+
+7. FILE CONVENTIONS (table)
+   | Type | Location | Naming |
+   → Feature, Shared component, API service, Service, Model, Interface,
+     Enum, Pipe, Directive, Guard, Interceptor, Route
+
+8. RÈGLES ANGULAR — FONDAMENTAUX (adapter selon la version détectée)
+
+   8a. Composants : Standalone ou NgModules
+       - Si NgModules → règles de déclaration dans les modules,
+         SharedModule exports, Feature modules
+       - Si Standalone → imports[] dans le composant,
+         providers pour les services
+
+   8b. Injection de dépendances
+       - Si inject() → documenter le pattern avec signal d'erreur, loading, etc.
+       - Si constructor → documenter les règles de visibilité (private/protected)
+
+   8c. Template — Syntaxe de flux de contrôle
+       - Angular ≥ 17 → Documenter @if/@for/@switch avec exemples
+       - Documenter le `track` obligatoire dans @for
+       - Note : si le code existant utilise *ngIf/*ngFor, ne les changer
+         que si on touche déjà au template
+
+   8d. Visibilité des membres
+       - private pour services internes
+       - protected pour services/propriétés accédés dans le template
+       - public (ou pas de modifier) pour les @Input/@Output
+       - private pour les méthodes internes
+
+   8e. Signals (si Angular ≥ 16)
+       - Si le projet les utilise → documenter signal(), computed(), effect()
+       - Si le projet utilise input() / output() / model()
+       - Si le projet n'utilise pas les Signals → noter que le code existant
+         n'utilise pas les Signals mais qu'ils peuvent être recommandés pour du nouveau code
+
+   8f. Lifecycle hooks
+       - Documenter ceux utilisés dans le projet (OnInit, OnDestroy, AfterViewInit...)
+       - Rappeler l'ordre d'exécution si pertinent
+
+9. FORMULAIRES
+   → Reactive Forms ou Template-driven (détecter dans le code)
+   → Exemples de création, validation, soumission avec error handling
+   → Pattern de messages d'erreur dans le template
+
+10. SERVICES API — PATTERN HTTP
+    → Documenter le client HTTP utilisé (HttpClient, Axios, fetch)
+    → Exemples : GET, POST, PUT, DELETE, upload de fichier
+    → Retour : Observable<T> ou Promise<T> selon le client
+    → Règle sur les URLs (base URL automatique ou pas)
+    → Pattern d'erreur dans les appels
+
+11. AUTH PATTERN
+    → Documenter le mécanisme d'auth du projet
+    → Token storage (cookie, localStorage, in-memory)
+    → State management auth (BehaviorSubject, Signal, NgRx)
+    → Pattern de guard
+    → Pattern d'interceptor (si HttpClient) ou de header injection (si Axios)
+
+12. INTERFACES TYPESCRIPT — ALIGNEMENT BACKEND
+    → Règle de mapping Guid → string, DateTime → string
+    → Interdiction du type `any`
+    → Convention de nommage des interfaces/models
+    → Emplacement des fichiers
+
+13. ROUTING
+    → Module-based (RouterModule) ou standalone (provideRouter)
+    → Lazy loading ou eager loading
+    → Convention de nommage des routes (kebab-case, langue)
+    → Guards utilisés
+    → Route par défaut et wildcard
+
+14. UI FRAMEWORK — UTILISATION COMBINÉE
+    → Documenter l'utilisation conjointe (ex: CoreUI + Tailwind + Material CDK)
+    → Quand utiliser quoi (composants interactifs, layout, styles avancés)
+    → Exemples d'import dans les modules/composants
+    → Custom fonts ou tokens si configurés
+
+15. PATTERN DE CHARGEMENT ASYNCHRONE
+    → Smart component pattern complet avec loading, error, data
+    → Exemple TypeScript + template HTML
+
+16. ENUMS TYPESCRIPT — RÈGLES STRICTES
+    → Fichier dédié obligatoire (jamais inline dans un composant)
+    → Règle backend enum → frontend dropdown
+    → Emplacement : shared/enums/ ou features/{name}/enums/
+    → Template de fichier enum avec OPTIONS constant
+
+17. ENVIRONNEMENTS — URLs API
+    → Pas de hardcoding d'URL
+    → Documenter les fichiers environment.ts et environment.development.ts
+    → Comment le base URL est injecté
+
+18. GESTION D'ERREUR
+    → Pattern d'erreur dans les composants (string, Signal, snackbar...)
+    → Pattern d'erreur pour les appels API (codes HTTP)
+    → Messages d'erreur dans la langue de l'UI
+
+19. SCSS / CSS CONVENTIONS
+    → :host display block si nécessaire
+    → SCSS scopé vs Tailwind utilitaire
+    → Media queries
+    → Pas de couleurs en dur si token system
+
+20. CONVENTIONS TYPESCRIPT
+    → Typage explicite des retours async
+    → const/let vs var
+    → Optional chaining + nullish coalescing
+    → Langue des messages d'erreur et textes UI
+
+21. SSR COMPATIBILITÉ (si @angular/ssr détecté)
+    → isPlatformBrowser pour window/document access
+    → afterNextRender / afterRender si Angular ≥ 16
+    → Pattern d'injection de PLATFORM_ID
+
+22. i18n (si ngx-translate ou @angular/localize détecté)
+    → Pattern de traduction dans les templates et les services
+    → Fichiers de traduction (emplacement, format)
+    → Language switching
+
+23. VALIDATION POST-IMPLÉMENTATION
+    → Commande build (npm run build / ng build)
+    → Commande lint si disponible
+    → Commande test si disponible
+
+24. CHECKLIST DE GÉNÉRATION D'UNE FEATURE
+    → Liste exhaustive de vérifications à faire après génération
+    → 15-20 items couvrant : fichiers, module, template, routing, interfaces,
+      service API, URLs, enums, UI, langue, SSR, build
+
+25. PROTOCOLE DE FIN DE TÂCHE
+    → Build, mise à jour MEMORY.md, signalement des dépendances
+```
+
+**Règles de rédaction de l'agent :**
+- Chaque section contient des **exemples de code réels** extraits du projet (pas des templates génériques)
+- Les exemples montrent le pattern tel qu'il existe, pas tel qu'il devrait être
+- Si le projet mélange des patterns (ex: *ngIf et @if), documenter les deux et préciser la règle pour le nouveau code
+- Les sections non applicables (ex: i18n si pas de traduction) sont **omises**, pas laissées vides
+- L'agent fait **300-500 lignes** — assez détaillé pour être autonome, assez concis pour être lu
 
 #### Si Aspire est détecté → Créer `.github/agents/aspire-debug.agent.md`
 
