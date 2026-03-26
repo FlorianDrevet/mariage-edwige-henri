@@ -1,206 +1,426 @@
-# Project Memory — {NomDuProjet}
+# Project Memory — Mariage Edwige & Henri
 
-> This file is the shared memory for all GitHub Copilot agents working on this repository.
-> **Always read this file before starting any task.** Update it whenever you learn something new about the project.
-> Keep entries concise, factual, and actionable. Add the date in `[YYYY-MM-DD]` when updating a section.
+> Shared memory for all Copilot agents. Always read before any task.
 
 ---
 
 ## 1. Solution Overview
 
-**Product goal:** <!-- Décrire l'objectif produit -->
-
-**Technology stack:**
-<!-- Lister le stack technique avec versions exactes.
-     Exemples de stacks possibles :
-     - .NET 10, ASP.NET Core Minimal APIs, MediatR, EF Core + PostgreSQL
-     - .NET 9, ASP.NET Core MVC, Dapper + SQL Server
-     - .NET 8, Vertical Slices, AutoMapper, EF Core + SQLite
-     - Frontend: Angular 19 / React 18 / Vue 3 / Blazor / Aucun
-     - Orchestration : Aspire / Docker Compose / Standalone
--->
-
-**Architecture pattern:** <!-- Clean Architecture + CQRS / MVC / Vertical Slices / N-Tier / Modular Monolith -->
-
-**Solution file:** <!-- ex : MonProjet.slnx -->
+- **Product goal**: Wedding website — gift registry (liste de mariage), photo sharing, guest management, event info
+- **Technology stack**:
+  - Backend: **.NET 10** (C# with `extension` methods syntax), **ASP.NET Core Minimal API**
+  - Frontend: **Angular 17.1** with **SSR** (`@angular/ssr`)
+  - Database: **PostgreSQL** via EF Core 10 + Npgsql
+  - Orchestration: **.NET Aspire 13.x** (AppHost + ServiceDefaults)
+  - Blob storage: **Azure Blob Storage** (pictures & gift images)
+  - Mapping: **Mapster 7.4**
+  - Validation: **FluentValidation 12.1**
+  - CQRS: **MediatR 14**
+  - Error handling: **ErrorOr 2.0** (result pattern)
+  - Auth: **JWT Bearer** (custom implementation)
+  - CSS: **Tailwind CSS 3.4** + custom fonts (Wedding, WindSong, LibreBaskerville)
+  - UI libs: **CoreUI Angular 4.7** + **Angular Material 17.1**
+  - HTTP client (front): **Axios** (wrapped in `AxiosService`)
+  - Auth (front): **@auth0/angular-jwt** + **ngx-cookie-service**
+  - Notifications: **Discord webhook**
+- **Architecture**: Clean Architecture + DDD + CQRS
+- **Solution file**: `src/back/Mariage.slnx`
 
 ---
 
 ## 2. Project Structure
 
-<!-- L'agent memory-bootstrap remplira cette section automatiquement.
-     Arbre des projets avec description d'une ligne chacun. -->
-
 ```
 src/
-├── ...
+├── back/
+│   ├── Mariage.slnx                    — Solution file
+│   ├── global.json                     — SDK .NET 10
+│   ├── Directory.Packages.props        — Central package management
+│   ├── Mariage.Api/                    — Presentation layer (Minimal API endpoints, Mapster mapping, error handling)
+│   ├── Mariage.AppHost/                — .NET Aspire orchestrator (PostgreSQL + API + Frontend)
+│   ├── Mariage.Application/            — Application layer (CQRS handlers, validators, interfaces)
+│   ├── Mariage.Contracts/              — DTOs/Requests/Responses
+│   ├── Mariage.Domain/                 — Domain layer (Aggregates, Entities, Value Objects, Errors)
+│   ├── Mariage.Infrastructure/         — Infrastructure (EF Core, Repositories, JWT, Blob, Discord)
+│   └── Mariage.ServiceDefaults/        — Aspire service defaults (OpenTelemetry, health checks)
+├── front/
+│   ├── package.json                    — Angular 17.1 app
+│   ├── tailwind.config.js              — Tailwind with custom fonts
+│   └── src/app/
+│       ├── core/                       — Layouts (navigation, footer), login
+│       ├── feature/                    — Feature modules (accueil, wedding-list, gift, photos, profil, users, mariage, maries, contact)
+│       └── shared/                     — APIs, services, models, interfaces, enums, components
 ```
 
 ---
 
 ## 3. Backend — Business Model
 
-<!-- Adapter cette section à l'architecture réelle du projet.
-     - Si DDD : Aggregates, Entities, Value Objects
-     - Si CRUD : Models / Entities avec leurs propriétés clés
-     - Si Vertical Slices : Models par feature -->
+### 3.1 Aggregates & Entities
 
-### 3.1 Entities / Models
+| Aggregate | Class | Key Properties |
+|-----------|-------|----------------|
+| **User** | `UserAggregate/User.cs` | Username, Email?, Password, Salt, Role, PictureIds (favorites), Guests (owned) |
+| └ Guest | `UserAggregate/Entities/Guest.cs` | FirstName, LastName, IsComing |
+| **Gift** | `GiftAggregate/Gift.cs` | Name, Price, Participation, UrlImage, Category (VO), GiftGivers (owned) |
+| └ GiftGiver | `GiftAggregate/Entities/GiftGiver.cs` | FirstName, LastName, Email?, Amount |
+| **Picture** | `PictureAggregate/Picture.cs` | UserId, UrlImage, CreatedAt |
 
-| Entity | Key Properties | Relations | Notes |
-|--------|---------------|-----------|-------|
-| <!-- à remplir --> | | | |
+### 3.2 Value Objects
 
-### 3.2 Business Rules / Invariants
+| VO | Location | Type |
+|----|----------|------|
+| `UserId` | `UserAggregate/ValueObjects/` | Guid wrapper |
+| `GuestId` | `UserAggregate/ValueObjects/` | Guid wrapper |
+| `GiftId` | `GiftAggregate/ValueObjects/` | Guid wrapper |
+| `GiftGiverId` | `GiftAggregate/ValueObjects/` | Guid wrapper |
+| `GiftCategory` | `GiftAggregate/ValueObjects/` | Enum VO (HomeAppliances, Decorations, TableArts, Digestives, Furniture, HouseholdLinens, Kitchenware, Santons, Honeymoon) |
+| `PictureId` | `PictureAggregate/ValueObject/` | Guid wrapper |
 
-<!-- Règles métier clés, validation domaine, contraintes -->
+### 3.3 Base Classes
 
-### 3.3 Error Handling
+- `AggregateRoot<TId>` → `Entity<TId>` (with `IEquatable`) → in `Domain/Common/Models/`
+- `ValueObject` (with `GetEqualityComponents()`) → in `Domain/Common/Models/`
 
-<!-- Pattern d'erreur : ErrorOr, Result, exceptions, etc. + codes d'erreur existants -->
+### 3.4 Error Handling (ErrorOr pattern)
+
+| File | Error codes |
+|------|-------------|
+| `Errors.Authentication.cs` | `Auth.InvalidUsername`, `Auth.InvalidPassword` |
+| `Errors.Gift.cs` | `Gift.NotFound` |
+| `Errors.User.cs` | `User.DuplicateEmail`, `User.NotFoundUserWithId` |
+| `Errors.Pictures.cs` | `Pictures.NotFoundPictureWithId` |
+| `Errors.Participation.cs` | `Participation.AmountExceedParticipationLeft` |
+
+All in `Mariage.Domain/Common/Errors/` as `partial class Errors`.
 
 ---
 
-## 4. Backend — Operations
+## 4. Backend — Operations (CQRS via MediatR)
 
-<!-- Adapter selon l'architecture :
-     - CQRS : Commands/Queries/Handlers par feature
-     - MVC : Controllers et actions par feature
-     - Vertical Slices : Endpoints/Features
-     - Services : Service classes et méthodes -->
+### 4.1 Authentication
+| Type | Class | Location |
+|------|-------|----------|
+| Command | `RegisterCommand` + Handler + Validator | `Application/Authentication/Commands/Register/` |
+| Query | `LoginQuery` + Handler | `Application/Authentication/Queries/Login/` |
+| Result | `AuthenticationResult` | `Application/Authentication/Common/` |
 
-### 4.1 Operations par feature
+### 4.2 Gifts
+| Type | Class | Location |
+|------|-------|----------|
+| Command | `CreateGiftCommand` | `Application/Gifts/Commands/CreateGift/` |
+| Command | `CreateGiftParticipationCommand` | `Application/Gifts/Commands/CreateGiftParticipation/` |
+| Query | `GetGiftQuery` | `Application/Gifts/Queries/GetGifts/` |
+| Query | `GetGiftByIdQuery` | `Application/Gifts/Queries/GetGiftById/` |
 
-<!-- Lister les opérations existantes groupées par feature/domaine -->
+### 4.3 Pictures
+| Type | Class | Location |
+|------|-------|----------|
+| Command | `CreatePictureCommand` | `Application/Pictures/Commands/CreatePicture/` |
+| Command | `RemovePictureCommand` | `Application/Pictures/Commands/RemovePicture/` |
+| Command | `AddPicturesToFavoritesCommand` | `Application/Pictures/Commands/AddPicturesToFavorites/` |
+| Command | `RemovePictureFromFavoritesCommand` | `Application/Pictures/Commands/RemovePictureFromFavorites/` |
+| Query | `GetPictureQuery` (paginated) | `Application/Pictures/Queries/GetPictures/` |
+| Query | `GetPicturePhotoBoothQuery` | `Application/Pictures/Queries/GetPicturePhotoBooth/` |
+| Query | `GetPicturePhotographQuery` | `Application/Pictures/Queries/GetPicturePhotograph/` |
+| Query | `GetPicturesTookByUserQuery` | `Application/Pictures/Queries/GetPicturesTookByUser/` |
+| Query | `GetFavoritePicturesQuery` | `Application/Pictures/Queries/GetFavoritesPictures/` |
 
-### 4.2 Middleware / Behaviors / Filters
+### 4.4 UserInfos
+| Type | Class | Location |
+|------|-------|----------|
+| Command | `ChangeEmailCommand` | `Application/UserInfos/Commands/Email/` |
+| Command | `ChangeIsComingCommand` | `Application/UserInfos/Commands/IsComing/` |
+| Command | `AddGuestsCommand` | `Application/UserInfos/Commands/AddGuests/` |
+| Query | `GetAllUsersInfosQuery` | `Application/UserInfos/Queries/AllUsers/` |
+| Query | `GetUserByIdQuery` | `Application/UserInfos/Queries/GetUserById/` |
 
-<!-- Pipeline behaviors, action filters, middleware custom -->
+### 4.5 Behaviors
+- `ValidationBehavior<TRequest, TResponse>` — FluentValidation pipeline via `IPipelineBehavior`
 
-### 4.3 Key Interfaces / Services
+### 4.6 Key Interfaces
 
-<!-- Interfaces clé : repositories, services métier, etc. -->
+| Interface | Location |
+|-----------|----------|
+| `IUserRepository` | `Application/Common/Interfaces/Persistence/` |
+| `IGiftRepository` | `Application/Common/Interfaces/Persistence/` |
+| `IPictureRepository` | `Application/Common/Interfaces/Persistence/` |
+| `IJwtGenerator` | `Application/Common/Interfaces/Authentication/` |
+| `IHashPassword` | `Application/Common/Interfaces/Authentication/` |
+| `IBlobService` | `Application/Common/Interfaces/Services/` |
+| `IDateTimeProvider` | `Application/Common/Interfaces/Services/` |
+| `IDiscordWebhook` | `Application/Common/Interfaces/Services/` |
 
 ---
 
 ## 5. Contracts / DTOs
 
-### 5.1 Requests par feature
+### 5.1 Authentication
+- `RegisterRequest(Username, Password)` → `AuthenticationResponse(Id, Username, Token)`
+- `LoginRequest(Username, Password)` → `AuthenticationResponse(Id, Username, Token)`
 
-### 5.2 Responses par feature
+### 5.2 Gifts
+- `CreateGiftRequest(Name, Price, ImageFile, Category)` → `GiftResponse(Id, Name, Price, Participation, UrlImage, Category, GiftGivers[])`
+- `CreateGiftParticipationRequest(FirstName, LastName, Email, Amount)` → `GiftResponse`
+- `GiftGiverResponse(Id, FirstName, LastName, Email, Amount)`
 
-### 5.3 Conventions
+### 5.3 Pictures
+- `CreatePictureRequest(ImageFile)` → `PictureResponse(Id, IsFavorite, UrlImage, Username)`
+- `AddFavoritePictureRequest`, `RemovePictureFromFavoriteRequest`
+- `GetPicturesPaginated`, `GetFavoritePicturesPaginated`
 
-<!-- ex : string pour Guid en JSON, validation attributes, naming, etc. -->
+### 5.4 UserInfos
+- `ChangeEmailRequest(Email?)` → `UserInfosResponse(Id, Username, Email, Guests[])`
+- `ChangeIsComingRequest(GuestId, IsComing)` → `UserInfosResponse`
+- `AddGuestsRequest(UserId, Guests[])` → `UserInfosResponse`
+- `GuestResponse(Id, FirstName, LastName, IsComing)`
 
 ---
 
 ## 6. API Endpoints
 
-| Route pattern | Method | Handler/Action | Auth |
-|---------------|--------|----------------|------|
-| <!-- à remplir --> | | | |
+| Route | Method | Handler | Auth |
+|-------|--------|---------|------|
+| `/healthz` | POST | HealthCheck | None |
+| `/auth/register` | POST | RegisterCommand | Admin |
+| `/auth/login` | POST | LoginQuery | None (rate limited) |
+| `/wedding-list` | GET | GetGiftQuery | None |
+| `/wedding-list/gift/{giftId}` | GET | GetGiftByIdQuery | None |
+| `/wedding-list` | POST | CreateGiftCommand | Admin |
+| `/wedding-list/{giftId}/participation` | POST | CreateGiftParticipationCommand | None |
+| `/pictures` | POST | CreatePictureCommand | Auth |
+| `/pictures/{id}` | DELETE | RemovePictureCommand | Auth |
+| `/pictures` | GET | GetPictureQuery (paginated) | Auth |
+| `/pictures-photo-booth` | GET | GetPicturePhotoBoothQuery | Auth |
+| `/pictures-photograph` | GET | GetPicturePhotographQuery | Auth |
+| `/pictures/took-by-user` | GET | GetPicturesTookByUserQuery | Auth |
+| `/pictures/favorites` | GET | GetFavoritePicturesQuery | Auth |
+| `/pictures/{pictureId}/favorites` | POST | AddPicturesToFavoritesCommand | Auth |
+| `/pictures/{pictureId}/favorites` | DELETE | RemovePictureFromFavoritesCommand | Auth |
+| `/user-infos/email` | PUT | ChangeEmailCommand | Auth |
+| `/user-infos/is-coming` | PUT | ChangeIsComingCommand | Auth |
+| `/user-infos` | GET | GetAllUsersInfosQuery | Admin |
+| `/user-infos/profils` | GET | GetUserByIdQuery | Auth |
+| `/user-infos/guests` | POST | AddGuestsCommand | Admin |
 
-### Conventions de routing
-
-<!-- ex : REST, prefix /api, versioning, etc. -->
+### Routing conventions
+- Minimal API via static `Use{Feature}Controller()` extension methods on `IApplicationBuilder`
+- `UseEndpoints()` pattern with `MapGet`/`MapPost`/`MapPut`/`MapDelete`
+- Mapster mapping in endpoint lambdas
+- No `/api` prefix
 
 ---
 
 ## 7. Persistence
 
-### 7.1 ORM / Data access
+### 7.1 ORM
+- **EF Core 10** with **Npgsql** (PostgreSQL)
 
-<!-- EF Core + provider / Dapper / autre — avec version -->
+### 7.2 DbContext
+- `MariageDbContext` in `Infrastructure/Persistence/`:
+  - `DbSet<Gift> Gifts`
+  - `DbSet<User> Users`
+  - `DbSet<Picture> Pictures`
 
-### 7.2 DbContext(s) / Configurations
+### 7.3 Configurations (Fluent API)
+- `UserConfiguration.cs` — UserId conversion, PictureIds as comma-separated string, Guests owned collection
+- `GiftConfiguration.cs` — GiftId conversion, GiftGivers owned collection, Category as ComplexProperty
+- `PictureConfiguration.cs` — PictureId/UserId conversions
 
-### 7.3 Repositories / Data services
+### 7.4 Repositories
+- `UserRepository`, `GiftRepository`, `PictureRepository` in `Infrastructure/Persistence/Repositories/`
 
-### 7.4 External Services
+### 7.5 External Services
+- `BlobService` — Azure Blob Storage (upload, delete, list photo booth/photograph)
+- `DiscordWebhook` — Discord notifications
+- `DateTimeProvider` — `IDateTimeProvider` implementation
 
-<!-- Blob storage, message bus, external APIs, etc. -->
+### 7.6 Migrations
+- `20251125124802_Initial` — single migration
+- Auto-migration via `MigrateDbContextExtensions` (runs on startup as `IHostedService`)
 
-### 7.5 Migrations (historique)
-
-### 7.6 Known Persistence Pitfalls
-
-<!-- Pièges spécifiques à l'ORM utilisé -->
+### 7.7 Known Persistence Pitfalls
+- **PictureIds stored as comma-separated string** in Users table — fragile, no FK constraint
+- **Namespace mismatch**: `InfraFlowSculptor.Infrastructure.Extensions` in `MigrateDbContextExtensions.cs`
 
 ---
 
 ## 8. Authentication & Authorization
 
-<!-- Provider, policies, current user service, access check pattern -->
+- **Provider**: Custom JWT Bearer (not ASP.NET Identity)
+- **JWT generation**: `IJwtGenerator` / `JwtGenerator` in Infrastructure
+- **Password hashing**: `IHashPassword` / `HashPassword` in Infrastructure
+- **JWT settings**: `JwtSettings` (Issuer, Audience, Secret) from `appsettings.json`
+- **Policies**: `IsAdmin` (requires `Admin` role)
+- **Rate limiting**: `/auth/login` → Fixed window (3 req / 10 sec)
+- **Frontend**: Token stored in cookie (`auth_token`), decoded with `@auth0/angular-jwt`
+- **Claims**: `ClaimTypes.NameIdentifier` = UserId, `role` = User/Admin/Moderator
 
 ---
 
 ## 9. Frontend
 
-<!-- Remplir uniquement si un frontend existe. memory-bootstrap adaptera cette section au framework détecté. -->
-
 ### 9.1 Framework & version
+- **Angular 17.1** with SSR (`@angular/ssr`, `server.ts`)
+- **Module-based** (NgModules, not standalone components)
 
-### 9.2 Structure des dossiers
+### 9.2 Structure
+```
+src/app/
+├── core/                  — layouts (navigation, footer), login
+├── feature/               — accueil, wedding-list, gift, photos, profil, users, mariage, maries, contact
+└── shared/
+    ├── apis/              — gift.api.ts, pictures.api.ts, profil.api.ts, users.api.ts
+    ├── services/          — auth, axios, auth-guard, discord-notification, screen
+    ├── models/            — user, guest, picture, photoBooth
+    ├── interfaces/        — product, giftGiver
+    ├── enums/             — category, role, method, pictureFilter, errors
+    ├── components/        — button, input, need-to-be-connected, photo-list, product, title-wedding
+    ├── directives/
+    └── pipe/
+```
 
 ### 9.3 Pages / Routes
 
-### 9.4 Services API
+| Route | Component | Description |
+|-------|-----------|-------------|
+| `/accueil` | AccueilComponent | Home page |
+| `/liste-de-mariage` | WeddingListComponent | Gift registry |
+| `/liste-de-mariage/cadeau/:id` | GiftComponent | Gift detail |
+| `/login` | LoginComponent | Login |
+| `/utilisateurs` | UsersComponent | Admin user management |
+| `/mariage` | MariageComponent | Wedding event info |
+| `/mariage/ceremonie-religieuse` | CeremonieComponent | Religious ceremony |
+| `/mariage/vin-honneur` | VinHonneurComponent | Cocktail hour |
+| `/mariage/reception` | ReceptionComponent | Reception |
+| `/mariage/photos` | PhotosComponent | Photo info |
+| `/maries` | MariesComponent | About the couple |
+| `/contact` | ContactComponent | Contact page |
+| `/photos` | PhotosMariageComponent | Photo gallery |
+| `/profil` | ProfilComponent | User profile |
 
-### 9.5 State management
+### 9.4 API Services
+- `GiftApi` — Gift CRUD & participation
+- `PicturesApi` — Picture CRUD, favorites, photo booth/photograph
+- `ProfilApi` — Guest isComing update
+- `UsersApi` — User list, profile, add guests
 
-### 9.6 Design system / CSS framework
+### 9.5 HTTP & Auth
+- **Axios** wrapped in `AxiosService` (not Angular HttpClient)
+- `AuthService` — BehaviorSubjects for `isAuthenticated$`, `isAdmin$`, `isModerator$`
+- Token stored in cookie with `ngx-cookie-service`
 
-### 9.7 Conventions spécifiques
+### 9.6 Design system
+- **Tailwind CSS 3.4** + SCSS + custom fonts (Wedding, WindSong, LibreBaskerville)
+- **CoreUI Angular** (modals, avatars, buttons)
+- **Angular Material** (CDK)
+
+### 9.7 Environments
+- Dev: `http://localhost:5143`
+- Prod: `https://mariage-backend-on8u.onrender.com`
 
 ---
 
 ## 10. Orchestration / Infrastructure
 
-<!-- Aspire / Docker Compose / Standalone — ressources, variables d'env, proxies -->
+### .NET Aspire (AppHost)
+- **ACR**: `wedding-acr` (Azure Container Registry)
+- **ACA**: `aca-wedding-env` (Azure Container Apps Environment)
+- **PostgreSQL** with DbGate UI, persistent data volume → database `postgresdb`
+- **API project** references `postgresdb`
+- **Frontend** (JavaScript app) references API
+
+### Deployment
+- **Render.com** (production)
+- **Azure Container Apps** (via Aspire `azure.yaml`)
 
 ---
 
 ## 11. Build & Run Commands
 
-<!-- 
-- Build backend : dotnet build
-- Build frontend : npm run build (dans src/Front)
-- Run complet : aspire run / docker-compose up / dotnet run
-- Tests : dotnet test
-- Migrations : dotnet ef migrations add ...
--->
+```bash
+# Backend — Build
+cd src/back && dotnet build Mariage.slnx
+
+# Backend — Run API only
+cd src/back/Mariage.Api && dotnet run
+
+# Frontend — Install
+cd src/front && npm install
+
+# Frontend — Dev
+cd src/front && npm run dev
+
+# Frontend — Build
+cd src/front && npm run build
+
+# Full stack — Aspire (ask user to run)
+cd src/back/Mariage.AppHost && dotnet run
+
+# Migrations — Add
+cd src/back && dotnet ef migrations add <Name> --project Mariage.Infrastructure --startup-project Mariage.Api
+
+# Migrations — Update
+cd src/back && dotnet ef database update --project Mariage.Infrastructure --startup-project Mariage.Api
+```
 
 ---
 
 ## 12. Conventions & Patterns — Où implémenter quoi
 
-<!-- memory-bootstrap remplira ce tableau avec les chemins RÉELS du projet.
-     Adapter les lignes à l'architecture détectée. -->
-
 | Ce que tu veux faire | Où chercher / créer |
 |---------------------|---------------------|
-| <!-- à remplir par memory-bootstrap --> | |
+| Nouvel agrégat | `Mariage.Domain/{Name}Aggregate/` — `{Name}.cs`, `Entities/`, `ValueObjects/` |
+| Nouvelle commande/query | `Mariage.Application/{Feature}/Commands/{Name}/` ou `Queries/{Name}/` — Command.cs + Handler.cs + Validator.cs |
+| Validation | `Mariage.Application/{Feature}/Commands/{Name}/{Name}Validator.cs` (FluentValidation) |
+| Erreurs domaine | `Mariage.Domain/Common/Errors/Errors.{Feature}.cs` (partial class `Errors`) |
+| Contrat (DTO) | `Mariage.Contracts/{Feature}/` |
+| Endpoint API | `Mariage.Api/Controllers/{Feature}Controller.cs` — static `Use{Feature}Controller()` |
+| Mapping Mapster | `Mariage.Api/Common/Mapping/{Feature}MappingConfig.cs` |
+| Interface repository | `Mariage.Application/Common/Interfaces/Persistence/I{Name}Repository.cs` |
+| Implémentation repository | `Mariage.Infrastructure/Persistence/Repositories/{Name}Repository.cs` |
+| Config EF Core | `Mariage.Infrastructure/Persistence/Configurations/{Name}Configuration.cs` |
+| Interface service | `Mariage.Application/Common/Interfaces/Services/I{Name}.cs` |
+| Implémentation service | `Mariage.Infrastructure/Services/{Name}/` |
+| DI présentation | `Mariage.Api/DependencyInjection.cs` → `AddPresentation()` |
+| DI application | `Mariage.Application/DependencyInjection.cs` → `AddApplication()` |
+| DI infrastructure | `Mariage.Infrastructure/DependencyInjection.cs` → `AddInfrastructure()` |
+| Page frontend | `src/front/src/app/feature/{name}/` + route dans `app-routing.module.ts` |
+| API service frontend | `src/front/src/app/shared/apis/{name}.api.ts` |
+| Modèle frontend | `src/front/src/app/shared/models/{name}.model.ts` |
+| Enum frontend | `src/front/src/app/shared/enums/{name}.enum.ts` |
+| Composant partagé | `src/front/src/app/shared/components/{name}/` |
 
 ---
 
 ## 13. Available Agents & Skills
 
-<!-- memory-bootstrap remplira cette section avec les agents et skills qu'il a générés. -->
-
 | Agent/Skill | Description | File |
 |-------------|-------------|------|
-| dev | Orchestrateur principal | .github/agents/dev.agent.md |
-| dotnet-dev | Expert C# .NET | .github/agents/dotnet-dev.agent.md |
-| memory-bootstrap | Exploration & setup | .github/agents/memory-bootstrap.agent.md |
-| merge-main | Synchronisation main | .github/agents/merge-main.agent.md |
-| pr-manager | Conventions PR | .github/agents/pr-manager.agent.md |
+| `dev` | Orchestrateur principal | `.github/agents/dev.agent.md` |
+| `dotnet-dev` | Expert C# .NET | `.github/agents/dotnet-dev.agent.md` |
+| `memory-bootstrap` | Explore et génère MEMORY.md | `.github/agents/memory-bootstrap.agent.md` |
+| `merge-main` | Merge main avec résolution conflits | `.github/agents/merge-main.agent.md` |
+| `pr-manager` | Conventions de Pull Request | `.github/agents/pr-manager.agent.md` |
+| `front-dev` | Expert Angular 17 frontend | `.github/agents/front-dev.agent.md` |
+| `aspire-debug` | Diagnostic runtime .NET Aspire | `.github/agents/aspire-debug.agent.md` |
+| `cqrs-feature` (skill) | Génération de features CQRS | `.github/skills/cqrs-feature/SKILL.md` |
 
 ---
 
 ## 14. Known Pitfalls & Lessons Learned
 
-<!-- Liste des pièges rencontrés avec date et solution -->
+- [2026-03-26] **PictureIds as comma-separated string** in Users table — fragile, no FK constraint, manual parsing
+- [2026-03-26] **`extension` keyword** in `Infrastructure/DependencyInjection.cs` — C# 13/.NET 10 feature, not all tooling supports it
+- [2026-03-26] **Namespace mismatch**: `InfraFlowSculptor.Infrastructure.Extensions` in `MigrateDbContextExtensions.cs` (copy-pasted)
+- [2026-03-26] **No upload validation** beyond `Length == 0` check — no content-type or size limit
+- [2026-03-26] **UserId extraction** from JWT claims repeated in every endpoint — no shared middleware
+- [2026-03-26] **Custom password hashing** — not standard ASP.NET Identity
+- [2026-03-26] **Hardcoded CORS origins** in `Program.cs`
+- [2026-03-26] **Angular Module-based** (not standalone) — Angular 17 supports both
+- [2026-03-26] **Axios** instead of Angular `HttpClient` — non-standard for Angular
+- [2026-03-26] **No test projects** in the solution
+- [2026-03-26] **`/healthz` POST** endpoint exists to wake up Render.com free plan instances
 
 ---
 
@@ -208,4 +428,4 @@ src/
 
 | Date | Description |
 |------|-------------|
-| <!-- date --> | Initial MEMORY.md created — run `@memory-bootstrap` to populate |
+| 2026-03-26 | Initial memory bootstrap — .NET 10 Clean Architecture + CQRS (MediatR, ErrorOr, Mapster, FluentValidation) + Angular 17 (Axios, Tailwind, CoreUI) + Aspire + PostgreSQL |

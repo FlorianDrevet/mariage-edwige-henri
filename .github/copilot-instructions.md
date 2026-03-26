@@ -21,16 +21,18 @@ agents/skills qui sont **générés automatiquement** par `memory-bootstrap` en 
 | `merge-main` | Merge la branche main avec résolution de conflits guidée par MEMORY.md | `.github/agents/merge-main.agent.md` |
 | `pr-manager` | Conventions de Pull Request (titre, description, checklist) | `.github/agents/pr-manager.agent.md` |
 
-## Agents et skills générés par `memory-bootstrap`
+## Agents générés (stack détectée : .NET 10 + Angular 17 + Aspire)
 
-Après exécution de `@memory-bootstrap`, des agents et skills supplémentaires peuvent apparaître dans `.github/agents/` et `.github/skills/` en fonction de la stack détectée. Par exemple :
+| Agent | Rôle | Fichier |
+|-------|------|---------|
+| `front-dev` | Expert Angular 17 frontend — modules, Axios, Tailwind, CoreUI | `.github/agents/front-dev.agent.md` |
+| `aspire-debug` | Diagnostic runtime .NET Aspire (logs, traces, resources) | `.github/agents/aspire-debug.agent.md` |
 
-- **Frontend React/Vue/Angular/Blazor** → agent frontend spécialisé
-- **Aspire** → agent de debug Aspire
-- **CQRS/MediatR** → skill de génération de features CQRS
-- **UI/UX SaaS** → skill de design system et règles UI/UX
+## Skills générés
 
-Ces fichiers sont documentés automatiquement dans `MEMORY.md` après le bootstrap.
+| Skill | Description | Fichier |
+|-------|-------------|---------|
+| `cqrs-feature` | Génération de features CQRS (command, query, handler, validator, endpoint) — patterns extraits du code réel | `.github/skills/cqrs-feature/SKILL.md` |
 
 ---
 
@@ -73,5 +75,21 @@ Utiliser `.github/PULL_REQUEST_TEMPLATE.md`. Chaque fichier créé/modifié doit
 
 ## Conventions spécifiques au projet
 
-> **Voir `MEMORY.md`** pour toutes les conventions détectées par `memory-bootstrap`.
-> Ce fichier ne contient pas de conventions spécifiques — elles sont générées dynamiquement.
+> **Voir `MEMORY.md`** pour toutes les conventions détectées.
+
+### Build & Run
+
+```bash
+# Backend
+cd src/back && dotnet build Mariage.slnx
+cd src/back/Mariage.Api && dotnet run
+
+# Frontend
+cd src/front && npm install && npm run dev
+
+# Aspire (full stack)
+cd src/back/Mariage.AppHost && dotnet run
+
+# Migrations
+cd src/back && dotnet ef migrations add <Name> --project Mariage.Infrastructure --startup-project Mariage.Api
+```
