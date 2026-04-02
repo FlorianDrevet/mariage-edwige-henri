@@ -18,16 +18,14 @@ Des agents et skills supplémentaires sont **générés automatiquement** par `m
 
 ## Agents et skills générés par `memory-bootstrap`
 
-Après exécution de `@memory-bootstrap`, des agents et skills supplémentaires peuvent apparaître :
+Agents et skills actuellement disponibles pour ce projet :
 
-| Condition détectée | Agent/Skill généré | Fichier |
-|-------------------|-------------------|---------|
-| Frontend Angular/React/Vue/Svelte/Blazor | `front-dev` agent | `.github/agents/front-dev.agent.md` |
-| .NET Aspire (AppHost) | `aspire-debug` agent | `.github/agents/aspire-debug.agent.md` |
-| CQRS + MediatR | `cqrs-feature` skill | `.github/skills/cqrs-feature/SKILL.md` |
-| Frontend SaaS B2B | `ui-ux-front-saas` skill | `.github/skills/ui-ux-front-saas/SKILL.md` |
-| Tests structurés | `testing` skill | `.github/skills/testing/SKILL.md` |
-| CI/CD pipeline | `ci-cd` skill | `.github/skills/ci-cd/SKILL.md` |
+| Agent/Skill | Description | Fichier |
+|-------------|-------------|---------|
+| `angular-front` agent | Expert Angular 17 frontend — NgModules, Axios, Tailwind, CoreUI | `.github/agents/angular-front.agent.md` |
+| `architect` agent | Architecte senior — analyse, challenge, plan d'implémentation | `.github/agents/architect.agent.md` |
+| `aspire-debug` agent | Diagnostic runtime .NET Aspire | `.github/agents/aspire-debug.agent.md` |
+| `cqrs-feature` skill | Génération features CQRS (patterns extraits du code réel) | `.github/skills/cqrs-feature/SKILL.md` |
 
 > **Voir `MEMORY.md` section 13** pour la liste complète des agents et skills disponibles.
 

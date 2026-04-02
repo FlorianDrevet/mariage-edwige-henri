@@ -17,7 +17,7 @@ agents/skills qui sont **générés automatiquement** par `memory-bootstrap` en 
 |-------|------|---------|
 | `dev` | Orchestrateur principal — lit MEMORY.md, route vers les spécialistes, charge les skills | `.github/agents/dev.agent.md` |
 | `memory-bootstrap` | Explore le projet, génère MEMORY.md, crée et adapte les agents/skills à la stack | `.github/agents/memory-bootstrap.agent.md` |
-| `dotnet-dev` | Expert C# .NET pour tout le code backend | `.github/agents/dotnet-dev.agent.md` |
+| `dotnet-dev` | Expert C# .NET 10 pour tout le code backend | `.github/agents/dotnet-dev.agent.md` |
 | `merge-main` | Merge la branche main avec résolution de conflits guidée par MEMORY.md | `.github/agents/merge-main.agent.md` |
 | `pr-manager` | Conventions de Pull Request (titre, description, checklist) | `.github/agents/pr-manager.agent.md` |
 
@@ -25,7 +25,8 @@ agents/skills qui sont **générés automatiquement** par `memory-bootstrap` en 
 
 | Agent | Rôle | Fichier |
 |-------|------|---------|
-| `front-dev` | Expert Angular 17 frontend — modules, Axios, Tailwind, CoreUI | `.github/agents/front-dev.agent.md` |
+| `angular-front` | Expert Angular 17 frontend — NgModules, Axios, Tailwind, CoreUI | `.github/agents/angular-front.agent.md` |
+| `architect` | Architecte senior — analyse, challenge, plan d'implémentation | `.github/agents/architect.agent.md` |
 | `aspire-debug` | Diagnostic runtime .NET Aspire (logs, traces, resources) | `.github/agents/aspire-debug.agent.md` |
 
 ## Skills générés

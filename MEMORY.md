@@ -398,12 +398,13 @@ cd src/back && dotnet ef database update --project Mariage.Infrastructure --star
 | Agent/Skill | Description | File |
 |-------------|-------------|------|
 | `dev` | Orchestrateur principal | `.github/agents/dev.agent.md` |
-| `dotnet-dev` | Expert C# .NET | `.github/agents/dotnet-dev.agent.md` |
+| `dotnet-dev` | Expert C# .NET 10 | `.github/agents/dotnet-dev.agent.md` |
+| `angular-front` | Expert Angular 17 frontend | `.github/agents/angular-front.agent.md` |
+| `architect` | Architecte senior — analyse, challenge, plan d'implémentation | `.github/agents/architect.agent.md` |
+| `aspire-debug` | Diagnostic runtime .NET Aspire | `.github/agents/aspire-debug.agent.md` |
 | `memory-bootstrap` | Explore et génère MEMORY.md | `.github/agents/memory-bootstrap.agent.md` |
 | `merge-main` | Merge main avec résolution conflits | `.github/agents/merge-main.agent.md` |
 | `pr-manager` | Conventions de Pull Request | `.github/agents/pr-manager.agent.md` |
-| `front-dev` | Expert Angular 17 frontend | `.github/agents/front-dev.agent.md` |
-| `aspire-debug` | Diagnostic runtime .NET Aspire | `.github/agents/aspire-debug.agent.md` |
 | `cqrs-feature` (skill) | Génération de features CQRS | `.github/skills/cqrs-feature/SKILL.md` |
 
 ---
@@ -429,3 +430,4 @@ cd src/back && dotnet ef database update --project Mariage.Infrastructure --star
 | Date | Description |
 |------|-------------|
 | 2026-03-26 | Initial memory bootstrap — .NET 10 Clean Architecture + CQRS (MediatR, ErrorOr, Mapster, FluentValidation) + Angular 17 (Axios, Tailwind, CoreUI) + Aspire + PostgreSQL |
+| 2026-04-02 | Re-bootstrap agents — rewrote angular-front (Angular 19→17, standalone→NgModules, inject→constructor, signals→classic), fixed all InfraFlowSculptor→Mariage refs across agents, removed Azure DevOps section from pr-manager, added architect agent, updated copilot-instructions.md |
