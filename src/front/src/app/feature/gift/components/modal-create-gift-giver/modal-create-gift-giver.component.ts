@@ -6,6 +6,7 @@ import {Router} from "@angular/router";
 import { Location } from '@angular/common';
 
 @Component({
+  standalone: false,
   selector: 'app-modal-create-gift-giver',
   templateUrl: './modal-create-gift-giver.component.html',
   styleUrl: './modal-create-gift-giver.component.scss'

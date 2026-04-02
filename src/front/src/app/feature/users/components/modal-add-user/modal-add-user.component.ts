@@ -7,6 +7,7 @@ import {Router} from "@angular/router";
 import {MethodEnum} from "../../../../shared/enums/method.enum";
 
 @Component({
+  standalone: false,
   selector: 'app-modal-add-user',
   templateUrl: './modal-add-user.component.html',
   styleUrl: './modal-add-user.component.scss'

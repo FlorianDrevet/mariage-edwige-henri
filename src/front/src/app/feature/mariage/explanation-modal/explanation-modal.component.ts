@@ -1,6 +1,7 @@
 import {AfterViewInit, Component} from '@angular/core';
 
 @Component({
+  standalone: false,
   selector: 'app-explanation-modal',
   templateUrl: './explanation-modal.component.html',
   styleUrl: './explanation-modal.component.scss'

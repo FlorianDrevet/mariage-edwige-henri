@@ -6,6 +6,7 @@ import {PhotoListComponent} from "../../shared/components/photo-list/photo-list.
 import {PictureFilterEnum} from "../../shared/enums/pictureFilter.enum";
 
 @Component({
+  standalone: false,
   selector: 'app-photos',
   templateUrl: './photos.component.html',
   styleUrl: './photos.component.scss'

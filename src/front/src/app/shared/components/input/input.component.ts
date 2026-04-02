@@ -2,6 +2,7 @@ import {Component, Input} from '@angular/core';
 import {FormGroup} from "@angular/forms";
 
 @Component({
+  standalone: false,
   selector: 'app-input',
   templateUrl: './input.component.html',
   styleUrl: './input.component.scss'

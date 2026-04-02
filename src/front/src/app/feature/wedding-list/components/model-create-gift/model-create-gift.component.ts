@@ -6,6 +6,7 @@ import {MethodEnum} from "../../../../shared/enums/method.enum";
 import {CategoryEnum} from "../../../../shared/enums/category.enum";
 
 @Component({
+  standalone: false,
   selector: 'app-model-create-gift',
   templateUrl: './model-create-gift.component.html',
   styleUrl: './model-create-gift.component.scss'

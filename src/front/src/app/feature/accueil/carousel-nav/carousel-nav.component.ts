@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 
 @Component({
+  standalone: false,
   selector: 'app-carousel-nav',
   templateUrl: './carousel-nav.component.html',
   styleUrl: './carousel-nav.component.scss'

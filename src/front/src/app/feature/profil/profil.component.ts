@@ -9,6 +9,7 @@ import {AxiosService} from "../../shared/services/axios.service";
 import {DiscordNotificationService} from "../../shared/services/discord-notification.service";
 
 @Component({
+  standalone: false,
   selector: 'app-profil',
   templateUrl: './profil.component.html',
   styleUrl: './profil.component.scss'

@@ -9,6 +9,7 @@ import {ScreenService} from "../../shared/services/screen.service";
 import {ErrorsEnum} from "../../shared/enums/errors.enum";
 
 @Component({
+  standalone: false,
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'

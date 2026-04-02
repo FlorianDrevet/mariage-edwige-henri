@@ -4,6 +4,7 @@ import {CookieService} from "ngx-cookie-service";
 import {Role} from "../../shared/enums/role.enum";
 
 @Component({
+  standalone: false,
   selector: 'app-mariage',
   templateUrl: './mariage.component.html',
   styleUrl: './mariage.component.scss'

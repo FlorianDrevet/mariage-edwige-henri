@@ -7,6 +7,7 @@ import {DiscordNotificationService} from "../../shared/services/discord-notifica
 import {CategoryEnum} from "../../shared/enums/category.enum";
 
 @Component({
+  standalone: false,
   selector: 'app-gift',
   templateUrl: './gift.component.html',
   styleUrl: './gift.component.scss'

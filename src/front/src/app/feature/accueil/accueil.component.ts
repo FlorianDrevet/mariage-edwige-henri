@@ -4,6 +4,7 @@ import {CookieService} from "ngx-cookie-service";
 import {AuthService} from "../../shared/services/auth.service";
 
 @Component({
+  standalone: false,
   selector: 'app-accueil',
   templateUrl: './accueil.component.html',
   styleUrl: './accueil.component.scss'

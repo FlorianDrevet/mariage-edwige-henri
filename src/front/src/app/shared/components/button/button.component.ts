@@ -2,6 +2,7 @@ import {Component, Input} from '@angular/core';
 import {Router} from "@angular/router";
 
 @Component({
+  standalone: false,
   selector: 'app-button',
   templateUrl: './button.component.html',
   styleUrl: './button.component.scss'

@@ -5,6 +5,7 @@ import {AuthService} from "../../shared/services/auth.service";
 import {CategoryEnum} from "../../shared/enums/category.enum";
 
 @Component({
+  standalone: false,
   selector: 'app-wedding-list',
   templateUrl: './wedding-list.component.html',
   styleUrl: './wedding-list.component.scss'

@@ -3,6 +3,7 @@ import {AuthService} from "../../../../shared/services/auth.service";
 import {Router} from "@angular/router";
 
 @Component({
+  standalone: false,
   selector: 'app-hamburger-navigation',
   templateUrl: './hamburger-navigation.component.html',
   styleUrl: './hamburger-navigation.component.scss'

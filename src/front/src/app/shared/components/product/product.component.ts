@@ -3,6 +3,7 @@ import {ProductInterface} from "../../interfaces/product.interface";
 import {CategoryEnum} from "../../enums/category.enum";
 
 @Component({
+  standalone: false,
   selector: 'app-product',
   templateUrl: './product.component.html',
   styleUrl: './product.component.scss'

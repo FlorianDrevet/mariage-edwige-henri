@@ -4,6 +4,7 @@ import {environment} from "../../../../environments/environment";
 import {AuthService} from "../../../shared/services/auth.service";
 
 @Component({
+  standalone: false,
   selector: 'app-navigation',
   templateUrl: './navigation.component.html',
   styleUrls: ['./navigation.component.scss']

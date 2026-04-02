@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Output} from '@angular/core';
 
 @Component({
+  standalone: false,
   selector: 'app-timeline-mariage-mobile',
   templateUrl: './timeline-mariage-mobile.component.html',
   styleUrl: './timeline-mariage-mobile.component.scss'

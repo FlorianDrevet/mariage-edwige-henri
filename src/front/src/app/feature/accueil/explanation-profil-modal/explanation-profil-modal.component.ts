@@ -2,6 +2,7 @@ import {AfterViewInit, Component} from '@angular/core';
 import {Router} from "@angular/router";
 
 @Component({
+  standalone: false,
   selector: 'app-explanation-profil-modal',
   templateUrl: './explanation-profil-modal.component.html',
   styleUrl: './explanation-profil-modal.component.scss'

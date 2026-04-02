@@ -3,6 +3,7 @@ import {ProductInterface} from "../interfaces/product.interface";
 import {CategoryEnum} from "../enums/category.enum";
 
 @Pipe({
+  standalone: false,
   name: 'giftCategory'
 })
 export class GiftCategoryPipe implements PipeTransform {

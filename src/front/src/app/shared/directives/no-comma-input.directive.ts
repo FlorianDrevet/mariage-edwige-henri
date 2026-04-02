@@ -1,6 +1,7 @@
 import {Directive, HostListener} from '@angular/core';
 
 @Directive({
+  standalone: false,
   selector: '[appNoCommaInput]'
 })
 export class NoCommaInputDirective {

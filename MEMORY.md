@@ -9,9 +9,9 @@
 - **Product goal**: Wedding website — gift registry (liste de mariage), photo sharing, guest management, event info
 - **Technology stack**:
   - Backend: **.NET 10** (C# with `extension` methods syntax), **ASP.NET Core Minimal API**
-  - Frontend: **Angular 17.1** with **SSR** (`@angular/ssr`)
+  - Frontend: **Angular 21.2** with **SSR** (`@angular/ssr`)
   - Database: **PostgreSQL** via EF Core 10 + Npgsql
-  - Orchestration: **.NET Aspire 13.x** (AppHost + ServiceDefaults)
+  - Orchestration: **.NET Aspire 13.2.1** (AppHost + ServiceDefaults)
   - Blob storage: **Azure Blob Storage** (pictures & gift images)
   - Mapping: **Mapster 7.4**
   - Validation: **FluentValidation 12.1**
@@ -19,7 +19,7 @@
   - Error handling: **ErrorOr 2.0** (result pattern)
   - Auth: **JWT Bearer** (custom implementation)
   - CSS: **Tailwind CSS 3.4** + custom fonts (Wedding, WindSong, LibreBaskerville)
-  - UI libs: **CoreUI Angular 4.7** + **Angular Material 17.1**
+  - UI libs: **CoreUI Angular 5.6** (standalone) + **Angular Material 21.2**
   - HTTP client (front): **Axios** (wrapped in `AxiosService`)
   - Auth (front): **@auth0/angular-jwt** + **ngx-cookie-service**
   - Notifications: **Discord webhook**
@@ -261,8 +261,10 @@ All in `Mariage.Domain/Common/Errors/` as `partial class Errors`.
 ## 9. Frontend
 
 ### 9.1 Framework & version
-- **Angular 17.1** with SSR (`@angular/ssr`, `server.ts`)
+- **Angular 21.2** with SSR (`@angular/ssr/node`, `server.ts`)
 - **Module-based** (NgModules, not standalone components)
+- **Node.js 24 LTS** required (Angular 21 requires Node >= 20.19 or 22.12 or >=24)
+- All components have explicit `standalone: false` (required for Angular 19+ where default changed to `true`)
 
 ### 9.2 Structure
 ```
@@ -316,19 +318,27 @@ src/app/
 - **Angular Material** (CDK)
 
 ### 9.7 Environments
-- Dev: `http://localhost:5143`
+- Dev: `''` (empty string = relative URL) — Angular dev-server proxy in `proxy.conf.js` forwards API calls to Aspire-injected backend URL
 - Prod: `https://mariage-backend-on8u.onrender.com`
+
+### 9.8 Aspire Integration (dev)
+- `proxy.conf.js` reads `services__api__https__0` / `services__api__http__0` env vars injected by Aspire
+- Proxied routes: `/auth`, `/wedding-list`, `/pictures`, `/pictures-photo-booth`, `/pictures-photograph`, `/user-infos`, `/healthz`
+- Angular dev server runs on port 4200 (hardcoded in AppHost)
+- `moduleResolution: "bundler"` in tsconfig.json (required for subpath exports)
 
 ---
 
 ## 10. Orchestration / Infrastructure
 
 ### .NET Aspire (AppHost)
+- **Version**: 13.2.1
 - **ACR**: `wedding-acr` (Azure Container Registry)
 - **ACA**: `aca-wedding-env` (Azure Container Apps Environment)
 - **PostgreSQL** with DbGate UI, persistent data volume → database `postgresdb`
 - **API project** references `postgresdb`
-- **Frontend** (JavaScript app) references API
+- **Frontend**: `AddJavaScriptApp("frontend", "./../../front", "dev")` with `WithHttpEndpoint(port: 4200)` and `WithExternalHttpEndpoints()`
+- Aspire injects `services__api__https__0` / `services__api__http__0` into the npm process
 
 ### Deployment
 - **Render.com** (production)
@@ -399,7 +409,6 @@ cd src/back && dotnet ef database update --project Mariage.Infrastructure --star
 |-------------|-------------|------|
 | `dev` | Orchestrateur principal | `.github/agents/dev.agent.md` |
 | `dotnet-dev` | Expert C# .NET 10 | `.github/agents/dotnet-dev.agent.md` |
-| `angular-front` | Expert Angular 17 frontend | `.github/agents/angular-front.agent.md` |
 | `architect` | Architecte senior — analyse, challenge, plan d'implémentation | `.github/agents/architect.agent.md` |
 | `aspire-debug` | Diagnostic runtime .NET Aspire | `.github/agents/aspire-debug.agent.md` |
 | `memory-bootstrap` | Explore et génère MEMORY.md | `.github/agents/memory-bootstrap.agent.md` |
@@ -418,7 +427,8 @@ cd src/back && dotnet ef database update --project Mariage.Infrastructure --star
 - [2026-03-26] **UserId extraction** from JWT claims repeated in every endpoint — no shared middleware
 - [2026-03-26] **Custom password hashing** — not standard ASP.NET Identity
 - [2026-03-26] **Hardcoded CORS origins** in `Program.cs`
-- [2026-03-26] **Angular Module-based** (not standalone) — Angular 17 supports both
+- [2026-03-26] **Angular Module-based** (not standalone) — requires explicit `standalone: false` on ALL components/directives/pipes since Angular 19+ changed the default to `true`
+- [2026-04-02] **Angular 21 + CoreUI 5.x migration**: CoreUI 5.x is standalone-only. Use standalone components in NgModule `imports[]` (not `declarations[]`). `@angular/ssr` CommonEngine moved to `@angular/ssr/node`. `moduleResolution` must be `"bundler"` (not `"node"`) to resolve subpath exports.
 - [2026-03-26] **Axios** instead of Angular `HttpClient` — non-standard for Angular
 - [2026-03-26] **No test projects** in the solution
 - [2026-03-26] **`/healthz` POST** endpoint exists to wake up Render.com free plan instances
@@ -431,3 +441,4 @@ cd src/back && dotnet ef database update --project Mariage.Infrastructure --star
 |------|-------------|
 | 2026-03-26 | Initial memory bootstrap — .NET 10 Clean Architecture + CQRS (MediatR, ErrorOr, Mapster, FluentValidation) + Angular 17 (Axios, Tailwind, CoreUI) + Aspire + PostgreSQL |
 | 2026-04-02 | Re-bootstrap agents — rewrote angular-front (Angular 19→17, standalone→NgModules, inject→constructor, signals→classic), fixed all InfraFlowSculptor→Mariage refs across agents, removed Azure DevOps section from pr-manager, added architect agent, updated copilot-instructions.md |
+| 2026-04-02 | **Migration Angular 17→21 + Aspire 13.1.2→13.2.1** — Node.js 24 LTS install, Angular 21.2.7, CoreUI 5.6.21, Angular Material 21.2, zone.js 0.16.1, TypeScript 5.9.3, moduleResolution→bundler, standalone:false on 42 files, @angular/ssr/node, proxy.conf.js Aspire integration, Microsoft packages 10.0.3→10.0.5 |

@@ -21,11 +21,10 @@ agents/skills qui sont **générés automatiquement** par `memory-bootstrap` en 
 | `merge-main` | Merge la branche main avec résolution de conflits guidée par MEMORY.md | `.github/agents/merge-main.agent.md` |
 | `pr-manager` | Conventions de Pull Request (titre, description, checklist) | `.github/agents/pr-manager.agent.md` |
 
-## Agents générés (stack détectée : .NET 10 + Angular 17 + Aspire)
+## Agents générés (stack détectée : .NET 10 + Angular 21 + Aspire 13.2.1)
 
 | Agent | Rôle | Fichier |
 |-------|------|---------|
-| `angular-front` | Expert Angular 17 frontend — NgModules, Axios, Tailwind, CoreUI | `.github/agents/angular-front.agent.md` |
 | `architect` | Architecte senior — analyse, challenge, plan d'implémentation | `.github/agents/architect.agent.md` |
 | `aspire-debug` | Diagnostic runtime .NET Aspire (logs, traces, resources) | `.github/agents/aspire-debug.agent.md` |
 

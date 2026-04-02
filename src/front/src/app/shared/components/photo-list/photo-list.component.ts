@@ -5,6 +5,7 @@ import {AuthService} from "../../services/auth.service";
 import {PictureFilterEnum} from "../../enums/pictureFilter.enum";
 
 @Component({
+  standalone: false,
   selector: 'app-photo-list',
   templateUrl: './photo-list.component.html',
   styleUrl: './photo-list.component.scss'

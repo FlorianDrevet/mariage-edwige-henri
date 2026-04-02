@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
+  standalone: false,
   selector: 'app-tag',
   templateUrl: './tag.component.html',
   styleUrl: './tag.component.scss'

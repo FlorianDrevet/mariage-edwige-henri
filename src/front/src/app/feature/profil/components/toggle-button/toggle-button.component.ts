@@ -3,6 +3,7 @@ import {GuestModel} from "../../../../shared/models/guest.model";
 import {ProfilApi} from "../../../../shared/apis/profil.api";
 
 @Component({
+  standalone: false,
   selector: 'app-toggle-button',
   templateUrl: './toggle-button.component.html',
   styleUrl: './toggle-button.component.scss'
