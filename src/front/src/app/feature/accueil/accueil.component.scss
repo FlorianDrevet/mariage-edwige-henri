@@ -1,3 +1,37 @@
+/* ── Diagonal powder snow patch behind hero photo ── */
+.powder-snow {
+  position: absolute;
+  inset: -100px -90px;
+  pointer-events: none;
+  z-index: 0;
+  transform: rotate(-38deg) scaleX(0.85);
+  background-image:
+    /* Noyau dense — la tache de poudreuse */
+    radial-gradient(ellipse 60% 36% at 50% 50%,
+      rgba(255,255,255,0.88) 0%,
+      rgba(255,255,255,0.72) 18%,
+      rgba(255,255,255,0.48) 36%,
+      rgba(255,255,255,0.22) 55%,
+      rgba(255,255,255,0.06) 70%,
+      transparent 82%
+    ),
+    /* Halo doux autour */
+    radial-gradient(ellipse 85% 52% at 50% 50%,
+      rgba(255,255,255,0.20) 0%,
+      rgba(255,255,255,0.08) 55%,
+      transparent 72%
+    ),
+    /* Irrégularités — grumeaux de neige */
+    radial-gradient(ellipse 22% 14% at 30% 38%, rgba(255,255,255,0.55) 0%, transparent 70%),
+    radial-gradient(ellipse 18% 12% at 68% 62%, rgba(255,255,255,0.50) 0%, transparent 70%),
+    radial-gradient(ellipse 14% 10% at 42% 68%, rgba(255,255,255,0.45) 0%, transparent 70%),
+    radial-gradient(ellipse 16% 10% at 58% 32%, rgba(255,255,255,0.45) 0%, transparent 70%),
+    radial-gradient(circle 8%  at 22% 55%, rgba(255,255,255,0.35) 0%, transparent 70%),
+    radial-gradient(circle 6%  at 75% 45%, rgba(255,255,255,0.30) 0%, transparent 70%),
+    radial-gradient(circle 5%  at 50% 22%, rgba(255,255,255,0.28) 0%, transparent 70%),
+    radial-gradient(circle 4%  at 48% 78%, rgba(255,255,255,0.28) 0%, transparent 70%);
+}
+
 html, body::-webkit-scrollbar {
   display: none !important;
   overflow-x: hidden !important;
