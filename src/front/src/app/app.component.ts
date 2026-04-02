@@ -8,7 +8,7 @@ import {NavigationEnd, Router} from "@angular/router";
   styleUrl: './app.component.scss'
 })
 export class AppComponent{
-  title = 'mariage-astrid-florian';
+  title = 'mariage-edwige-henri';
   isLoginPage: boolean = false;
 
   constructor(private router: Router) {
