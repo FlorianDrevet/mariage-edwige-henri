@@ -3,7 +3,12 @@
 }
 
 <div class="flex flex-col w-screen items-center relative">
-  <app-carousel-nav class="w-full lg:w-2/5 p-10 z-50 "></app-carousel-nav>
+  <div class="w-full lg:w-2/5 p-10 z-50">
+    <img
+      src="assets/pictures/astrid_florian.jpg"
+      alt="Photo des mariés"
+      class="w-full object-cover" />
+  </div>
   @if(screenService.isSmallScreen$ | async) {
     <img
       alt="image de fleurs gold"

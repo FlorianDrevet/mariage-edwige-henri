@@ -1,78 +1,40 @@
 <div class="flex flex-col w-screen items-center mt-32" id="mariage-part">
-  <app-title-wedding>La réception</app-title-wedding>
-  @if (AuthService.isAuthenticated$ | async) {
-    <div class="flex flex-row items-center lg:mt-8 justify-evenly flex-wrap">
-      <div class="flex flex-col items-center lg:mt-8">
-        <img class="reception" ngSrc="assets/pictures/charpiniere.jpg" height="172" width="419" alt="Photo de la charpinière"/>
-        <a
-          class="mt-10"
-          href="https://www.google.fr/maps/place/La+Charpini%C3%A8re,+42330+Saint-Galmier/@45.586276,4.3019667,17z/data=!3m1!4b1!4m6!3m5!1s0x47f44ddd73d53843:0xe5fd25f94459c59e!8m2!3d45.586276!4d4.304547!16s%2Fg%2F1tkf09fp?entry=ttu"
-          target="_blank">
-          <p class="text-2xl text-center w-fit ml-auto mr-auto">La Charpinière</p>
-          <p class="text-2xl text-center">42330 Saint-Galmier</p>
-        </a>
-      </div>
-      <div class="flex flex-col items-center w-4/5 lg:w-1/5 mt-10 lg:mt-0">
-        <img class="mb-10 mt-10" ngSrc="assets/icons/calendrier.png" height="200" width="200" alt="Icon de calendrier"/>
-        <p class="text-2xl text-center">Mme Anne-Frédérique Veniat et Mme Corinne Drevet vous accueilleront au domaine de la Charpinière, à Saint-Galmier, à partir de 20h.</p>
-      </div>
-      <div class="flex flex-col items-center w-4/5 lg:w-1/5 mt-10 lg:mt-0">
-        <img class="mb-10 mt-10" ngSrc="assets/icons/verifier-le-courrier.png" height="170" width="170" alt="Icon de confirmation"/>
-        <p class="text-2xl text-center">Nous aurons besoin de savoir si vous serez présent à la réception au plus tard le 21 juin.</p>
-        <p class="text-2xl text-center mt-3">Rendez-vous sur votre <a routerLink="/profils" class="underline-gold">profil</a> pour confirmer.</p>
-      </div>
+  <app-title-wedding>Le dîner</app-title-wedding>
+  <div class="flex flex-row items-center lg:mt-8 justify-evenly flex-wrap">
+    <div class="flex flex-col items-center lg:mt-8">
+      <a
+        class="mt-10"
+        href="https://www.google.fr/maps/search/Quartier+Sarson,+26230+Grignan"
+        target="_blank">
+        <p class="text-2xl text-center font-bold">Domaine de Sarson</p>
+        <p class="text-2xl text-center">Quartier Sarson</p>
+        <p class="text-2xl text-center">26230 Grignan</p>
+      </a>
     </div>
-    <div class="flex flex-col w-screen items-center mt-32">
-      <app-title-wedding>Pour dormir à la Charpinière</app-title-wedding>
-      <p class="text-2xl text-center mt-3 w-4/5 lg:w-3/5 mb-20">Pour ceux qui souhaitent dormir sur place, le domaine de la Charpinière vous propose 2 possibilités :</p>
-      <div class="flex flex-row justify-evenly w-full flex-wrap">
-        <div class="flex flex-col w-4/5 lg:w-2/5">
-          <a href="https://lacharpiniere.com/fr/hotel-chambre-tradition/" target="_blank">
-            <img class="reception" ngSrc="assets/pictures/ChambrePrivilege-2.png" height="746" width="1920" alt="Photo chambre tradition de la charpiniere"/>
-            <p class="text-2xl text-center mt-3 underline-gold w-fit ml-auto mr-auto">Chambre double Tradition à 140€</p>
-          </a>
-        </div>
-        <div class="flex flex-col w-4/5 lg:w-2/5 mt-20 lg:mt-0">
-          <a href="https://lacharpiniere.com/fr/hotel-chambre-privilege/" target="_blank">
-            <img class="reception" ngSrc="assets/pictures/ChambrePrivilege-1.png" height="747" width="1920" alt="Photo chambre privilège de la charpiniere"/>
-            <p class="text-2xl text-center mt-3 underline-gold w-fit ml-auto mr-auto">Chambre double Privilège à 165 €</p>
-          </a>
-        </div>
-      </div>
-      <p class="text-2xl text-center mt-20 lg:mt-32 w-4/5 lg:w-3/5 lg:mb-20">
-        Si vous souhaitez réserver une chambre, veuillez contacter directement le domaine de la Charpinière en indiquant
-        que vous souhaitez réserver pour notre mariage. Attention, le nombre de chambre est limité. Il est possible de payer
-        le jour même.
+    <div class="flex flex-col items-center w-4/5 lg:w-1/5 mt-10 lg:mt-0">
+      <img class="mb-10 mt-10" ngSrc="assets/icons/repas.png" height="200" width="200" alt="Icon repas"/>
+      <p class="text-2xl text-center">
+        À l'issue du cocktail, nous vous accueillerons au Domaine de Sarson pour un dîner.
+      </p>
+      <p class="text-2xl text-center mt-3">
+        (Pour les invités au dîner)
       </p>
     </div>
+  </div>
 
-    <div class="flex flex-col flex-wrap w-screen items-center mt-20 mb-20">
-      <app-title-wedding>Autres hôtels</app-title-wedding>
-      <div class="flex flex-row justify-evenly w-full flex-wrap">
-        <div class="flex flex-col w-4/5 lg:w-2/5">
-          <a href="https://www.bestwestern.fr/infos_hotel.jsp?HotelCode=93732&ChainCode=BW&RequestedCurrencyCode=EUR&roomStay=1&lang=fr" target="_blank">
-            <img class="reception" ngSrc="assets/pictures/best_western.png" height="746" width="1920" alt="Photo hotel Best Western"/>
-            <p class="text-2xl text-center mt-3 underline-gold w-fit ml-auto mr-auto">Hôtel Best Western</p>
-            <p class="text-2xl text-center mt-3 underline-gold w-fit ml-auto mr-auto">Saint-Etienne Porte du Forez</p>
-          </a>
-        </div>
-        <div class="flex flex-col w-4/5 lg:w-2/5 mt-20 lg:mt-0">
-          <a href="https://reservations.theoriginalshotels.com/115781?_ga=2.30234047.1630263881.1708727490-2001601885.1708727490&adults=2&datein=9/7/2024&dateout=9/8/2024&domain=www.theoriginalshotels.com&languageid=3&rooms=1&subChan=SITE-TheOriginals#/accommodation/room" target="_blank">
-            <img class="reception" ngSrc="assets/pictures/the-originals-access-tendance-hotel-saint-etienne-aeroport-quad_fam-1_enhanced.jpg" height="746" width="1820" alt="Photo chambre privilège de la charpiniere"/>
-            <p class="text-2xl text-center mt-3 underline-gold w-fit ml-auto mr-auto">The Originals Access</p>
-          </a>
-        </div>
-        <div class="flex flex-col w-4/5 lg:w-2/5 mt-20 lg:mt-20">
-          <a href="https://premium.logishotels.com/fo/booking/233/2862/availability?nbroom=1&specialMode=default&begindate=07%2F09%2F2024&roomtcode=195084&tmonth=09&tyear=2024&hotelid=2862&numnight=1&m=booking&roomAge1=40,40&langcode=FR&enddate=08%2F09%2F2024&fyear=2024&custid=233&fmonth=09&fday=07&tday=08" target="_blank">
-            <img class="reception" ngSrc="assets/pictures/hostelleri_forez.png" height="746" width="1820" alt="Photo chambres de l'hostellerie du forez"/>
-            <p class="text-2xl text-center mt-3 underline-gold w-fit ml-auto mr-auto">Hostellerie Du Forez</p>
-          </a>
-        </div>
-      </div>
+  <div class="flex flex-col w-screen items-center mt-32 mb-20">
+    <app-title-wedding>Hébergement</app-title-wedding>
+    <div class="flex flex-col items-center w-4/5 lg:w-3/5 mt-10">
+      <img class="mb-10 mt-10" ngSrc="assets/icons/verifier-le-courrier.png" height="170" width="170" alt="Icon mail"/>
+      <p class="text-2xl text-center">
+        Vous aurez la possibilité de dormir sur place.
+      </p>
+      <p class="text-2xl text-center mt-3">
+        À voir directement avec les futurs mariés :
+      </p>
+      <a href="mailto:laplusbelledumonde@jetemmerde.com" class="text-2xl text-center mt-3 underline">
+        laplusbelledumonde@jetemmerde.com
+      </a>
     </div>
-  } @else {
-    <img class="reception" ngSrc="assets/pictures/charpiniere.jpg" height="172" width="419" alt="Photo de la charpinière"/>
-    <app-need-to-be-connected></app-need-to-be-connected>
-  }
+  </div>
 </div>
-

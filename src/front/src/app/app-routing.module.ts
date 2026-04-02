@@ -68,7 +68,7 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'maries',
+    path: 'staff-officiel',
     component: MariesComponent,
   },
   {
