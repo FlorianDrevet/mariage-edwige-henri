@@ -15,9 +15,53 @@
     min-height: 100vh !important;
     height: 100% !important;
     @apply m-0 p-0;
-    background-color: #6f0523;
     color: #dabb7f;
     position: relative;
+
+    /* ── Fabric drape waves — soft undulating diagonal folds ── */
+    background-color: #6f0523;
+    background-image:
+      /* Layer 1 (135°) — grandes ondes douces, profil sinusoïdal */
+      repeating-linear-gradient(
+        135deg,
+        rgba(0,0,0,0)     0px,
+        rgba(0,0,0,0.03)  20px,
+        rgba(0,0,0,0.10)  55px,
+        rgba(0,0,0,0.18)  90px,
+        rgba(0,0,0,0.22)  120px,
+        rgba(0,0,0,0.18)  150px,
+        rgba(0,0,0,0.10)  185px,
+        rgba(0,0,0,0.03)  220px,
+        rgba(0,0,0,0)     250px,
+        rgba(0,0,0,0)     340px
+      ),
+      /* Layer 2 (127°) — ondes décalées, période différente */
+      repeating-linear-gradient(
+        127deg,
+        rgba(0,0,0,0)     0px,
+        rgba(0,0,0,0.02)  15px,
+        rgba(0,0,0,0.09)  40px,
+        rgba(0,0,0,0.16)  65px,
+        rgba(0,0,0,0.20)  85px,
+        rgba(0,0,0,0.16)  105px,
+        rgba(0,0,0,0.09)  130px,
+        rgba(0,0,0,0.02)  155px,
+        rgba(0,0,0,0)     175px,
+        rgba(0,0,0,0)     240px
+      ),
+      /* Layer 3 (143°) — ondulations fines, surface du tissu */
+      repeating-linear-gradient(
+        143deg,
+        rgba(0,0,0,0)     0px,
+        rgba(0,0,0,0.04)  18px,
+        rgba(0,0,0,0.10)  32px,
+        rgba(0,0,0,0.13)  42px,
+        rgba(0,0,0,0.10)  52px,
+        rgba(0,0,0,0.04)  66px,
+        rgba(0,0,0,0)     80px,
+        rgba(0,0,0,0)     120px
+      );
+    background-attachment: fixed;
   }
   body.modal-open, body.login {
     overflow: hidden;
