@@ -18,7 +18,7 @@
   - CQRS: **MediatR 14**
   - Error handling: **ErrorOr 2.0** (result pattern)
   - Auth: **JWT Bearer** (custom implementation)
-  - CSS: **Tailwind CSS 3.4** + custom fonts (Wedding, WindSong, LibreBaskerville)
+  - CSS: **Tailwind CSS 3.4** + custom fonts (Viga `font-viga`, GFSDidot `font-gfsdidot`, Montserrat `font-montserrat`)
   - UI libs: **CoreUI Angular 5.6** (standalone) + **Angular Material 21.2**
   - HTTP client (front): **Axios** (wrapped in `AxiosService`)
   - Auth (front): **@auth0/angular-jwt** + **ngx-cookie-service**
@@ -313,9 +313,29 @@ src/app/
 - Token stored in cookie with `ngx-cookie-service`
 
 ### 9.6 Design system
-- **Tailwind CSS 3.4** + SCSS + custom fonts (Wedding, WindSong, LibreBaskerville)
+- **Tailwind CSS 3.4** + SCSS + custom fonts (Viga `font-viga` → accents, GFSDidot `font-gfsdidot` → titres élégants, Montserrat `font-montserrat` → corps/nav)
+- Polices déclarées dans `src/scss/_typography.scss` · Tailwind classes dans `tailwind.config.js`
 - **CoreUI Angular** (modals, avatars, buttons)
 - **Angular Material** (CDK)
+
+#### Palette couleurs — Thème Noël dark mode (appliquée via Tailwind + CSS custom properties)
+| Token | Hex | Usage |
+|-------|-----|-------|
+| `primary` / `--color-primary` | `#6f0523` | **Fond de page** (`background-color: body`), couleur principale |
+| `primary-light` / `--color-primary-light` | `#8a0a2e` | Variante claire du primaire |
+| `primary-dark` / `--color-primary-dark` | `#520418` | Fond cartes produit, inputs, modals, sidenav |
+| `gold` / `--color-gold` | `#dabb7f` | **Texte principal** (titres, labels, liens), dégradés dorés |
+| `gold-dark` / `--color-gold-dark` | `#b8954f` | Point médian des dégradés dorés, placeholders |
+| `gold-light` / `--color-gold-light` | `#e8d4a8` | Texte paragraphes, texte secondaire, liens hover |
+| `secondary` / `--color-secondary` | `#1a3c34` | **Boutons** (gradient vert sapin), soulignements actifs, en-têtes tableau, accents |
+| `secondary-light` / `--color-secondary-light` | `#2d5a3f` | Bouton hover, liens hover |
+- Variables SCSS dans `src/scss/_vars.scss` · Variables CSS dans `:root` (dispo dans tous les composants)
+- Gradient doré standard : `linear-gradient(to right, #dabb7f 0%, #b8954f 63%, #dabb7f 100%)`
+- Gradient texte (navigation/photos) : `linear-gradient(to right, #b8954f, #dabb7f, #e8d4a8, #dabb7f, #b8954f)` (shimmer doré)
+- Boutons : gradient vert sapin `linear-gradient(to right, #1a3c34, #2d5a3f, #1a3c34)` avec texte doré
+- Cartes/inputs/modals : fond `#520418` avec bordure gradient gold-vert sapin
+- Texte body : `#dabb7f` (doré), paragraphes `#e8d4a8` (doré clair)
+- CoreUI overrides globaux dans `styles.scss` (modals, selects, close buttons)
 
 ### 9.7 Environments
 - Dev: `''` (empty string = relative URL) — Angular dev-server proxy in `proxy.conf.js` forwards API calls to Aspire-injected backend URL
@@ -443,3 +463,7 @@ cd src/back && dotnet ef database update --project Mariage.Infrastructure --star
 | 2026-04-02 | Re-bootstrap agents — rewrote angular-front (Angular 19→17, standalone→NgModules, inject→constructor, signals→classic), fixed all InfraFlowSculptor→Mariage refs across agents, removed Azure DevOps section from pr-manager, added architect agent, updated copilot-instructions.md |
 | 2026-04-02 | **Migration Angular 17→21 + Aspire 13.1.2→13.2.1** — Node.js 24 LTS install, Angular 21.2.7, CoreUI 5.6.21, Angular Material 21.2, zone.js 0.16.1, TypeScript 5.9.3, moduleResolution→bundler, standalone:false on 42 files, @angular/ssr/node, proxy.conf.js Aspire integration, Microsoft packages 10.0.3→10.0.5 |
 | 2026-04-02 | **Adaptation site mariage sœur** — palette couleurs (vert sapin #2D5016, bordeaux #7D2633, doré #C9A84C), date mariage 19/12/2026, carousel→1 photo fixe accueil, onglet "Les mariés"→"Staff officiel" (route /staff-officiel, fiançailles 25/05/2025), sections Le Mariage : Sanctuaire Saint-Joseph (cérémonie), Volupté (photographes), Domaine de Sarson (cocktail + dîner), hébergement sur place |
+| 2026-04-02 | **Refonte palette couleurs** — primaire `#6f0523` (bordeaux profond), doré `#dabb7f` + `#b8954f`, secondaire `#0a4b52` (sarcelle) remplacent l'ancienne palette (#7D2633, #C9A84C, #2D5016). CSS custom properties dans `_vars.scss`, couleurs Tailwind dans `tailwind.config.js`. Tous les composants SCSS mis à jour (boutons, inputs, navigation, timeline, profil, etc.). |
+| 2026-04-02 | **Thème Noël dark mode** — fond de page `#6f0523` (burgundy), textes en `#dabb7f` (or) et `#e8d4a8` (or clair), accents `#0a4b52` (sarcelle) pour boutons/liens. Tous les composants adaptés : cartes produit fond `#520418`, inputs/modals/toggles fond sombre, gradient texte nav `#dabb7f→#0a4b52→#dabb7f`, boutons gradient teal, hamburger gold, tables admin teal/gold. CoreUI overrides globaux (modals, selects). |
+| 2026-04-02 | **Remplacement polices** — AlexBrush (Wedding)→Viga (`font-viga`), WindSong→GFSDidot (`font-gfsdidot`), LibreBaskerville→Montserrat (`font-montserrat`) dans `_typography.scss` + `tailwind.config.js` + tous les templates. Anciens dossiers AlexBrush-Regular, Libre_Baskerville, WindSong supprimés. |
+| 2026-04-02 | **Vert sapin + dégradé titre doré** — secondaire `#0a4b52`→`#1a3c34` (vert sapin foncé), `#0d6370`→`#2d5a3f` (vert sapin clair). Gradient titre "Edwige & Henri" revu : `#b8954f→#dabb7f→#e8d4a8→#dabb7f→#b8954f` (shimmer doré). 12 fichiers SCSS/Tailwind mis à jour. |

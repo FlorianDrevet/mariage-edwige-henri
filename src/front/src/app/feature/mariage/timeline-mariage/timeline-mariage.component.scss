@@ -1,13 +1,13 @@
 .main-line {
-  background-image: linear-gradient(to right, #edc273 0%, #9a754d 63%, #edc273 100%);
-  height: 5px;
+  background-image: linear-gradient(to right, #dabb7f 0%, #b8954f 63%, #dabb7f 100%);
+  height: 3px;
   border-radius: 15px;
 }
 
 .vertical-line {
-  height: 50px;
-  background-image: linear-gradient(to bottom, #edc273 0%, #9a754d 63%, #edc273 100%);
-  width: 5px;
+  height: 40px;
+  background-image: linear-gradient(to bottom, #dabb7f 0%, #b8954f 63%, #dabb7f 100%);
+  width: 3px;
 }
 
 .vertical-line-top {
@@ -23,6 +23,6 @@
 }
 
 img:hover {
-  transform: scale(1.1);
-  transition: 0.1s;
+  transform: scale(1.08);
+  transition: 0.2s ease;
 }

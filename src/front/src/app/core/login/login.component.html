@@ -5,10 +5,10 @@
   <div class="w-4/5 lg:w-1/3 flex flex-col items-center mt-auto mb-auto ml-auto mr-auto">
     <img alt="Fleurs decoratives"
          priority
-         height="278" ngSrc="assets/layout/middle_gold_flower.webp" width="1024">
+         height="200" ngSrc="assets/layout/middle_gold_flower.webp" width="800">
 
-    <h1 class="font-librebaskerville text-5xl">Connexion</h1>
-    <p class="w-4/5 mt-20 font-librebaskerville text-justify mb-10">
+    <h1 class="font-montserrat text-3xl text-gold tracking-wider">Connexion</h1>
+    <p class="w-4/5 mt-12 font-montserrat text-justify mb-6 text-gold-light text-sm leading-relaxed">
       En vous connectant, vous pourrez accéder aux informations concernant
       la réception. Vous retrouverez les identifiants dans le faire part,
       sur le carton de la réception.
@@ -19,7 +19,7 @@
       [form]="loginForm"
       [required]="true"
       controlName="username"
-      class="mt-10"
+      class="mt-6"
       placeholder="Identifiant"
     ></app-input>
 
@@ -29,14 +29,14 @@
       [form]="loginForm"
       [required]="true"
       controlName="password"
-      class="mt-10"
+      class="mt-6"
       placeholder="Mot de passe"
     ></app-input>
 
     @if (error) {
-      <p class="text-red-700 font-librebaskerville text-xl mt-10 w-4/5 text-center">{{error.toString()}}</p>
+      <p class="text-gold-light font-montserrat text-sm mt-6 w-4/5 text-center">{{error.toString()}}</p>
     }
 
-    <app-button (click)="onLoginClick()" class="mt-10">Connexion</app-button>
+    <app-button (click)="onLoginClick()" class="mt-8">Connexion</app-button>
   </div>
 </form>

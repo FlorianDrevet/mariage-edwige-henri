@@ -1,5 +1,5 @@
 <div class="flex flex-column">
-  <h3 class="font-librebaskerville text-4xl mb-10 w-fit">{{title}}</h3>
+  <h3 class="font-montserrat text-xl mb-6 w-fit tracking-wider">{{title}}</h3>
   @if(category != CategoryEnum.HoneyMoon) {
     <div class="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
       @for (product of products | giftCategory:category; track product) {

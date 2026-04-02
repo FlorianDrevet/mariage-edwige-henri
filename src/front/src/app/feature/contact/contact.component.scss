@@ -1,11 +1,16 @@
 img {
-  border-radius: 20px;
+  border-radius: 12px;
 }
 
 p a{
-  background-image: linear-gradient(to right, #edc273 0%, #9a754d 63%, #edc273 100%);
-  background-size: 100% 2px;
+  background-image: linear-gradient(to right, #dabb7f 0%, #b8954f 63%, #dabb7f 100%);
+  background-size: 100% 1px;
   background-repeat: no-repeat;
   background-position: bottom;
   padding-bottom: 2px;
+  transition: opacity 0.3s ease;
+}
+
+p a:hover {
+  opacity: 0.8;
 }

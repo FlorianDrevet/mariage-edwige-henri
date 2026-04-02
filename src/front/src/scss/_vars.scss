@@ -1,1 +1,22 @@
-$min-width: 1150px
+$min-width: 1150px;
+
+// Palette couleurs mariage — Noël
+$color-primary:       #6f0523;
+$color-primary-light: #8a0a2e;
+$color-primary-dark:  #520418;
+$color-gold:          #dabb7f;
+$color-gold-dark:     #b8954f;
+$color-gold-light:    #e8d4a8;
+$color-secondary:     #1a3c34;
+$color-secondary-light: #2d5a3f;
+
+:root {
+  --color-primary:         #{$color-primary};
+  --color-primary-light:   #{$color-primary-light};
+  --color-primary-dark:    #{$color-primary-dark};
+  --color-gold:            #{$color-gold};
+  --color-gold-dark:       #{$color-gold-dark};
+  --color-gold-light:      #{$color-gold-light};
+  --color-secondary:       #{$color-secondary};
+  --color-secondary-light: #{$color-secondary-light};
+}

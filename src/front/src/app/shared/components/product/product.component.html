@@ -1,11 +1,11 @@
-<div class="group relative gradient-box p-10">
-  <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none lg:h-80">
+<div class="group relative gradient-box p-6">
+  <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md lg:aspect-none lg:h-64">
     <img src="{{product.urlImage}}" alt="Front of men&#039;s Basic Tee in black." class="h-full w-full object-cover object-center lg:h-full lg:w-full">
   </div>
-  <div class="mt-4 flex flex-col">
+  <div class="mt-3 flex flex-col">
     <div class="flex justify-between">
       <div>
-        <h3 class="text-sm text-gray-700">
+        <h3 class="text-sm text-gold font-montserrat">
           <a [routerLink]="['/liste-de-mariage/cadeau', product.id]">
             <span aria-hidden="true" class="absolute inset-0"></span>
             {{product.name}}
@@ -13,11 +13,11 @@
         </h3>
       </div>
       @if (product.category != CategoryEnum.HoneyMoon) {
-        <p class="text-sm font-medium text-gray-900">{{product.participation}} / {{product.price | price}}</p>
+        <p class="text-xs font-medium text-gold-light">{{product.participation}} / {{product.price | price}}</p>
       }
     </div>
     @if (product.category != CategoryEnum.HoneyMoon) {
-      <c-progress class="mb-3 mt-2">
+      <c-progress class="mb-2 mt-2">
         <c-progress-bar color="warning" [value]="product.participation/product.price * 100">
           {{product.participation/product.price * 100 | percentage}}%
         </c-progress-bar>

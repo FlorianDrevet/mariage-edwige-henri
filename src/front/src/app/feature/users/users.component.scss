@@ -4,18 +4,24 @@ table {
 
  th,
  td {
-  border: 1px solid black;
+  border: 1px solid #1a3c34;
   padding: 8px;
   text-align: left;
+  color: #e8d4a8;
 }
 
 th {
-  background-color: #f2f2f2;
+  background-color: #1a3c34;
+  color: #dabb7f;
   font-weight: bold;
 }
 
  tr:nth-child(even) {
-  background-color: #f2f2f2;
+  background-color: rgba(26, 60, 52, 0.15);
+}
+
+ tr:nth-child(odd) {
+  background-color: rgba(82, 4, 24, 0.5);
 }
 
 th, td {

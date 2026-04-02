@@ -12,18 +12,20 @@ ul li {
 ul li button {
   position: relative;
   text-decoration: none;
-  color: black;
+  color: #dabb7f;
+  font-weight: 300;
+  transition: color 0.3s ease;
 }
 
 ul li button::after {
   content: '';
   position: absolute;
   left: 0;
-  bottom: -2px;
+  bottom: -4px;
   width: 0;
-  height: 2px;
-  background-color: #2D5016;
-  transition: width 0.3s;
+  height: 1px;
+  background: linear-gradient(to right, #dabb7f, #e8d4a8);
+  transition: width 0.4s ease;
 }
 
 ul li button:hover::after {
@@ -35,7 +37,7 @@ ul li button:hover::after {
 }
 
 .gradient-text {
-  background-image: linear-gradient(to right, #7D2633, #C9A84C, #2D5016);
+  background-image: linear-gradient(to right, #b8954f, #dabb7f, #e8d4a8, #dabb7f, #b8954f);
 
   -webkit-background-clip: text;
   background-clip: text;

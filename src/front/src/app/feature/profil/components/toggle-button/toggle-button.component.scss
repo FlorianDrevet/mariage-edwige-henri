@@ -1,7 +1,7 @@
 .radio-container {
   display: flex;
   align-items: center;
-  background: linear-gradient(to right, #edc273 0%, #9a754d 100%);
+  background: linear-gradient(to right, #dabb7f 0%, #b8954f 100%);
   border-radius: 30px;
   width: fit-content;
   font-family: LibreBaskerville, serif;
@@ -28,9 +28,9 @@
   border-radius: 0;
   cursor: pointer;
   user-select: none;
-  background: linear-gradient(white, white) padding-box,
+  background: linear-gradient(#520418, #520418) padding-box,
   transparent border-box;
-  color: #374152;
+  color: #dabb7f;
   @apply pt-[15px] pb-[15px] pl-[30px] pr-[30px] lg:pt-[20px] lg:pb-[20px] lg:pl-[40px] lg:pr-[40px];
 }
 

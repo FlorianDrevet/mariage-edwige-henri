@@ -3,23 +3,23 @@
 }
 
 <div class="flex flex-col w-screen items-center relative">
-  <div class="w-full lg:w-2/5 p-10 z-50">
+  <div class="w-full lg:w-1/3 p-6 z-50">
     <img
       src="assets/pictures/edwige_henri.jpg"
       alt="Photo d'Edwige et Henri"
-      class="w-full object-cover" />
+      class="w-full object-cover rounded-lg shadow-lg" />
   </div>
   @if(screenService.isSmallScreen$ | async) {
     <img
       alt="image de fleurs gold"
-      class="mr-auto ml-auto rotate-180 -mt-16"
-      height="150" ngSrc="assets/layout/gold_flowers_straight.webp" priority width="480">
+      class="mr-auto ml-auto rotate-180 -mt-10"
+      height="100" ngSrc="assets/layout/gold_flowers_straight.webp" priority width="340">
   }
   @else {
     <img
       priority
       ngSrc="assets/layout/gold_flowers.webp"
-      class="ml-auto w-2/3 rotate-180 absolute -bottom-40 right-0 mt-10"
+      class="ml-auto w-1/2 rotate-180 absolute -bottom-28 right-0 mt-6"
       alt="decoration doré"
       width="1024"
       height="469">

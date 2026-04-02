@@ -1,47 +1,89 @@
-// AlexBrush
+// GFS_Didot
 
 @font-face {
-  font-family: 'Wedding';
-  src: url('./../assets/typography/AlexBrush-Regular/AlexBrush-Regular.ttf') format('truetype');
+  font-family: 'GFSDidot';
+  src: url('./../assets/typography/GFS_Didot/GFSDidot-Regular.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
 
-// LibreBaskerville
+// Montserrat
 
 @font-face {
-  font-family: 'LibreBaskerville';
-  src: url('./../assets/typography/Libre_Baskerville/LibreBaskerville-Regular.ttf') format('truetype');
-  font-weight: normal;
+  font-family: 'Montserrat';
+  src: url('./../assets/typography/Montserrat/static/Montserrat-Light.ttf') format('truetype');
+  font-weight: 300;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'LibreBaskerville';
-  src: url('./../assets/typography/Libre_Baskerville/LibreBaskerville-Italic.ttf') format('truetype');
-  font-weight: normal;
+  font-family: 'Montserrat';
+  src: url('./../assets/typography/Montserrat/static/Montserrat-LightItalic.ttf') format('truetype');
+  font-weight: 300;
   font-style: italic;
 }
 
 @font-face {
-  font-family: 'LibreBaskerville';
-  src: url('./../assets/typography/Libre_Baskerville/LibreBaskerville-Bold.ttf') format('truetype');
-  font-weight: bold;
-  font-style: normal;
-}
-
-// WindSong
-
-@font-face {
-  font-family: 'WindSong';
-  src: url('./../assets/typography/WindSong/WindSong-Regular.ttf') format('truetype');
-  font-weight: normal;
+  font-family: 'Montserrat';
+  src: url('./../assets/typography/Montserrat/static/Montserrat-Regular.ttf') format('truetype');
+  font-weight: 400;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'WindSong-medium';
-  src: url('./../assets/typography/WindSong/WindSong-Medium.ttf') format('truetype');
+  font-family: 'Montserrat';
+  src: url('./../assets/typography/Montserrat/static/Montserrat-Italic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('./../assets/typography/Montserrat/static/Montserrat-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('./../assets/typography/Montserrat/static/Montserrat-MediumItalic.ttf') format('truetype');
+  font-weight: 500;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('./../assets/typography/Montserrat/static/Montserrat-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('./../assets/typography/Montserrat/static/Montserrat-SemiBoldItalic.ttf') format('truetype');
+  font-weight: 600;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('./../assets/typography/Montserrat/static/Montserrat-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('./../assets/typography/Montserrat/static/Montserrat-BoldItalic.ttf') format('truetype');
+  font-weight: 700;
+  font-style: italic;
+}
+
+// Viga
+
+@font-face {
+  font-family: 'Viga';
+  src: url('./../assets/typography/Viga/Viga-Regular.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }

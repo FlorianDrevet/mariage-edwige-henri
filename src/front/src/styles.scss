@@ -1,3 +1,4 @@
+@use "sass:math";
 @import "@coreui/coreui/scss/coreui";
 @import "scss/main";
 
@@ -5,19 +6,147 @@
 @layer base {
   html {
     overflow-x: initial !important;
-    min-height: 120vh !important;
+    min-height: 100vh !important;
     height: 100% !important;
+    font-size: 16px;
   }
   body {
     overflow-x: initial !important;
-    min-height: 120vh !important;
+    min-height: 100vh !important;
     height: 100% !important;
-    @apply m-0 p-0
+    @apply m-0 p-0;
+    background-color: #6f0523;
+    color: #dabb7f;
+    position: relative;
   }
   body.modal-open, body.login {
     overflow: hidden;
+  }
+  a {
+    color: #e8d4a8;
+    transition: color 0.3s ease;
+  }
+  a:hover {
+    color: #2d5a3f;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    color: #dabb7f;
+    letter-spacing: 0.02em;
+  }
+  p {
+    color: #e8d4a8;
+    line-height: 1.7;
+  }
+  ::selection {
+    background-color: #1a3c34;
+    color: #dabb7f;
   }
 }
 
 @tailwind components;
 @tailwind utilities;
+
+/* ═══════════════════════════════════════════
+   Snowfall effect — subtle white dust
+   ═══════════════════════════════════════════ */
+.snowfall {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+.snowflake {
+  position: absolute;
+  top: -10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.7);
+  pointer-events: none;
+  animation: snowfall linear infinite;
+}
+
+/* Generate 40 snowflakes with varied sizes, positions, and speeds */
+@for $i from 1 through 40 {
+  .snowflake:nth-child(#{$i}) {
+    $size: math.random(4) + 1px;
+    $left: math.random(100) * 1%;
+    $delay: math.random(15) * 1s;
+    $duration: 10s + math.random(20) * 1s;
+    $drift: math.random(100) - 50px;
+    $opacity: 0.2 + math.random(5) * 0.1;
+
+    left: $left;
+    width: $size;
+    height: $size;
+    animation-delay: $delay;
+    animation-duration: $duration;
+    opacity: $opacity;
+    --drift: #{$drift};
+  }
+}
+
+@keyframes snowfall {
+  0% {
+    transform: translateY(-10px) translateX(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: var(--opacity, 0.5);
+  }
+  90% {
+    opacity: var(--opacity, 0.5);
+  }
+  100% {
+    transform: translateY(100vh) translateX(var(--drift, 20px));
+    opacity: 0;
+  }
+}
+
+/* ═══════════════════════════════════════════
+   CoreUI modal dark theme overrides
+   ═══════════════════════════════════════════ */
+.modal-content {
+  background-color: #520418 !important;
+  border: 1px solid rgba(218, 187, 127, 0.3) !important;
+  border-radius: 12px !important;
+  color: #dabb7f !important;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+}
+
+.modal-header {
+  border-bottom-color: rgba(218, 187, 127, 0.12) !important;
+  padding: 1rem 1.25rem !important;
+}
+
+.modal-footer {
+  border-top-color: rgba(218, 187, 127, 0.12) !important;
+  padding: 0.75rem 1.25rem !important;
+}
+
+.modal-body {
+  padding: 1rem 1.25rem !important;
+}
+
+.btn-close {
+  filter: invert(1) brightness(2) !important;
+}
+
+/* CoreUI select dark theme */
+.form-select, select {
+  background-color: #520418 !important;
+  color: #dabb7f !important;
+  border-color: rgba(218, 187, 127, 0.2) !important;
+  font-size: 0.875rem !important;
+  padding: 0.5rem 0.75rem !important;
+  border-radius: 8px !important;
+}
+
+.form-select:focus, select:focus {
+  border-color: #1a3c34 !important;
+  box-shadow: 0 0 0 0.2rem rgba(26, 60, 52, 0.2) !important;
+}

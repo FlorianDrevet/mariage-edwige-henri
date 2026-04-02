@@ -11,19 +11,20 @@
 
 .modal-content {
   overflow: auto;
-  background-color: #fefefe;
+  background-color: #520418;
   margin: auto;
   padding: 20px;
-  border: 1px solid #888;
+  border: 1px solid #dabb7f;
   width: 80%;
   display: flex;
   flex-direction: column;
   align-items: center;
   max-height: 80%;
+  border-radius: 16px;
 }
 
 .close {
-  color: #aaa;
+  color: #dabb7f;
   float: right;
   font-size: 28px;
   font-weight: bold;
@@ -31,7 +32,7 @@
 
 .close:hover,
 .close:focus {
-  color: black;
+  color: #e8d4a8;
   text-decoration: none;
   cursor: pointer;
 }

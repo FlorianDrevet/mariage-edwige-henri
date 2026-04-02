@@ -1,8 +1,8 @@
 <div class="w-screen flex flex-column items-center mt-10 mb-40">
   <app-modal-add-user class="mb-10"></app-modal-add-user>
   <div class="flex lg:flex-row flex-col mb-20">
-    <h1 class="font-librebaskerville text-3xl text-center">Nombre de personnes ayant répondu "oui": </h1>
-    <p class="font-librebaskerville text-3xl ml-5 text-center">{{ NbrOfYes() }} + 3</p>
+    <h1 class="font-montserrat text-3xl text-center">Nombre de personnes ayant répondu "oui": </h1>
+    <p class="font-montserrat text-3xl ml-5 text-center">{{ NbrOfYes() }} + 3</p>
   </div>
   <table class="w-2/3 ml-auto mr-auto" id="users">
     <thead>
@@ -56,7 +56,7 @@
 
 <c-modal #verticallyCenteredModalGuests alignment="center" id="verticallyCenteredModalGuests" size="lg">
   <c-modal-header>
-    <h5 cModalTitle class="font-librebaskerville text-4xl">Ajouter un nouvel invité</h5>
+    <h5 cModalTitle class="font-montserrat text-4xl">Ajouter un nouvel invité</h5>
   </c-modal-header>
   <c-modal-body>
     <form [formGroup]="registerForm">

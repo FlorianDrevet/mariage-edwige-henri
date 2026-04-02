@@ -1,40 +1,42 @@
 .stepper-input {
   display: flex;
-  font-size: 1.5em;
+  font-size: 1.2em;
   justify-content: center;
-  background:  linear-gradient(to right, #C9A84C 0%, #7D2633 100%);
+  background:  linear-gradient(to right, #dabb7f 0%, #6f0523 100%);
   width: fit-content;
   height: fit-content;
-  border-radius: 10px;
+  border-radius: 8px;
 }
 
 .btn {
   cursor: pointer;
-  padding: 1em;
+  padding: 0.75em;
   color: #fff;
   background: transparent;
   border: 1px solid transparent;
 }
 
 .btn-left {
-  border-radius: 10px 0 0 10px;
+  border-radius: 8px 0 0 8px;
 }
 
 .btn-right {
-  border-radius: 0 10px 10px 0;
+  border-radius: 0 8px 8px 0;
 }
 
 .input-box {
   text-align: center;
-  background: linear-gradient(white, white) padding-box,
+  background: linear-gradient(#520418, #520418) padding-box,
   transparent border-box;
   border: 1px solid transparent;
   width: 80%;
+  color: #dabb7f;
+  font-size: 0.9rem;
 }
 
 .error {
-  color: red;
-  @apply text-3xl;
+  color: #e8d4a8;
+  @apply text-lg;
 }
 
 /* Chrome, Safari, Edge, Opera */

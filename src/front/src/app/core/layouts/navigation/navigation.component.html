@@ -2,17 +2,17 @@
   <app-hamburger-navigation class=""></app-hamburger-navigation>
   <img
     alt="image de fleurs gold"
-    class="mr-auto ml-auto -mt-5"
-    height="150" ngSrc="assets/layout/gold_flowers_straight.webp" priority width="480">
+    class="mr-auto ml-auto -mt-3"
+    height="120" ngSrc="assets/layout/gold_flowers_straight.webp" priority width="380">
 
-  <div class="flex flex-col items-center w-screen -mt-5">
+  <div class="flex flex-col items-center w-screen -mt-3">
 
-    <h1 class="font-librebaskerville text-5xl uppercase gradient-text" id="title">Edwige</h1>
-    <h1 class="font-librebaskerville text-5xl uppercase gradient-text mt-2 mb-2">&</h1>
-    <h1 class="font-librebaskerville text-5xl uppercase gradient-text">Henri</h1>
+    <h1 class="font-montserrat text-3xl uppercase gradient-text tracking-widest" id="title">Edwige</h1>
+    <h1 class="font-montserrat text-3xl uppercase gradient-text mt-1 mb-1 tracking-widest">&</h1>
+    <h1 class="font-montserrat text-3xl uppercase gradient-text tracking-widest">Henri</h1>
 
-    <h3 class="font-librebaskerville text-2xl relative z-1 mt-10 uppercase">19 DÉCEMBRE 2026</h3>
-    <h3 class="font-librebaskerville text-xl relative z-1 mt-2 uppercase">
+    <h3 class="font-montserrat text-base relative z-1 mt-6 uppercase tracking-wider opacity-90">19 DÉCEMBRE 2026</h3>
+    <h3 class="font-montserrat text-sm relative z-1 mt-1 uppercase tracking-wider opacity-80">
       @if (daysLeft === 0) {
         C'est aujourd'hui !
       } @else if (daysLeft < 0) {
@@ -25,32 +25,32 @@
   </div>
 }
 @else {
-  <header class="flex flex-col items-center w-screen relative container h-[30rem]	">
+  <header class="flex flex-col items-center w-screen relative container h-[26rem]">
     <div class="w-screen flex flex-row">
       <img
         priority
         ngSrc="assets/layout/gold_flowers.webp"
-        class="inset-0 w-2/3 mr-auto"
+        class="inset-0 w-1/2 mr-auto max-h-[360px]"
         alt="decoration doré"
         width="1024"
         height="469">
-      <div class="flex flex-col">
+      <div class="flex flex-col gap-1">
         @if (AuthService.isAuthenticated$ | async) {
-          <app-button class="m-20 mb-0" routerUrl="/profils">Profil</app-button>
-          <app-button class="m-20 mb-0 mt-0" (click)="onLogoutClick()">Déconnexion</app-button>
+          <app-button class="m-10 mb-0" routerUrl="/profils">Profil</app-button>
+          <app-button class="m-10 mb-0 mt-0" (click)="onLogoutClick()">Déconnexion</app-button>
         } @else {
-          <app-button class="m-20 mb-0" routerUrl="/login">Connexion</app-button>
+          <app-button class="m-10 mb-0" routerUrl="/login">Connexion</app-button>
         }
         @if (AuthService.isAdmin$ | async) {
-          <app-model-create-gift class="m-20 mt-0 mb-0"></app-model-create-gift>
-          <app-button class="m-20 mt-0" routerUrl="/utilisateurs">Invités</app-button>
+          <app-model-create-gift class="m-10 mt-0 mb-0"></app-model-create-gift>
+          <app-button class="m-10 mt-0" routerUrl="/utilisateurs">Invités</app-button>
         }
       </div>
     </div>
-    <div class="absolute top-48 flex flex-col items-center">
-      <h1 class="font-librebaskerville text-[70px] flex items-center uppercase gradient-text" id="title">Edwige & Henri</h1>
-      <h3 class="font-librebaskerville text-4xl relative z-1 mt-10 uppercase">19 DÉCEMBRE 2026</h3>
-      <h3 class="font-librebaskerville text-2xl relative z-1 mt-2 uppercase">
+    <div class="absolute top-36 flex flex-col items-center">
+      <h1 class="font-montserrat text-[48px] flex items-center uppercase gradient-text tracking-[0.15em]" id="title">Edwige & Henri</h1>
+      <h3 class="font-montserrat text-xl relative z-1 mt-6 uppercase tracking-[0.2em] opacity-90">19 DÉCEMBRE 2026</h3>
+      <h3 class="font-montserrat text-base relative z-1 mt-1 uppercase tracking-wider opacity-80">
         @if (daysLeft === 0) {
           C'est aujourd'hui !
         } @else if (daysLeft < 0) {
@@ -61,13 +61,13 @@
         }
       </h3>
       <nav>
-        <ul class="flex flex-row justify-around space-x-10 mt-10">
-          <li><a routerLink="/accueil" routerLinkActive="active-link" class="font-librebaskerville">Accueil</a></li>
-          <li><a routerLink="/staff-officiel" routerLinkActive="active-link" class="font-librebaskerville">Staff officiel</a></li>
-          <li><a routerLink="/mariage" routerLinkActive="active-link" class="font-librebaskerville">Le mariage</a></li>
-          <li><a routerLink="/photos" routerLinkActive="active-link" class="font-librebaskerville">Photos</a></li>
-          <li><a routerLink="/liste-de-mariage" routerLinkActive="active-link" class="font-librebaskerville">Liste de mariage</a></li>
-          <li><a routerLink="/contact" routerLinkActive="active-link" class="font-librebaskerville">Contact</a></li>
+        <ul class="flex flex-row justify-around space-x-8 mt-8">
+          <li><a routerLink="/accueil" routerLinkActive="active-link" class="font-montserrat text-sm tracking-wider uppercase">Accueil</a></li>
+          <li><a routerLink="/staff-officiel" routerLinkActive="active-link" class="font-montserrat text-sm tracking-wider uppercase">Staff officiel</a></li>
+          <li><a routerLink="/mariage" routerLinkActive="active-link" class="font-montserrat text-sm tracking-wider uppercase">Le mariage</a></li>
+          <li><a routerLink="/photos" routerLinkActive="active-link" class="font-montserrat text-sm tracking-wider uppercase">Photos</a></li>
+          <li><a routerLink="/liste-de-mariage" routerLinkActive="active-link" class="font-montserrat text-sm tracking-wider uppercase">Liste de mariage</a></li>
+          <li><a routerLink="/contact" routerLinkActive="active-link" class="font-montserrat text-sm tracking-wider uppercase">Contact</a></li>
         </ul>
       </nav>
     </div>
