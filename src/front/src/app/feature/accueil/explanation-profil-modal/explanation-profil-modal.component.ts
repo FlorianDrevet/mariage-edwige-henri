@@ -1,4 +1,5 @@
-import {AfterViewInit, Component} from '@angular/core';
+import {AfterViewInit, Component, Inject, PLATFORM_ID} from '@angular/core';
+import {isPlatformBrowser} from '@angular/common';
 import {Router} from "@angular/router";
 
 @Component({
@@ -10,16 +11,19 @@ import {Router} from "@angular/router";
 export class ExplanationProfilModalComponent implements AfterViewInit{
   showModal = true;
 
-  constructor(private router: Router) {
-  }
+  constructor(private router: Router, @Inject(PLATFORM_ID) private platformId: Object) {}
 
   closeModal() {
     this.showModal = false;
-    document.body.classList.remove('modal-open');
+    if (isPlatformBrowser(this.platformId)) {
+      document.body.classList.remove('modal-open');
+    }
   }
 
   ngAfterViewInit(): void {
-    document.body.classList.add('modal-open');
+    if (isPlatformBrowser(this.platformId)) {
+      document.body.classList.add('modal-open');
+    }
   }
 
   public goToProfil() {

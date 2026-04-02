@@ -1,6 +1,6 @@
 @use "sass:math";
-@import "@coreui/coreui/scss/coreui";
-@import "scss/main";
+@use "@coreui/coreui/scss/coreui";
+@use "scss/main";
 
 @tailwind base;
 @layer base {

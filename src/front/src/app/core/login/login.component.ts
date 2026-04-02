@@ -1,4 +1,5 @@
-import {AfterViewInit, Component} from '@angular/core';
+import {AfterViewInit, Component, Inject, PLATFORM_ID} from '@angular/core';
+import {isPlatformBrowser} from '@angular/common';
 import {cilGroup, cilLockLocked} from "@coreui/icons";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AxiosService} from "../../shared/services/axios.service";
@@ -23,7 +24,8 @@ export class LoginComponent implements AfterViewInit{
               private axiosService: AxiosService,
               private authService: AuthService,
               protected screenService: ScreenService,
-              private router: Router) {
+              private router: Router,
+              @Inject(PLATFORM_ID) private platformId: Object) {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required],
@@ -31,6 +33,7 @@ export class LoginComponent implements AfterViewInit{
   }
 
   ngAfterViewInit(): void {
+    if (!isPlatformBrowser(this.platformId)) return;
     this.screenService.isSmallScreen$.subscribe((isSmall) => {
       if (!isSmall) {
         this.router.events.subscribe((val) => {
