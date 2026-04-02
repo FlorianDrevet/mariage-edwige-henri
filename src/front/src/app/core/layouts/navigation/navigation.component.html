@@ -25,32 +25,32 @@
   </div>
 }
 @else {
-  <header class="flex flex-col items-center w-screen relative container h-[26rem]">
+  <header class="flex flex-col items-center w-screen relative container h-[19rem]">
     <div class="w-screen flex flex-row">
       <img
         priority
         ngSrc="assets/layout/gold_flowers.webp"
-        class="inset-0 w-1/2 mr-auto max-h-[360px]"
+        class="inset-0 w-1/2 mr-auto max-h-[240px]"
         alt="decoration doré"
         width="1024"
         height="469">
       <div class="flex flex-col gap-1">
         @if (AuthService.isAuthenticated$ | async) {
-          <app-button class="m-10 mb-0" routerUrl="/profils">Profil</app-button>
-          <app-button class="m-10 mb-0 mt-0" (click)="onLogoutClick()">Déconnexion</app-button>
+          <app-button class="m-6 mb-0" routerUrl="/profils">Profil</app-button>
+          <app-button class="m-6 mb-0 mt-0" (click)="onLogoutClick()">Déconnexion</app-button>
         } @else {
-          <app-button class="m-10 mb-0" routerUrl="/login">Connexion</app-button>
+          <app-button class="m-6 mb-0" routerUrl="/login">Connexion</app-button>
         }
         @if (AuthService.isAdmin$ | async) {
-          <app-model-create-gift class="m-10 mt-0 mb-0"></app-model-create-gift>
-          <app-button class="m-10 mt-0" routerUrl="/utilisateurs">Invités</app-button>
+          <app-model-create-gift class="m-6 mt-0 mb-0"></app-model-create-gift>
+          <app-button class="m-6 mt-0" routerUrl="/utilisateurs">Invités</app-button>
         }
       </div>
     </div>
-    <div class="absolute top-36 flex flex-col items-center">
-      <h1 class="font-montserrat text-[48px] flex items-center uppercase gradient-text tracking-[0.15em]" id="title">Edwige & Henri</h1>
-      <h3 class="font-montserrat text-xl relative z-1 mt-6 uppercase tracking-[0.2em] opacity-90">19 DÉCEMBRE 2026</h3>
-      <h3 class="font-montserrat text-base relative z-1 mt-1 uppercase tracking-wider opacity-80">
+    <div class="absolute top-24 flex flex-col items-center">
+      <h1 class="font-montserrat text-[40px] flex items-center uppercase gradient-text tracking-[0.15em]" id="title">Edwige & Henri</h1>
+      <h3 class="font-montserrat text-base relative z-1 mt-4 uppercase tracking-[0.2em] opacity-90">19 DÉCEMBRE 2026</h3>
+      <h3 class="font-montserrat text-sm relative z-1 mt-1 uppercase tracking-wider opacity-80">
         @if (daysLeft === 0) {
           C'est aujourd'hui !
         } @else if (daysLeft < 0) {
@@ -61,7 +61,7 @@
         }
       </h3>
       <nav>
-        <ul class="flex flex-row justify-around space-x-8 mt-8">
+        <ul class="flex flex-row justify-around space-x-8 mt-6">
           <li><a routerLink="/accueil" routerLinkActive="active-link" class="font-montserrat text-sm tracking-wider uppercase">Accueil</a></li>
           <li><a routerLink="/staff-officiel" routerLinkActive="active-link" class="font-montserrat text-sm tracking-wider uppercase">Staff officiel</a></li>
           <li><a routerLink="/mariage" routerLinkActive="active-link" class="font-montserrat text-sm tracking-wider uppercase">Le mariage</a></li>
