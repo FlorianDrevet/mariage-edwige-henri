@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "mariage-astrid-florian": {
+    "mariage-edwige-henri": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -24,7 +24,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/mariage-astrid-florian",
+            "outputPath": "dist/mariage-edwige-henri",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -89,10 +89,10 @@
           },
           "configurations": {
             "production": {
-              "buildTarget": "mariage-astrid-florian:build:production"
+              "buildTarget": "mariage-edwige-henri:build:production"
             },
             "development": {
-              "buildTarget": "mariage-astrid-florian:build:development"
+              "buildTarget": "mariage-edwige-henri:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -100,7 +100,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "mariage-astrid-florian:build"
+            "buildTarget": "mariage-edwige-henri:build"
           }
         },
         "test": {

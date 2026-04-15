@@ -1,5 +1,5 @@
 {
-  "name": "mariage-astrid-florian",
+  "name": "mariage-edwige-henri",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -8,7 +8,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "dev": "ng serve --configuration=development --proxy-config proxy.conf.js",
-    "serve:ssr:mariage-astrid-florian": "node dist/mariage-astrid-florian/server/server.mjs"
+    "serve:ssr:mariage-edwige-henri": "node dist/mariage-edwige-henri/server/server.mjs"
   },
   "private": true,
   "dependencies": {
