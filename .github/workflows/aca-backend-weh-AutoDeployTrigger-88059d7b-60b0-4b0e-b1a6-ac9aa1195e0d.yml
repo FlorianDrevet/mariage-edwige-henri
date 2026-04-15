@@ -20,6 +20,7 @@ jobs:
       id-token: write #This is required for requesting the OIDC JWT Token
       contents: read #Required when GH token is used to authenticate with private repo
     env:
+      ACR_NAME: ${{ secrets.ACABACKENDWEH_ACR_NAME }}
       REGISTRY_LOGIN_SERVER: ${{ secrets.ACABACKENDWEH_ACR_NAME }}.azurecr.io
       IMAGE_NAME: aca-backend-weh
       IMAGE_TAG: ${{ github.sha }}
@@ -35,12 +36,17 @@ jobs:
           tenant-id: ${{ secrets.ACABACKENDWEH_AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.ACABACKENDWEH_AZURE_SUBSCRIPTION_ID }}
 
-      - name: Log in to ACR
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ env.REGISTRY_LOGIN_SERVER }}
-          username: ${{ secrets.ACABACKENDWEH_REGISTRY_USERNAME }}
-          password: ${{ secrets.ACABACKENDWEH_REGISTRY_PASSWORD }}
+      - name: Validate deployment settings
+        shell: bash
+        run: |
+          if [ -z "${ACR_NAME}" ]; then
+            echo "ACABACKENDWEH_ACR_NAME GitHub secret is missing or empty."
+            exit 1
+          fi
+
+      - name: Log in to ACR with Azure CLI
+        shell: bash
+        run: az acr login --name "${ACR_NAME}"
 
       - name: Build and push container image
         uses: docker/build-push-action@v6
@@ -55,8 +61,6 @@ jobs:
         with:
           imageToDeploy: ${{ env.REGISTRY_LOGIN_SERVER }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
           acrName: ${{ secrets.ACABACKENDWEH_ACR_NAME }}
-          acrUsername: ${{ secrets.ACABACKENDWEH_REGISTRY_USERNAME }}
-          acrPassword: ${{ secrets.ACABACKENDWEH_REGISTRY_PASSWORD }}
           containerAppName: aca-backend-weh
           resourceGroup: rg-wedding-edwige-henri
           targetPort: 8080
