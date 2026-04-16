@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {UsersApi} from "../../shared/apis/users.api";
 import {UserModel} from "../../shared/models/user.model";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
@@ -24,7 +24,8 @@ export class ProfilComponent implements OnInit {
   constructor(private usersApi: UsersApi,
               private discord: DiscordNotificationService,
               private fb: FormBuilder,
-              private axiosService: AxiosService,) {
+              private axiosService: AxiosService,
+              private cdr: ChangeDetectorRef) {
     this.profilForm = this.fb.group({
       email: ['', Validators.required],
     });
@@ -38,6 +39,7 @@ export class ProfilComponent implements OnInit {
         email: profils.email ?? '',
       })
       this.discord.sendNotification(this.profils.username + " clicked on profil page").subscribe();
+      this.cdr.detectChanges();
     });
   }
 
