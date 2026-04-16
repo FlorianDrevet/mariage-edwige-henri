@@ -18,7 +18,7 @@ import { MaxValueInputDirective } from './directives/max-value-input.directive';
 import { NumberInputDirective } from './directives/number-input.directive';
 import { GiftCategoryPipe } from './pipe/gift-category.pipe';
 import { PhotoListComponent } from './components/photo-list/photo-list.component';
-import {MatProgressSpinner} from "@angular/material/progress-spinner";
+import { SkeletonPhotoCardComponent } from './components/skeleton-photo-card/skeleton-photo-card.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +32,7 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
     NumberInputDirective,
     GiftCategoryPipe,
     PhotoListComponent,
+    SkeletonPhotoCardComponent,
   ],
   imports: [
     CommonModule,
@@ -41,7 +42,6 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
     IconModule,
     FormsModule,
     ReactiveFormsModule,
-    MatProgressSpinner,
   ],
   providers: [
     ScreenService,

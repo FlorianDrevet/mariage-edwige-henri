@@ -1,6 +1,9 @@
-<div class="photo-list" >
-  <div *ngFor="let photo of photos" class="photo-item">
-    <img [src]="photo.urlImage" alt="Photo" class="image-from-wedding">
+<div class="photo-list">
+  @if (isLoading && photos.length === 0) {
+    <app-skeleton-photo-card [count]="6"></app-skeleton-photo-card>
+  }
+  <div *ngFor="let photo of photos; trackBy: trackById" class="photo-item">
+    <img [src]="photo.urlImage" alt="Photo" loading="lazy" class="image-from-wedding">
     <div class="action-buttons-img">
       <button class="button-download" (click)="downloadPicture(photo)">
         <img src="assets/icons/telecharger.png">
@@ -12,9 +15,7 @@
       }
     </div>
   </div>
-  @if (isLoading) {
-    <div class="mt-5">
-      <mat-spinner></mat-spinner>
-    </div>
+  @if (isLoading && photos.length > 0) {
+    <app-skeleton-photo-card [count]="3"></app-skeleton-photo-card>
   }
 </div>

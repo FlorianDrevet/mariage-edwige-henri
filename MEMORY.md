@@ -39,17 +39,18 @@ src/
 │   ├── Mariage.Api/                    — Presentation layer (Minimal API endpoints, Mapster mapping, error handling)
 │   ├── Mariage.AppHost/                — .NET Aspire orchestrator (PostgreSQL + API + Frontend)
 │   ├── Mariage.Application/            — Application layer (CQRS handlers, validators, interfaces)
-│   ├── Mariage.Contracts/              — DTOs/Requests/Responses
+│   ├── Mariage.Contracts/              — DTOs/Requests/Responses (incl. PaginatedResponse<T>)
 │   ├── Mariage.Domain/                 — Domain layer (Aggregates, Entities, Value Objects, Errors)
 │   ├── Mariage.Infrastructure/         — Infrastructure (EF Core, Repositories, JWT, Blob, Discord)
 │   └── Mariage.ServiceDefaults/        — Aspire service defaults (OpenTelemetry, health checks)
 ├── front/
-│   ├── package.json                    — Angular 17.1 app
+│   ├── package.json                    — Angular 21.2 app
 │   ├── tailwind.config.js              — Tailwind with custom fonts
 │   └── src/app/
 │       ├── core/                       — Layouts (navigation, footer), login
 │       ├── feature/                    — Feature modules (accueil, wedding-list, gift, photos, profil, users, mariage, maries, contact)
 │       └── shared/                     — APIs, services, models, interfaces, enums, components
+docs/                                   — Learning wiki (pagination, lazy loading, architecture)
 ```
 
 ---
@@ -277,7 +278,7 @@ src/app/
     ├── models/            — user, guest, picture, photoBooth
     ├── interfaces/        — product, giftGiver
     ├── enums/             — category, role, method, pictureFilter, errors
-    ├── components/        — button, input, need-to-be-connected, photo-list, product, title-wedding
+    ├── components/        — button, input, need-to-be-connected, photo-list, skeleton-photo-card, product, title-wedding
     ├── directives/
     └── pipe/
 ```
@@ -467,3 +468,5 @@ cd src/back && dotnet ef database update --project Mariage.Infrastructure --star
 | 2026-04-02 | **Thème Noël dark mode** — fond de page `#6f0523` (burgundy), textes en `#dabb7f` (or) et `#e8d4a8` (or clair), accents `#0a4b52` (sarcelle) pour boutons/liens. Tous les composants adaptés : cartes produit fond `#520418`, inputs/modals/toggles fond sombre, gradient texte nav `#dabb7f→#0a4b52→#dabb7f`, boutons gradient teal, hamburger gold, tables admin teal/gold. CoreUI overrides globaux (modals, selects). |
 | 2026-04-02 | **Remplacement polices** — AlexBrush (Wedding)→Viga (`font-viga`), WindSong→GFSDidot (`font-gfsdidot`), LibreBaskerville→Montserrat (`font-montserrat`) dans `_typography.scss` + `tailwind.config.js` + tous les templates. Anciens dossiers AlexBrush-Regular, Libre_Baskerville, WindSong supprimés. |
 | 2026-04-02 | **Vert sapin + dégradé titre doré** — secondaire `#0a4b52`→`#1a3c34` (vert sapin foncé), `#0d6370`→`#2d5a3f` (vert sapin clair). Gradient titre "Edwige & Henri" revu : `#b8954f→#dabb7f→#e8d4a8→#dabb7f→#b8954f` (shimmer doré). 12 fichiers SCSS/Tailwind mis à jour. |
+| 2026-04-16 | **Refactoring pagination** — Generic `PaginatedList<T>` (Application), `PaginatedResponse<T>` (Contracts), `QueryableExtensions.ToPaginatedListAsync` (Infrastructure). All picture endpoints now return paginated responses with totalCount/hasNextPage metadata. 1-based pageNumber with defaults. FluentValidation for pagination params. Frontend updated: `PaginatedResponse<T>` model, `hasNextPage` tracking, `loading="lazy"` on images, `trackBy` on ngFor. Documentation wiki initialized in `docs/` (backend pagination, frontend lazy loading, clean architecture). |
+| 2026-04-16 | **Skeleton loading photos** — Remplacement `mat-spinner` par `SkeletonPhotoCardComponent` avec shimmer doré personnalisé sur fond bordeaux. Animation CSS custom (gold gradient sweep). FadeIn transition sur photo-items. Composant réutilisable avec `@Input() count`. Documentation complète dans `docs/frontend/skeleton-loading.md` (comparatif 4 approches : ngx-skeleton-loader, @defer, animate-pulse, shimmer maison). `MatProgressSpinner` supprimé du SharedModule. |

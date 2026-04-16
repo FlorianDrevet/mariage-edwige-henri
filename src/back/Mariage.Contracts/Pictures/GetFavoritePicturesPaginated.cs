@@ -1,5 +1,5 @@
 ﻿namespace Mariage.Contracts.Pictures;
 
 public record GetFavoritePicturesPaginated( 
-    int Page,
+    int PageNumber,
     int PageSize);
