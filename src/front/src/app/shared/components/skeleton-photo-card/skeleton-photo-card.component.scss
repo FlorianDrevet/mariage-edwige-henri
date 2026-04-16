@@ -36,6 +36,8 @@
 
 .skeleton-image {
   border-radius: 6px;
+  // Width is approximated since real photos use w-auto (depends on image aspect ratio).
+  // Height matches .image-from-wedding exactly.
   @apply sm:h-[400px] h-[200px] sm:w-[280px] w-[160px];
 }
 

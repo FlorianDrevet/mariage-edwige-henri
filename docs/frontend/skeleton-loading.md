@@ -316,9 +316,9 @@ Utilisateur arrive sur /photos
 Le skeleton doit **occuper le même espace** que le contenu final pour éviter les layout shifts (CLS) :
 
 ```scss
-// Les skeletons utilisent les mêmes dimensions que .image-from-wedding
+// Height matches .image-from-wedding. Width is approximated since real photos use w-auto.
 .skeleton-image {
-  @apply sm:h-[400px] h-[200px] w-[300px]; // Mêmes dimensions que les photos réelles
+  @apply sm:h-[400px] h-[200px] sm:w-[280px] w-[160px];
 }
 ```
 
