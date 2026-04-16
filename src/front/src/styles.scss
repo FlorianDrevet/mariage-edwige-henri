@@ -5,13 +5,13 @@
 @tailwind base;
 @layer base {
   html {
-    overflow-x: initial !important;
+    overflow-x: hidden !important;
     min-height: 100vh !important;
     height: 100% !important;
     font-size: 16px;
   }
   body {
-    overflow-x: initial !important;
+    overflow-x: hidden !important;
     min-height: 100vh !important;
     height: 100% !important;
     @apply m-0 p-0;

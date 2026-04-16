@@ -3,7 +3,7 @@
 }
 
 @if(screenService.isSmallScreen$ | async) {
-  <div class="w-screen">
+  <div class="w-full">
     <app-timeline-mariage-mobile (clicked)="getClicked()" class="ml-auto mr-auto"></app-timeline-mariage-mobile>
   </div>
 } @else {
@@ -12,7 +12,7 @@
 
 @if (clicked) {
   <router-outlet></router-outlet>
-  <div class="flex w-screen">
+  <div class="flex w-full">
     <app-button class="ml-auto mr-10 mb-10" (click)="scrollIntoView('title')">
       <img
         class="rotate-180"
