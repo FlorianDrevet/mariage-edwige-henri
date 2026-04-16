@@ -1,0 +1,128 @@
+<div class="w-screen flex flex-col items-center mt-10 mb-40">
+  <app-title-wedding class="mt-6">Gestion des logements</app-title-wedding>
+
+  <!-- Create new accommodation -->
+  <div class="w-4/5 lg:w-3/5 mt-10">
+    <h2 class="font-montserrat text-xl mb-4">Ajouter un logement</h2>
+    <form [formGroup]="accommodationForm" class="flex flex-col gap-4">
+      <div class="flex flex-col">
+        <label class="font-montserrat text-sm mb-1">Titre</label>
+        <input formControlName="title" type="text" class="form-input" placeholder="Titre du logement">
+      </div>
+      <div class="flex flex-col">
+        <label class="font-montserrat text-sm mb-1">Description</label>
+        <textarea formControlName="description" class="form-input" rows="3" placeholder="Description du logement"></textarea>
+      </div>
+      <div class="flex flex-col">
+        <label class="font-montserrat text-sm mb-1">URL de l'image</label>
+        <input formControlName="urlImage" type="text" class="form-input" placeholder="https://...">
+      </div>
+      <app-button class="w-fit" (click)="onCreateClick()">Ajouter</app-button>
+    </form>
+  </div>
+
+  <!-- List of accommodations -->
+  <div class="w-4/5 lg:w-3/5 mt-14">
+    <h2 class="font-montserrat text-xl mb-4">Logements existants</h2>
+    @if (accommodations.length === 0) {
+      <p class="font-montserrat text-sm">Aucun logement créé.</p>
+    }
+    <div class="flex flex-col gap-6">
+      @for (accommodation of accommodations; track accommodation.id) {
+        <div class="accommodation-card">
+          @if (editingAccommodation?.id === accommodation.id) {
+            <!-- Edit mode -->
+            <form [formGroup]="editForm" class="flex flex-col gap-3">
+              <div class="flex flex-col">
+                <label class="font-montserrat text-sm mb-1">Titre</label>
+                <input formControlName="title" type="text" class="form-input">
+              </div>
+              <div class="flex flex-col">
+                <label class="font-montserrat text-sm mb-1">Description</label>
+                <textarea formControlName="description" class="form-input" rows="3"></textarea>
+              </div>
+              <div class="flex flex-col">
+                <label class="font-montserrat text-sm mb-1">URL de l'image</label>
+                <input formControlName="urlImage" type="text" class="form-input">
+              </div>
+              <div class="flex flex-row gap-3">
+                <app-button (click)="onUpdateClick()">Enregistrer</app-button>
+                <app-button (click)="onCancelEditClick()">Annuler</app-button>
+              </div>
+            </form>
+          } @else {
+            <!-- View mode -->
+            <div class="flex flex-col lg:flex-row gap-4">
+              @if (accommodation.urlImage) {
+                <img [src]="accommodation.urlImage" [alt]="accommodation.title" class="accommodation-image">
+              }
+              <div class="flex flex-col flex-1">
+                <h3 class="font-montserrat text-lg font-bold">{{ accommodation.title }}</h3>
+                <p class="font-montserrat text-sm mt-2">{{ accommodation.description }}</p>
+              </div>
+            </div>
+            <div class="flex flex-row gap-3 mt-4">
+              <app-button (click)="onEditClick(accommodation)">Modifier</app-button>
+              <app-button (click)="onDeleteClick(accommodation.id)">Supprimer</app-button>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Assign accommodation to users -->
+  <div class="w-4/5 lg:w-3/5 mt-14">
+    <h2 class="font-montserrat text-xl mb-4">Assigner un logement à un utilisateur</h2>
+    <div class="flex flex-col lg:flex-row gap-4 items-end">
+      <div class="flex flex-col flex-1">
+        <label class="font-montserrat text-sm mb-1">Utilisateur</label>
+        <select [(ngModel)]="selectedUserId" class="form-input">
+          <option value="" disabled>Choisir un utilisateur</option>
+          @for (user of users; track user.id) {
+            <option [value]="user.id">{{ user.username }}</option>
+          }
+        </select>
+      </div>
+      <div class="flex flex-col flex-1">
+        <label class="font-montserrat text-sm mb-1">Logement</label>
+        <select [(ngModel)]="selectedAccommodationId" class="form-input">
+          <option value="" disabled>Choisir un logement</option>
+          @for (accommodation of accommodations; track accommodation.id) {
+            <option [value]="accommodation.id">{{ accommodation.title }}</option>
+          }
+        </select>
+      </div>
+      <app-button (click)="onAssignClick()">Assigner</app-button>
+    </div>
+  </div>
+
+  <!-- Users with accommodation assignment -->
+  <div class="w-4/5 lg:w-3/5 mt-14">
+    <h2 class="font-montserrat text-xl mb-4">Assignations actuelles</h2>
+    <table class="w-full" id="accommodationAssignments">
+      <thead>
+      <tr>
+        <th>Utilisateur</th>
+        <th>Logement</th>
+        <th>Statut</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+        @for (user of users; track user.id) {
+          @if (user.accommodation) {
+            <tr>
+              <td>{{ user.username }}</td>
+              <td>{{ getUserAccommodationName(user) }}</td>
+              <td>{{ getUserAccommodationStatus(user) }}</td>
+              <td>
+                <app-button (click)="onRemoveAssignmentClick(user.id)">Retirer</app-button>
+              </td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

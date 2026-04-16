@@ -37,6 +37,8 @@ import {PhotosMariageComponent} from "./feature/photos/photos.component";
 import { TimelineMariageComponent } from './feature/mariage/timeline-mariage/timeline-mariage.component';
 import { TimelineMariageMobileComponent } from './feature/mariage/timeline-mariage-mobile/timeline-mariage-mobile.component';
 import { ExplanationModalComponent } from './feature/mariage/explanation-modal/explanation-modal.component';
+import {AccommodationComponent} from "./feature/accommodation/accommodation.component";
+import {AccommodationModule} from "./feature/accommodation/accommodation.module";
 
 @NgModule({
   declarations: [
@@ -54,10 +56,12 @@ import { ExplanationModalComponent } from './feature/mariage/explanation-modal/e
     PhotosMariageComponent,
     TimelineMariageComponent,
     TimelineMariageMobileComponent,
-    ExplanationModalComponent
+    ExplanationModalComponent,
+    AccommodationComponent,
   ],
   imports: [
     AcceuilModule,
+    AccommodationModule,
     AppRoutingModule,
     AvatarComponent,
     BrowserAnimationsModule,

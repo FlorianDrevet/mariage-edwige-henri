@@ -22,6 +22,7 @@
   <div (click)="onCloseNavClicked()" class="mt-auto mb-10 ml-auto mr-auto flex flex-col">
     @if (authService.isAdmin$ | async) {
       <app-button routerUrl="/utilisateurs" class="w-full">Invités</app-button>
+      <app-button routerUrl="/logements" class="w-full">Logements</app-button>
     }
     @if (authService.isAuthenticated$ | async) {
       <app-button routerUrl="/profils" class="w-full">Profil</app-button>

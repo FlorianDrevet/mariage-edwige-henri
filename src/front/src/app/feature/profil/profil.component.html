@@ -31,6 +31,43 @@
         </div>
       }
     </div>
+
+    @if (profils.accommodation) {
+      <app-title-wedding class="mt-14">Votre logement proposé</app-title-wedding>
+      <div class="accommodation-section w-4/5 lg:w-2/5 mt-6">
+        <div class="accommodation-card">
+          @if (profils.accommodation.urlImage) {
+            <img [src]="profils.accommodation.urlImage" [alt]="profils.accommodation.title" class="accommodation-image">
+          }
+          <h3 class="font-montserrat text-lg font-bold mt-4">{{ profils.accommodation.title }}</h3>
+          <p class="font-montserrat text-sm mt-2 leading-relaxed">{{ profils.accommodation.description }}</p>
+
+          <div class="mt-6">
+            @if (profils.accommodation.isAccepted === null) {
+              <p class="font-montserrat text-sm mb-3">Souhaitez-vous réserver ce logement ?</p>
+              <div class="flex flex-row gap-4 justify-center">
+                <app-button (click)="onAccommodationRespond(true)">Oui, je réserve</app-button>
+                <app-button (click)="onAccommodationRespond(false)">Non merci</app-button>
+              </div>
+            } @else if (profils.accommodation.isAccepted) {
+              <p class="font-montserrat text-sm text-center accommodation-accepted">
+                ✓ Vous avez réservé ce logement
+              </p>
+              <div class="flex justify-center mt-3">
+                <app-button (click)="onAccommodationRespond(false)">Annuler la réservation</app-button>
+              </div>
+            } @else {
+              <p class="font-montserrat text-sm text-center accommodation-declined">
+                ✗ Vous avez décliné ce logement
+              </p>
+              <div class="flex justify-center mt-3">
+                <app-button (click)="onAccommodationRespond(true)">Finalement, je réserve</app-button>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    }
     <!--<p class="font-montserrat text-sm w-4/5 text-center mb-24 mt-14">Si une des réponses a changé, envoyer nous un mail à <a href="mailto:afdrevet@outlook.com">afdrevet&#64;outlook.com</a></p>-->
   </div>
 }

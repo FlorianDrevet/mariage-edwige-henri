@@ -7,6 +7,7 @@ import {isComing} from "./type/is-coming.type";
 import {MethodEnum} from "../../shared/enums/method.enum";
 import {AxiosService} from "../../shared/services/axios.service";
 import {DiscordNotificationService} from "../../shared/services/discord-notification.service";
+import {AccommodationApi} from "../../shared/apis/accommodation.api";
 
 @Component({
   standalone: false,
@@ -24,7 +25,8 @@ export class ProfilComponent implements OnInit {
   constructor(private usersApi: UsersApi,
               private discord: DiscordNotificationService,
               private fb: FormBuilder,
-              private axiosService: AxiosService,) {
+              private axiosService: AxiosService,
+              private accommodationApi: AccommodationApi) {
     this.profilForm = this.fb.group({
       email: ['', Validators.required],
     });
@@ -32,7 +34,6 @@ export class ProfilComponent implements OnInit {
 
   ngOnInit(): void {
     this.usersApi.getUserProfils().then(profils => {
-      console.log(profils)
       this.profils = profils;
       this.profilForm.setValue({
         email: profils.email ?? '',
@@ -55,6 +56,12 @@ export class ProfilComponent implements OnInit {
         this.profils.email = pro.email
       })
     }
+  }
+
+  onAccommodationRespond(accepted: boolean) {
+    this.accommodationApi.respond(accepted).then(user => {
+      this.profils = user;
+    });
   }
 
   private isComingValue(value: string | null): isComing {

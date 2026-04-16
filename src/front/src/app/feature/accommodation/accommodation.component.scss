@@ -1,0 +1,73 @@
+table {
+  border-collapse: collapse;
+}
+
+th,
+td {
+  border: 1px solid #1a3c34;
+  padding: 8px;
+  text-align: left;
+  color: #e8d4a8;
+}
+
+th {
+  background-color: #1a3c34;
+  color: #dabb7f;
+  font-weight: bold;
+}
+
+tr:nth-child(even) {
+  background-color: rgba(26, 60, 52, 0.15);
+}
+
+tr:nth-child(odd) {
+  background-color: rgba(82, 4, 24, 0.5);
+}
+
+th, td {
+  font-family: Montserrat, sans-serif;
+}
+
+.form-input {
+  background-color: #520418;
+  border: 1px solid #1a3c34;
+  border-radius: 4px;
+  color: #e8d4a8;
+  padding: 8px 12px;
+  font-family: Montserrat, sans-serif;
+  font-size: 0.875rem;
+  width: 100%;
+
+  &::placeholder {
+    color: #b8954f;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: #dabb7f;
+  }
+}
+
+textarea.form-input {
+  resize: vertical;
+}
+
+select.form-input {
+  appearance: none;
+  cursor: pointer;
+}
+
+.accommodation-card {
+  background-color: #520418;
+  border: 1px solid #1a3c34;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.accommodation-image {
+  width: 200px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid #1a3c34;
+}

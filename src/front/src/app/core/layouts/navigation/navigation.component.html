@@ -43,7 +43,8 @@
         }
         @if (AuthService.isAdmin$ | async) {
           <app-model-create-gift class="m-6 mt-0 mb-0"></app-model-create-gift>
-          <app-button class="m-6 mt-0" routerUrl="/utilisateurs">Invités</app-button>
+          <app-button class="m-6 mt-0 mb-0" routerUrl="/utilisateurs">Invités</app-button>
+          <app-button class="m-6 mt-0" routerUrl="/logements">Logements</app-button>
         }
       </div>
     </div>

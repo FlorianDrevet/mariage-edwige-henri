@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Mariage.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Mariage.Infrastructure.Migrations
 {
     [DbContext(typeof(MariageDbContext))]
-    partial class MariageDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260416100250_AddAccommodation")]
+    partial class AddAccommodation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
