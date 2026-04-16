@@ -19,6 +19,7 @@ import { NumberInputDirective } from './directives/number-input.directive';
 import { GiftCategoryPipe } from './pipe/gift-category.pipe';
 import { PhotoListComponent } from './components/photo-list/photo-list.component';
 import { SkeletonPhotoCardComponent } from './components/skeleton-photo-card/skeleton-photo-card.component';
+import { LoaderComponent } from './components/loader/loader.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { SkeletonPhotoCardComponent } from './components/skeleton-photo-card/ske
     GiftCategoryPipe,
     PhotoListComponent,
     SkeletonPhotoCardComponent,
+    LoaderComponent,
   ],
   imports: [
     CommonModule,
@@ -60,6 +62,7 @@ import { SkeletonPhotoCardComponent } from './components/skeleton-photo-card/ske
     NumberInputDirective,
     GiftCategoryPipe,
     PhotoListComponent,
+    LoaderComponent,
   ]
 })
 export class SharedModule { }

@@ -3,6 +3,10 @@
 
     <app-title-wedding>Notre liste de mariage</app-title-wedding>
 
+    @if (isLoading) {
+      <app-loader text="Chargement de la liste" class="mt-12"></app-loader>
+    }
+
     <app-category-gift
       [title]="'Voyage de Noces'"
       [category]="CategoryEnum.HoneyMoon"

@@ -1,0 +1,37 @@
+.loader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 70px;
+}
+
+.wedding-loader {
+  position: relative;
+  width: 44px;
+  height: 44px;
+}
+
+.ring-outer {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 3px solid rgba(218, 187, 127, 0.15);
+  border-top-color: #dabb7f;
+  animation: spin 1.2s cubic-bezier(0.6, 0.15, 0.35, 0.85) infinite;
+}
+
+.ring-inner {
+  position: absolute;
+  inset: 7px;
+  border-radius: 50%;
+  border: 2px solid rgba(184, 149, 79, 0.1);
+  border-bottom-color: #b8954f;
+  animation: spin 1.6s cubic-bezier(0.6, 0.15, 0.35, 0.85) infinite reverse;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
