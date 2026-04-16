@@ -1,0 +1,65 @@
+// ── Shimmer animation — gold gradient sweep ──
+@keyframes shimmer {
+  0%   { background-position: -500px 0; }
+  100% { background-position: 500px 0; }
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(218, 187, 127, 0.05) 25%,
+    rgba(218, 187, 127, 0.15) 50%,
+    rgba(218, 187, 127, 0.05) 75%
+  );
+  background-size: 1000px 100%;
+  animation: shimmer 1.8s ease-in-out infinite;
+}
+
+// ── Grid layout — mirrors .photo-list ──
+.skeleton-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  padding: 8px;
+  gap: 4px;
+  width: 100%;
+}
+
+// ── Individual skeleton card — mirrors .photo-item ──
+.skeleton-card {
+  margin: 6px;
+  position: relative;
+  border-radius: 6px;
+  overflow: hidden;
+  background-color: rgba(82, 4, 24, 0.4);
+}
+
+.skeleton-image {
+  border-radius: 6px;
+  // Width is approximated since real photos use w-auto (depends on image aspect ratio).
+  // Height matches .image-from-wedding exactly.
+  @apply sm:h-[400px] h-[200px] sm:w-[280px] w-[160px];
+}
+
+// ── Fake action button (download) ──
+.skeleton-actions {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: flex;
+  flex-direction: row;
+  gap: 6px;
+}
+
+.skeleton-button {
+  border-radius: 8px;
+  @apply md:h-[40px] h-[28px] md:w-[40px] w-[28px];
+}
+
+// ── Accessibility: Respect reduced-motion preference ──
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-shimmer {
+    animation: none;
+    background: rgba(218, 187, 127, 0.08);
+  }
+}
