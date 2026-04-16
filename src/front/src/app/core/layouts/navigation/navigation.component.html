@@ -26,15 +26,15 @@
 }
 @else {
   <header class="flex flex-col items-center w-full relative container h-[19rem]">
-    <div class="w-full flex flex-row">
+    <div class="w-full flex flex-row justify-between">
       <img
         priority
         ngSrc="assets/layout/gold_flowers.webp"
-        class="inset-0 w-1/2 mr-auto max-h-[240px]"
+        class="inset-0 w-1/2 max-h-[240px]"
         alt="decoration doré"
         width="1024"
         height="469">
-      <div class="flex flex-col gap-1">
+      <div class="flex flex-col gap-1 ml-auto">
         @if (AuthService.isAuthenticated$ | async) {
           <app-button class="m-6 mb-0" routerUrl="/profils">Profil</app-button>
           <app-button class="m-6 mb-0 mt-0" (click)="onLogoutClick()">Déconnexion</app-button>
