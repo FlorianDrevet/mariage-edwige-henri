@@ -2,6 +2,7 @@ using System.Security.Claims;
 using ErrorOr;
 using MapsterMapper;
 using Mariage.Api.Errors;
+using Mariage.Application.Common.Interfaces.Persistence;
 using Mariage.Application.UserInfos.Commands;
 using Mariage.Application.UserInfos.Commands.AddGuests;
 using Mariage.Application.UserInfos.Commands.IsComing;
@@ -9,6 +10,7 @@ using Mariage.Application.UserInfos.Queries.AllUsers;
 using Mariage.Application.UserInfos.Queries.GetUserById;
 using Mariage.Contracts.Pictures;
 using Mariage.Contracts.UserInfos;
+using Mariage.Domain.UserAggregate;
 using Mariage.Domain.UserAggregate.ValueObjects;
 using MediatR;
 
@@ -16,12 +18,21 @@ namespace Mariage.Api.Controllers;
 
 public static class UserInfosController
 {
+    internal static UserInfosResponse MapUserWithAccommodation(
+        User user, IMapper mapper, IAccommodationRepository accommodationRepository)
+    {
+        var accommodation = user.AccommodationId is not null
+            ? accommodationRepository.GetById(user.AccommodationId)
+            : null;
+        return mapper.Map<UserInfosResponse>((user, accommodation));
+    }
+
     public static IApplicationBuilder UseUserInfosController(this IApplicationBuilder builder)
     {
         return builder.UseEndpoints(endpoints =>
         {
             endpoints.MapPut("/user-infos/email",
-                    async (IMediator mediator, IMapper mapper, 
+                    async (IMediator mediator, IMapper mapper, IAccommodationRepository accommodationRepository,
                         ChangeEmailRequest request, HttpContext httpContext) =>
                     {
                         var userId = httpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -34,10 +45,10 @@ public static class UserInfosController
                         var changeEmailResult = await mediator.Send(command);
 
                         return changeEmailResult.Match(
-                            changeEmailResult =>
+                            user =>
                             {
-                                var user = mapper.Map<UserInfosResponse>(changeEmailResult);
-                                return Results.Ok(user);
+                                var response = MapUserWithAccommodation(user, mapper, accommodationRepository);
+                                return Results.Ok(response);
                             },
                             error => error.Result());
                     })
@@ -46,7 +57,7 @@ public static class UserInfosController
                 .WithOpenApi();
             
             endpoints.MapPut("/user-infos/is-coming",
-                    async (IMediator mediator, IMapper mapper, 
+                    async (IMediator mediator, IMapper mapper, IAccommodationRepository accommodationRepository,
                         ChangeIsComingRequest request, HttpContext httpContext) =>
                     {
                         var userId = httpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -59,10 +70,10 @@ public static class UserInfosController
                         var changeIsComingResult = await mediator.Send(command);
 
                         return changeIsComingResult.Match(
-                            changeIsComingResult =>
+                            user =>
                             {
-                                var user = mapper.Map<UserInfosResponse>(changeIsComingResult);
-                                return Results.Ok(user);
+                                var response = MapUserWithAccommodation(user, mapper, accommodationRepository);
+                                return Results.Ok(response);
                             },
                             error => error.Result());
                     })
@@ -71,15 +82,17 @@ public static class UserInfosController
                 .WithOpenApi(); 
             
             endpoints.MapGet("/user-infos",
-                    async (IMediator mediator, IMapper mapper) =>
+                    async (IMediator mediator, IMapper mapper, IAccommodationRepository accommodationRepository) =>
                     {
                         var query = new GetAllUsersInfosQuery();
                         var getAllUsersInfosResult = await mediator.Send(query);
                         
                         return getAllUsersInfosResult.Match(
-                            getAllUsersInfosResult =>
+                            users =>
                             {
-                                var usersInfos = mapper.Map<List<UserInfosResponse>>(getAllUsersInfosResult);
+                                var usersInfos = users
+                                    .Select(u => MapUserWithAccommodation(u, mapper, accommodationRepository))
+                                    .ToList();
                                 return Results.Ok(usersInfos);
                             },
                             error => error.Result()
@@ -90,7 +103,8 @@ public static class UserInfosController
                 .WithOpenApi();  
             
             endpoints.MapGet("/user-infos/profils",
-                    async (IMediator mediator, IMapper mapper, HttpContext httpContext) =>
+                    async (IMediator mediator, IMapper mapper, IAccommodationRepository accommodationRepository,
+                        HttpContext httpContext) =>
                     {
                         var userId = httpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
                         if (userId == null)
@@ -99,13 +113,12 @@ public static class UserInfosController
                         }
                         var query = new GetUserByIdQuery(UserId.Create(Guid.Parse(userId)));
                         var getUserByIdInfosResult = await mediator.Send(query);
-                        Console.WriteLine(getUserByIdInfosResult);
                         
                         return getUserByIdInfosResult.Match(
-                            getUserByIdInfosResult =>
+                            user =>
                             {
-                                var usersInfos = mapper.Map<UserInfosResponse>(getUserByIdInfosResult);
-                                return Results.Ok(usersInfos);
+                                var response = MapUserWithAccommodation(user, mapper, accommodationRepository);
+                                return Results.Ok(response);
                             },
                             error => error.Result()
                         );
@@ -115,19 +128,17 @@ public static class UserInfosController
                 .WithOpenApi();  
             
             endpoints.MapPost("/user-infos/guests",
-                    async (IMediator mediator, IMapper mapper, 
+                    async (IMediator mediator, IMapper mapper, IAccommodationRepository accommodationRepository,
                         AddGuestsRequest request) =>
                     {
-                        Console.WriteLine(request.Guests.Count);
                         var command = mapper.Map<AddGuestsCommand>(request);
-                        //Console.WriteLine(command.Guests.Count);
                         var addGuestsResult = await mediator.Send(command);
 
                         return addGuestsResult.Match(
-                            addGuestsResult =>
+                            user =>
                             {
-                                var user = mapper.Map<UserInfosResponse>(addGuestsResult);
-                                return Results.Ok(user);
+                                var response = MapUserWithAccommodation(user, mapper, accommodationRepository);
+                                return Results.Ok(response);
                             },
                             error => error.Result());
                     })

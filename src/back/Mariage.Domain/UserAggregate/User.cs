@@ -1,4 +1,5 @@
 using ErrorOr;
+using Mariage.Domain.AccommodationAggregate.ValueObjects;
 using Mariage.Domain.Common.Errors;
 using Mariage.Domain.Common.Models;
 using Mariage.Domain.PictureAggregate;
@@ -18,6 +19,9 @@ public sealed class User : AggregateRoot<UserId>
     public string Role { get; set; } = null!;
     
     public List<PictureId> PictureIds { get; private set; } = new();
+    
+    public AccommodationId? AccommodationId { get; private set; }
+    public bool? IsAccommodationAccepted { get; private set; }
     
     public IReadOnlyList<Guest> Guests => _guests.AsReadOnly();
 
@@ -70,5 +74,22 @@ public sealed class User : AggregateRoot<UserId>
     public bool RemovePictureFromFavorite(PictureId pictureId)
     {
         return PictureIds.Remove(pictureId);
+    }
+
+    public void AssignAccommodation(AccommodationId accommodationId)
+    {
+        AccommodationId = accommodationId;
+        IsAccommodationAccepted = null;
+    }
+
+    public void RemoveAccommodation()
+    {
+        AccommodationId = null;
+        IsAccommodationAccepted = null;
+    }
+
+    public void RespondToAccommodation(bool accepted)
+    {
+        IsAccommodationAccepted = accepted;
     }
 }

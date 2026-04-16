@@ -36,6 +36,21 @@ public class UserInfosMappingConfig : IRegister
             .Map(dest => dest.Id, src => src.Id.Value);
         
         config.NewConfig<User, UserInfosResponse>()
-            .Map(dest => dest.Id, src => src.Id.Value);
+            .Map(dest => dest.Id, src => src.Id.Value)
+            .Map(dest => dest.Accommodation, src => (UserAccommodationResponse?)null);
+
+        config.NewConfig<(User User, Domain.AccommodationAggregate.Accommodation? Accommodation), UserInfosResponse>()
+            .Map(dest => dest.Id, src => src.User.Id.Value)
+            .Map(dest => dest.Username, src => src.User.Username)
+            .Map(dest => dest.Email, src => src.User.Email)
+            .Map(dest => dest.Guests, src => src.User.Guests)
+            .Map(dest => dest.Accommodation, src => src.Accommodation != null
+                ? new UserAccommodationResponse(
+                    src.Accommodation.Id.Value,
+                    src.Accommodation.Title,
+                    src.Accommodation.Description,
+                    src.Accommodation.UrlImage,
+                    src.User.IsAccommodationAccepted)
+                : null);
     }
 }

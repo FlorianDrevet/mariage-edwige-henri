@@ -73,5 +73,6 @@ app.UseAuthenticationController();
 app.UseWeddingListController();
 app.UsePicturesController();
 app.UseUserInfosController();
+app.UseAccommodationController();
 
 app.Run();

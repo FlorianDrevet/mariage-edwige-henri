@@ -1,3 +1,4 @@
+using Mariage.Domain.AccommodationAggregate.ValueObjects;
 using Mariage.Domain.PictureAggregate.ValueObject;
 using Mariage.Domain.UserAggregate;
 using Mariage.Domain.UserAggregate.Entities;
@@ -31,6 +32,16 @@ public class UserConfiguration: IEntityTypeConfiguration<User>
                 ids => string.Join(',', ids.Select(id => id.Value)),
                 value => value.Split(',', StringSplitOptions.RemoveEmptyEntries).Select( id => PictureId.Create(Guid.Parse(id))).ToList()
             );
+
+        builder.Property(user => user.AccommodationId)
+            .HasConversion(
+                id => id != null ? id.Value : (Guid?)null,
+                value => value.HasValue ? AccommodationId.Create(value.Value) : null
+            )
+            .IsRequired(false);
+
+        builder.Property(user => user.IsAccommodationAccepted)
+            .IsRequired(false);
     }
     
     private void ConfigureGuest(EntityTypeBuilder<User> builder)

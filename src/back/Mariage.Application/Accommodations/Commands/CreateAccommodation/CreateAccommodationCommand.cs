@@ -1,0 +1,11 @@
+using ErrorOr;
+using Mariage.Domain.AccommodationAggregate;
+using MediatR;
+
+namespace Mariage.Application.Accommodations.Commands.CreateAccommodation;
+
+public record CreateAccommodationCommand(
+    string Title,
+    string Description,
+    string UrlImage
+) : IRequest<ErrorOr<Accommodation>>;
