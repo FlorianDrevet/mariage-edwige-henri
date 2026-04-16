@@ -5,3 +5,51 @@
   background-repeat: no-repeat;
 }
 
+/* ── Wedding rings loader ── */
+.loader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 70px;
+}
+
+.wedding-loader {
+  position: relative;
+  width: 70px;
+  height: 40px;
+}
+
+.ring {
+  position: absolute;
+  top: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  animation: ring-spin 1.4s cubic-bezier(0.6, 0.15, 0.35, 0.85) infinite;
+}
+
+.ring-left {
+  left: 0;
+  border-top-color: #dabb7f;
+  border-left-color: #dabb7f;
+  animation-direction: normal;
+}
+
+.ring-right {
+  right: 0;
+  border-top-color: #b8954f;
+  border-right-color: #b8954f;
+  animation-direction: reverse;
+}
+
+@keyframes ring-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+

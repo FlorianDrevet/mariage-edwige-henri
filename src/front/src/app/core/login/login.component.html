@@ -37,6 +37,16 @@
       <p class="text-gold-light font-montserrat text-sm mt-6 w-4/5 text-center">{{error.toString()}}</p>
     }
 
-    <app-button (click)="onLoginClick()" class="mt-8">Connexion</app-button>
+    @if (isLoading) {
+      <div class="loader-container mt-8">
+        <div class="wedding-loader">
+          <div class="ring ring-left"></div>
+          <div class="ring ring-right"></div>
+        </div>
+        <p class="font-montserrat text-gold-dark text-xs tracking-widest mt-4 uppercase">Connexion en cours</p>
+      </div>
+    } @else {
+      <app-button (click)="onLoginClick()" class="mt-8">Connexion</app-button>
+    }
   </div>
 </form>

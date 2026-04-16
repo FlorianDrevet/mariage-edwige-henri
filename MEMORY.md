@@ -362,8 +362,16 @@ src/app/
 - Aspire injects `services__api__https__0` / `services__api__http__0` into the npm process
 
 ### Deployment
-- **Render.com** (production)
-- **Azure Container Apps** (via Aspire `azure.yaml`)
+- **Render.com** (production frontend)
+- **Azure Container Apps** (backend via Aspire `azure.yaml`)
+
+### Secrets Management
+- **Azure Key Vault** `kv-weh` (RBAC-based, francecentral)
+- ACA `aca-backend-weh` uses **System Assigned Managed Identity** (principalId: `6d76d2ed-c8fd-4c3e-b822-b533c8ac9854`)
+- Identity has **Key Vault Secrets User** role on `kv-weh`
+- All 6 env vars use ACA `secretRef` → Key Vault references (no plain-text secrets)
+- Secrets in KV: `ConnectionStrings--postgresdb`, `JwtSettings--Secret`, `BlobSettings--ConnectionString`, `BlobSettings--ConnectionStringPictures`, `AppInsights--ConnectionString`, `DiscordWebhookSettings--WebhookUrl`
+- To update a secret: `az keyvault secret set --vault-name kv-weh --name <secret-name> --value <new-value>` then restart the container app
 
 ---
 
@@ -470,3 +478,4 @@ cd src/back && dotnet ef database update --project Mariage.Infrastructure --star
 | 2026-04-02 | **Vert sapin + dégradé titre doré** — secondaire `#0a4b52`→`#1a3c34` (vert sapin foncé), `#0d6370`→`#2d5a3f` (vert sapin clair). Gradient titre "Edwige & Henri" revu : `#b8954f→#dabb7f→#e8d4a8→#dabb7f→#b8954f` (shimmer doré). 12 fichiers SCSS/Tailwind mis à jour. |
 | 2026-04-16 | **Refactoring pagination** — Generic `PaginatedList<T>` (Application), `PaginatedResponse<T>` (Contracts), `QueryableExtensions.ToPaginatedListAsync` (Infrastructure). All picture endpoints now return paginated responses with totalCount/hasNextPage metadata. 1-based pageNumber with defaults. FluentValidation for pagination params. Frontend updated: `PaginatedResponse<T>` model, `hasNextPage` tracking, `loading="lazy"` on images, `trackBy` on ngFor. Documentation wiki initialized in `docs/` (backend pagination, frontend lazy loading, clean architecture). |
 | 2026-04-16 | **Skeleton loading photos** — Remplacement `mat-spinner` par `SkeletonPhotoCardComponent` avec shimmer doré personnalisé sur fond bordeaux. Animation CSS custom (gold gradient sweep). FadeIn transition sur photo-items. Composant réutilisable avec `@Input() count`. Documentation complète dans `docs/frontend/skeleton-loading.md` (comparatif 4 approches : ngx-skeleton-loader, @defer, animate-pulse, shimmer maison). `MatProgressSpinner` supprimé du SharedModule. |
+| 2026-04-16 | **Key Vault secrets** — Créé `kv-weh` (Azure Key Vault, RBAC, francecentral). 6 secrets migrés depuis plain-text env vars. System Assigned Managed Identity activée sur `aca-backend-weh` avec rôle Key Vault Secrets User. Toutes les env vars utilisent désormais `secretRef` → KV references. Plus aucun secret en clair dans la config ACA. |

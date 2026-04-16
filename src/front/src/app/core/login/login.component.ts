@@ -19,6 +19,7 @@ export class LoginComponent implements AfterViewInit{
   icon = {cilGroup, cilLockLocked};
   loginForm: FormGroup;
   error: ErrorsEnum | null = null;
+  isLoading = false;
 
   constructor(private fb: FormBuilder,
               private axiosService: AxiosService,
@@ -52,6 +53,8 @@ export class LoginComponent implements AfterViewInit{
 
   public onLoginClick(): void {
     if (this.loginForm.valid) {
+      this.isLoading = true;
+      this.error = null;
       const login = this.loginForm.value
       this.axiosService.request(
         MethodEnum.POST,
@@ -68,6 +71,7 @@ export class LoginComponent implements AfterViewInit{
           }
         )
         .catch(error => {
+          this.isLoading = false;
           if (error.response && error.response.status === 503) {
             this.error = ErrorsEnum.RATE_LIMIT;
             console.error('Too many requests, please try again later.');
