@@ -23,7 +23,7 @@ jobs:
           webhook_token: ${{ secrets.DISCORD_WEBHOOK_TOKEN }}
           color: "#48f442"
           username: "The Lab Bot"
-          message: "🚀 New commit on main !\n\n**${{ github.event.head_commit.message }}**\n\nAuthor: ${{ github.event.head_commit.author.name }}\nCommit: ${{ github.sha }}"
+          message: "🚀 Nouveauté !\n\n**${{ github.event.head_commit.message }}**"
 
   notify-merged-pr:
     if: ${{ github.event_name == 'pull_request' && github.event.pull_request.merged == true }}
@@ -38,4 +38,4 @@ jobs:
           webhook_token: ${{ secrets.DISCORD_WEBHOOK_TOKEN }}
           color: "#48f442"
           username: "The Lab Bot"
-          message: "🎉 PR merged on main !\n\n**${{ github.event.pull_request.title }}**\n\n${{ github.event.pull_request.body }}\n\nMerged by: ${{ github.event.pull_request.merged_by.login }}"
+          message: "🎉 Nouveauté !\n\n**${{ github.event.pull_request.title }}**\n\n${{ github.event.pull_request.body }}"
