@@ -3,5 +3,5 @@ export const environment =
     production: true,
     API_URL: 'https://aca-backend-weh.whiteglacier-bc202834.francecentral.azurecontainerapps.io',
     date_wedding: '2026-12-19',
-    discord_webhook: 'https://discord.com/api/webhooks/1213928572058734633/CPXtkaFdkMAGqNPWrfsz5KRIp-AZh1Yn8_8Qi3NG5OZy5ca7VnfbKGFdbyfmdOLZVOqC'
+    discord_webhook: 'https://discordapp.com/api/webhooks/1494304681525252257/WojnsgdxAT41-Hsclal276AOwSTJaWvfpz1-8fAxKyasoyT2wTqo_dXUupYg5QHuUwiO'
   };
