@@ -7,6 +7,7 @@ public interface IAccommodationRepository
 {
     void Add(Accommodation accommodation);
     Accommodation? GetById(AccommodationId id);
+    Dictionary<AccommodationId, Accommodation> GetAllById(IEnumerable<AccommodationId> ids);
     List<Accommodation> GetAll();
     void Update(Accommodation accommodation);
     void Delete(Accommodation accommodation);

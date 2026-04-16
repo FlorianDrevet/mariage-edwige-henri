@@ -6,6 +6,7 @@ import {LoginComponent} from "./core/login/login.component";
 import {UsersComponent} from "./feature/users/users.component";
 import {ProfilComponent} from "./feature/profil/profil.component";
 import {AuthGuardService} from "./shared/services/auth-guard.service";
+import {AdminGuardService} from "./shared/services/admin-guard.service";
 import {GiftComponent} from "./feature/gift/gift.component";
 import {MariageComponent} from "./feature/mariage/mariage.component";
 import {CeremonieComponent} from "./feature/mariage/timeline/ceremonie/ceremonie.component";
@@ -88,7 +89,7 @@ const routes: Routes = [
   {
     path: 'logements',
     component: AccommodationComponent,
-    canActivate: [AuthGuardService]
+    canActivate: [AdminGuardService]
   },
   { path: '**', redirectTo: '/accueil', pathMatch: 'full' }
 ];

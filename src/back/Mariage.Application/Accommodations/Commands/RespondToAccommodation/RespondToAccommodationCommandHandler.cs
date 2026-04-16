@@ -6,7 +6,9 @@ using MediatR;
 
 namespace Mariage.Application.Accommodations.Commands.RespondToAccommodation;
 
-public class RespondToAccommodationCommandHandler(IUserRepository userRepository)
+public class RespondToAccommodationCommandHandler(
+    IUserRepository userRepository,
+    IAccommodationRepository accommodationRepository)
     : IRequestHandler<RespondToAccommodationCommand, ErrorOr<User>>
 {
     public async Task<ErrorOr<User>> Handle(
@@ -20,6 +22,12 @@ public class RespondToAccommodationCommandHandler(IUserRepository userRepository
         }
 
         if (user.AccommodationId is null)
+        {
+            return Errors.Accommodation.NotFound();
+        }
+
+        var accommodation = accommodationRepository.GetById(user.AccommodationId);
+        if (accommodation is null)
         {
             return Errors.Accommodation.NotFound();
         }

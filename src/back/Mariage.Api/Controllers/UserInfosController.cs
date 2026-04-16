@@ -90,8 +90,19 @@ public static class UserInfosController
                         return getAllUsersInfosResult.Match(
                             users =>
                             {
+                                var accommodationIds = users
+                                    .Where(u => u.AccommodationId is not null)
+                                    .Select(u => u.AccommodationId!)
+                                    .Distinct();
+                                var accommodationsById = accommodationRepository.GetAllById(accommodationIds);
                                 var usersInfos = users
-                                    .Select(u => MapUserWithAccommodation(u, mapper, accommodationRepository))
+                                    .Select(u =>
+                                    {
+                                        var accommodation = u.AccommodationId is not null
+                                            ? accommodationsById.GetValueOrDefault(u.AccommodationId)
+                                            : null;
+                                        return mapper.Map<UserInfosResponse>((u, accommodation));
+                                    })
                                     .ToList();
                                 return Results.Ok(usersInfos);
                             },

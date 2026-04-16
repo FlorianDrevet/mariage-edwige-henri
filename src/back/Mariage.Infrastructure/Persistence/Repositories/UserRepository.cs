@@ -65,4 +65,13 @@ public class UserRepository(MariageDbContext mariageDbContext) : IUserRepository
             .Where(user => user.AccommodationId == accommodationId)
             .ToList();
     }
+
+    public void UpdateUsers(IEnumerable<User> users)
+    {
+        foreach (var user in users)
+        {
+            mariageDbContext.Update(user);
+        }
+        mariageDbContext.SaveChanges();
+    }
 }

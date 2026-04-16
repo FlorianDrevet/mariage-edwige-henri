@@ -25,8 +25,8 @@ public class DeleteAccommodationCommandHandler(
         foreach (var user in affectedUsers)
         {
             user.RemoveAccommodation();
-            userRepository.UpdateUser(user);
         }
+        userRepository.UpdateUsers(affectedUsers);
 
         accommodationRepository.Delete(accommodation);
         return Result.Deleted;

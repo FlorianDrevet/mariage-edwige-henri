@@ -18,6 +18,14 @@ public class AccommodationRepository(MariageDbContext mariageDbContext) : IAccom
             .FirstOrDefault(a => a.Id == id);
     }
 
+    public Dictionary<AccommodationId, Accommodation> GetAllById(IEnumerable<AccommodationId> ids)
+    {
+        var idSet = ids.ToHashSet();
+        return mariageDbContext.Accommodations
+            .Where(a => idSet.Contains(a.Id))
+            .ToDictionary(a => a.Id);
+    }
+
     public List<Accommodation> GetAll()
     {
         return mariageDbContext.Accommodations.ToList();

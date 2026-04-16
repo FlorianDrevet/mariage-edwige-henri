@@ -17,4 +17,5 @@ public interface IUserRepository
     void DeletePicture(PictureId pictureId);
     User AddGuests(UserId requestUserId, List<Guest> guests);
     List<User> GetUsersByAccommodationId(AccommodationId accommodationId);
+    void UpdateUsers(IEnumerable<User> users);
 }
