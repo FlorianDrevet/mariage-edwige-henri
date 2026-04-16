@@ -22,4 +22,12 @@ export class GiftApi {
   public postGiftGiver(id: string, giftGiver: GiftGiverInterface): Promise<ProductInterface> {
     return this.axiosService.request(MethodEnum.POST, `/wedding-list/${id}/participation`, giftGiver);
   }
+
+  public updateGift(id: string, formData: FormData): Promise<ProductInterface> {
+    return this.axiosService.request(MethodEnum.PUT, `/wedding-list/${id}`, formData, {"Content-Type": "multipart/form-data"}, true);
+  }
+
+  public deleteGift(id: string): Promise<void> {
+    return this.axiosService.request(MethodEnum.DELETE, `/wedding-list/${id}`, null);
+  }
 }

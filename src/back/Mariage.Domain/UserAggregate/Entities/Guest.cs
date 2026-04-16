@@ -28,4 +28,10 @@ public sealed class Guest: Entity<GuestId>
     {
         IsComing = isComing;
     }
+
+    public void Update(string firstName, string lastName)
+    {
+        FirstName = firstName;
+        LastName = lastName;
+    }
 }

@@ -37,4 +37,12 @@ public sealed class Gift : AggregateRoot<GiftId>
         _giftGivers.Add(giftGiver);
         Participation += giftGiver.Amount;
     }
+
+    public void Update(string name, float price, string urlImage, GiftCategory category)
+    {
+        Name = name;
+        Price = price;
+        UrlImage = urlImage;
+        Category = category;
+    }
 } 

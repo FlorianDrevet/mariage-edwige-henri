@@ -27,4 +27,16 @@ export class UsersApi {
       "guests": guests
     });
   }
+
+  public deleteUser(userId: string): Promise<void> {
+    return this.axiosService.request(MethodEnum.DELETE, `/user-infos/${userId}`, null);
+  }
+
+  public updateGuest(userId: string, guestId: string, guest: PostGuestModel): Promise<UserModel> {
+    return this.axiosService.request(MethodEnum.PUT, `/user-infos/${userId}/guests/${guestId}`, guest);
+  }
+
+  public deleteGuest(userId: string, guestId: string): Promise<UserModel> {
+    return this.axiosService.request(MethodEnum.DELETE, `/user-infos/${userId}/guests/${guestId}`, null);
+  }
 }

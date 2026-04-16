@@ -12,6 +12,7 @@ public interface IUserRepository
     void AddUser(User user);
     User? GetUserById(UserId requestUserId);
     void UpdateUser(User user);
+    void DeleteUser(User user);
     List<User> GetAllUsers();
     void DeletePicture(PictureId pictureId);
     User AddGuests(UserId requestUserId, List<Guest> guests);

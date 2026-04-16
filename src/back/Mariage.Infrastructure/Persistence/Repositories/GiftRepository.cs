@@ -31,4 +31,16 @@ public class GiftRepository(MariageDbContext mariageDbContext): IGiftRepository
         mariageDbContext.SaveChanges();
         return gift!;
     }
+
+    public void UpdateGift(Gift gift)
+    {
+        mariageDbContext.Update(gift);
+        mariageDbContext.SaveChanges();
+    }
+
+    public void DeleteGift(Gift gift)
+    {
+        mariageDbContext.Remove(gift);
+        mariageDbContext.SaveChanges();
+    }
 }

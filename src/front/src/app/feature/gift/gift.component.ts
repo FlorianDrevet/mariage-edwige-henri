@@ -1,10 +1,12 @@
 import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {ProductInterface} from "../../shared/interfaces/product.interface";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {GiftApi} from "../../shared/apis/gift.api";
 import {AuthService} from "../../shared/services/auth.service";
 import {DiscordNotificationService} from "../../shared/services/discord-notification.service";
 import {CategoryEnum} from "../../shared/enums/category.enum";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {cilGift, cilMoney} from "@coreui/icons";
 
 @Component({
   standalone: false,
@@ -17,12 +19,24 @@ export class GiftComponent implements OnInit {
   value: number = 0;
   choosingAmount: boolean = true;
   clickedLydia: boolean = false;
+  icon = {cilGift, cilMoney};
+  editGiftForm: FormGroup;
+  editImage: File | undefined;
+  editFile: any | undefined;
 
 
   constructor(private route: ActivatedRoute,
               private discord: DiscordNotificationService,
               private giftApi: GiftApi,
-              protected authService: AuthService) { }
+              private fb: FormBuilder,
+              private router: Router,
+              protected authService: AuthService) {
+    this.editGiftForm = this.fb.group({
+      name: ['', Validators.required],
+      price: ['', Validators.required],
+      category: ['', Validators.required],
+    });
+  }
 
   ngOnInit(): void {
     this.getProduct()
@@ -74,6 +88,52 @@ export class GiftComponent implements OnInit {
     this.getProduct()
     this.choosingAmount = true;
     this.value = 0;
+  }
+
+  onEditGiftClick() {
+    if (this.gift) {
+      this.editGiftForm.patchValue({
+        name: this.gift.name,
+        price: this.gift.price,
+        category: this.gift.category,
+      });
+      this.editImage = undefined;
+      this.editFile = undefined;
+    }
+  }
+
+  onEditFileSelected() {
+    const inputNode: any = document.querySelector('#editFile');
+    this.editFile = inputNode.files[0];
+    if (typeof (FileReader) !== 'undefined') {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.editImage = e.target!.result;
+      };
+      reader.readAsDataURL(inputNode.files[0]);
+    }
+  }
+
+  onUpdateGiftClick() {
+    if (!this.gift) return;
+    const form = this.editGiftForm.value;
+    const formData = new FormData();
+    formData.append("name", form.name);
+    formData.append("price", form.price.toString());
+    formData.append("category", form.category.toString());
+    if (this.editFile) {
+      formData.append("ImageFile", this.editFile);
+    }
+    this.giftApi.updateGift(this.gift.id, formData).then(_ => {
+      this.getProduct();
+    });
+  }
+
+  onDeleteGiftClick() {
+    if (!this.gift) return;
+    this.giftApi.deleteGift(this.gift.id).then(_ => {
+      this.router.navigate(['/liste-de-mariage']);
+    });
   }
 
   protected readonly CategoryEnum = CategoryEnum;

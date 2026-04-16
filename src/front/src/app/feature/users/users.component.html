@@ -9,6 +9,7 @@
     <tr>
       <th>Identifiant</th>
       <th>Email</th>
+      <th>Actions</th>
     </tr>
     </thead>
     <tbody>
@@ -19,6 +20,10 @@
             [cModalToggle]="verticallyCenteredModalGuests.id">+</app-button>
           </td>
           <td>{{ user.email }}</td>
+          <td>
+            <app-button (click)="onDeleteUserClick(user.id, user.username)"
+              [cModalToggle]="deleteUserModal.id">Supprimer</app-button>
+          </td>
         </tr>
       }
     </tbody>
@@ -31,6 +36,7 @@
       <th>Prénom</th>
       <th>Nom</th>
       <th>A confirmé</th>
+      <th>Actions</th>
     </tr>
     </thead>
     <tbody>
@@ -43,6 +49,12 @@
             <td>{{ guest.lastName }}</td>
             <td>
               <app-tag [confirmed]="guest.isComing"></app-tag>
+            </td>
+            <td class="flex flex-row gap-2">
+              <app-button (click)="onEditGuestClick(user.id, guest)"
+                [cModalToggle]="editGuestModal.id">Modifier</app-button>
+              <app-button (click)="onDeleteGuestClick(user.id, guest)"
+                [cModalToggle]="deleteGuestModal.id">Supprimer</app-button>
             </td>
           </tr>
         }
@@ -89,6 +101,82 @@
       (click)="onAddGuestClick()"
       [cModalToggle]="verticallyCenteredModalGuests.id"
     >Ajouter
+    </app-button>
+  </c-modal-footer>
+</c-modal>
+
+<!-- Modal Supprimer Utilisateur -->
+<c-modal #deleteUserModal alignment="center" id="deleteUserModal" size="sm">
+  <c-modal-header>
+    <h5 cModalTitle class="font-montserrat text-2xl">Confirmer la suppression</h5>
+  </c-modal-header>
+  <c-modal-body>
+    <p class="font-montserrat text-sm">Êtes-vous sûr de vouloir supprimer l'utilisateur <strong>{{deleteUserName}}</strong> et tous ses invités ? Cette action est irréversible.</p>
+  </c-modal-body>
+  <c-modal-footer>
+    <app-button [cModalToggle]="deleteUserModal.id">Annuler</app-button>
+    <app-button
+      (click)="onConfirmDeleteUser()"
+      [cModalToggle]="deleteUserModal.id"
+    >Supprimer
+    </app-button>
+  </c-modal-footer>
+</c-modal>
+
+<!-- Modal Modifier Invité -->
+<c-modal #editGuestModal alignment="center" id="editGuestModal" size="lg">
+  <c-modal-header>
+    <h5 cModalTitle class="font-montserrat text-4xl">Modifier l'invité</h5>
+  </c-modal-header>
+  <c-modal-body>
+    <form [formGroup]="editGuestForm">
+      <div class="h-10"></div>
+
+      <app-input
+        [form]="editGuestForm"
+        [icon]="icon.cilGroup"
+        [required]="true"
+        class="mt-10"
+        controlName="firstName"
+        placeholder="Prénom"
+      ></app-input>
+
+      <div class="h-10"></div>
+
+      <app-input
+        [form]="editGuestForm"
+        [icon]="icon.cilLockLocked"
+        [required]="true"
+        class="mt-24"
+        controlName="lastName"
+        placeholder="Nom"
+      ></app-input>
+    </form>
+  </c-modal-body>
+  <c-modal-footer>
+    <app-button [cModalToggle]="editGuestModal.id">Annuler</app-button>
+    <app-button
+      (click)="onUpdateGuestClick()"
+      [cModalToggle]="editGuestModal.id"
+    >Enregistrer
+    </app-button>
+  </c-modal-footer>
+</c-modal>
+
+<!-- Modal Supprimer Invité -->
+<c-modal #deleteGuestModal alignment="center" id="deleteGuestModal" size="sm">
+  <c-modal-header>
+    <h5 cModalTitle class="font-montserrat text-2xl">Confirmer la suppression</h5>
+  </c-modal-header>
+  <c-modal-body>
+    <p class="font-montserrat text-sm">Êtes-vous sûr de vouloir supprimer l'invité <strong>{{deleteGuestName}}</strong> ? Cette action est irréversible.</p>
+  </c-modal-body>
+  <c-modal-footer>
+    <app-button [cModalToggle]="deleteGuestModal.id">Annuler</app-button>
+    <app-button
+      (click)="onConfirmDeleteGuest()"
+      [cModalToggle]="deleteGuestModal.id"
+    >Supprimer
     </app-button>
   </c-modal-footer>
 </c-modal>

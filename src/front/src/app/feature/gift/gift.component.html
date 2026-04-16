@@ -17,6 +17,10 @@
                 </div>
               }
             }
+            <div class="flex flex-row gap-3 mt-4">
+              <app-button (click)="onEditGiftClick()" [cModalToggle]="editGiftModal.id">Modifier</app-button>
+              <app-button [cModalToggle]="deleteGiftModal.id">Supprimer</app-button>
+            </div>
           </div>
         }
         <div class="flex flex-col justify-evenly h-full items-center w-fit">
@@ -68,3 +72,83 @@
     </div>
   </div>
 }
+
+<!-- Modal Modifier Cadeau -->
+<c-modal #editGiftModal alignment="center" id="editGiftModal" size="lg">
+  <c-modal-header>
+    <h5 cModalTitle class="font-montserrat text-4xl">Modifier le cadeau</h5>
+  </c-modal-header>
+  <c-modal-body>
+    <form [formGroup]="editGiftForm">
+      <div class="h-10"></div>
+
+      <app-input
+        [form]="editGiftForm"
+        [icon]="icon.cilGift"
+        [required]="true"
+        class="mt-10"
+        controlName="name"
+        placeholder="Nom"
+      ></app-input>
+
+      <div class="h-10"></div>
+
+      <app-input
+        [form]="editGiftForm"
+        [icon]="icon.cilMoney"
+        [required]="true"
+        class="mt-24"
+        controlName="price"
+        placeholder="Prix"
+      ></app-input>
+
+      <select aria-label="Category" cSelect formControlName="category" class="mt-24" [required]="true">
+        <option [value]="CategoryEnum.TableArts">Arts de la table</option>
+        <option [value]="CategoryEnum.HouseholdLinens">Linge de maison</option>
+        <option [value]="CategoryEnum.Decorations">Décorations</option>
+        <option [value]="CategoryEnum.HomeAppliances">Electroménager</option>
+        <option [value]="CategoryEnum.Kitchen">Cuisine</option>
+        <option [value]="CategoryEnum.Digestives">Digestifs</option>
+        <option [value]="CategoryEnum.Furniture">Meubles</option>
+        <option [value]="CategoryEnum.Santons">Santons</option>
+        <option [value]="CategoryEnum.HoneyMoon">Voyage de Noces</option>
+      </select>
+
+      <div class="h-10"></div>
+
+      @if (editImage !== undefined) {
+        <div class="preview-img-container">
+          <img [src]="editImage" alt="Image du produit">
+        </div>
+      }
+      <app-button (click)="editFileInput.click()">Changer l'image</app-button>
+      <input #editFileInput (change)="onEditFileSelected()" hidden id="editFile" type="file">
+    </form>
+  </c-modal-body>
+  <c-modal-footer>
+    <app-button [cModalToggle]="editGiftModal.id">Annuler</app-button>
+    <app-button
+      (click)="onUpdateGiftClick()"
+      [cModalToggle]="editGiftModal.id"
+    >Enregistrer
+    </app-button>
+  </c-modal-footer>
+</c-modal>
+
+<!-- Modal Supprimer Cadeau -->
+<c-modal #deleteGiftModal alignment="center" id="deleteGiftModal" size="sm">
+  <c-modal-header>
+    <h5 cModalTitle class="font-montserrat text-2xl">Confirmer la suppression</h5>
+  </c-modal-header>
+  <c-modal-body>
+    <p class="font-montserrat text-sm">Êtes-vous sûr de vouloir supprimer le cadeau <strong>{{gift?.name}}</strong> ? Cette action est irréversible.</p>
+  </c-modal-body>
+  <c-modal-footer>
+    <app-button [cModalToggle]="deleteGiftModal.id">Annuler</app-button>
+    <app-button
+      (click)="onDeleteGiftClick()"
+      [cModalToggle]="deleteGiftModal.id"
+    >Supprimer
+    </app-button>
+  </c-modal-footer>
+</c-modal>

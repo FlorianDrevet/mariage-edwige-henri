@@ -3,6 +3,8 @@ using Mariage.Api.Errors;
 using Mariage.Application.Common.Interfaces.Services;
 using Mariage.Application.Gifts.Commands.CreateGift;
 using Mariage.Application.Gifts.Commands.CreateGiftParticipation;
+using Mariage.Application.Gifts.Commands.DeleteGift;
+using Mariage.Application.Gifts.Commands.UpdateGift;
 using Mariage.Application.Gifts.Queries.GetGiftById;
 using Mariage.Application.Gifts.Queries.GetGifts;
 using Mariage.Application.Pictures.Queries;
@@ -107,6 +109,58 @@ public static class WeddingListController
                         );
                     })
                 .WithName("CreateGiftParticipation")
+                .WithOpenApi();
+
+            endpoints.MapPut("/wedding-list/{giftId}",
+                    async (
+                        IMediator mediator,
+                        IMapper mapper,
+                        IBlobService blobService,
+                        [FromForm] UpdateGiftRequest request,
+                        Guid giftId) =>
+                    {
+                        string? imageUrl = null;
+                        if (request.ImageFile is { Length: > 0 })
+                        {
+                            var fileName = Path.GetFileName(request.ImageFile.FileName);
+                            await using var stream = request.ImageFile.OpenReadStream();
+                            imageUrl = await blobService.UploadFileAsync(stream, fileName);
+                        }
+
+                        var giftToUpdate = await mediator.Send(new GetGiftByIdQuery(GiftId.Create(giftId)));
+                        var currentImageUrl = giftToUpdate.IsError ? "" : giftToUpdate.Value.UrlImage;
+                        var finalImageUrl = imageUrl ?? currentImageUrl;
+
+                        var command = mapper.Map<UpdateGiftCommand>((request, finalImageUrl, GiftId.Create(giftId)));
+                        var updateGiftResult = await mediator.Send(command);
+
+                        return updateGiftResult.Match(
+                            result =>
+                            {
+                                var gift = mapper.Map<GiftResponse>(result);
+                                return Results.Ok(gift);
+                            },
+                            error => error.Result()
+                        );
+                    })
+                .RequireAuthorization("IsAdmin")
+                .WithName("UpdateGift")
+                .DisableAntiforgery()
+                .WithOpenApi();
+
+            endpoints.MapDelete("/wedding-list/{giftId}",
+                    async (IMediator mediator, Guid giftId) =>
+                    {
+                        var command = new DeleteGiftCommand(GiftId.Create(giftId));
+                        var deleteGiftResult = await mediator.Send(command);
+
+                        return deleteGiftResult.Match(
+                            _ => Results.NoContent(),
+                            error => error.Result()
+                        );
+                    })
+                .RequireAuthorization("IsAdmin")
+                .WithName("DeleteGift")
                 .WithOpenApi();
         });
     }

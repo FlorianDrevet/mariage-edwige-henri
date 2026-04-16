@@ -12,7 +12,8 @@ import {
   ModalComponent,
   ModalFooterComponent,
   ModalHeaderComponent,
-  ModalTitleDirective, ModalToggleDirective
+  ModalTitleDirective, ModalToggleDirective,
+  FormSelectDirective
 } from "@coreui/angular";
 
 
@@ -37,6 +38,7 @@ import {
     ModalHeaderComponent,
     ModalTitleDirective,
     ModalToggleDirective,
+    FormSelectDirective,
   ]
 })
 export class GiftModule { }

@@ -55,6 +55,22 @@ public sealed class User : AggregateRoot<UserId>
     {
         _guests.AddRange(guests);
     }
+
+    public bool UpdateGuest(GuestId guestId, string firstName, string lastName)
+    {
+        var guest = _guests.FirstOrDefault(x => x.Id == guestId);
+        if (guest is null) return false;
+        guest.Update(firstName, lastName);
+        return true;
+    }
+
+    public bool RemoveGuest(GuestId guestId)
+    {
+        var guest = _guests.FirstOrDefault(x => x.Id == guestId);
+        if (guest is null) return false;
+        _guests.Remove(guest);
+        return true;
+    }
     
     public bool AddPictureToFavorite(PictureId pictureId)
     {

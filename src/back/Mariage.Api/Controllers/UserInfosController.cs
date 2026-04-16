@@ -4,7 +4,10 @@ using MapsterMapper;
 using Mariage.Api.Errors;
 using Mariage.Application.UserInfos.Commands;
 using Mariage.Application.UserInfos.Commands.AddGuests;
+using Mariage.Application.UserInfos.Commands.DeleteGuest;
+using Mariage.Application.UserInfos.Commands.DeleteUser;
 using Mariage.Application.UserInfos.Commands.IsComing;
+using Mariage.Application.UserInfos.Commands.UpdateGuest;
 using Mariage.Application.UserInfos.Queries.AllUsers;
 using Mariage.Application.UserInfos.Queries.GetUserById;
 using Mariage.Contracts.Pictures;
@@ -133,7 +136,67 @@ public static class UserInfosController
                     })
                 .WithName("AddGuests")
                 .RequireAuthorization("IsAdmin")
-                .WithOpenApi(); 
+                .WithOpenApi();
+
+            endpoints.MapDelete("/user-infos/{userId}",
+                    async (IMediator mediator, Guid userId) =>
+                    {
+                        var command = new DeleteUserCommand(UserId.Create(userId));
+                        var deleteUserResult = await mediator.Send(command);
+
+                        return deleteUserResult.Match(
+                            _ => Results.NoContent(),
+                            error => error.Result()
+                        );
+                    })
+                .WithName("DeleteUser")
+                .RequireAuthorization("IsAdmin")
+                .WithOpenApi();
+
+            endpoints.MapPut("/user-infos/{userId}/guests/{guestId}",
+                    async (IMediator mediator, IMapper mapper,
+                        UpdateGuestRequest request, Guid userId, Guid guestId) =>
+                    {
+                        var command = new UpdateGuestCommand(
+                            UserId.Create(userId),
+                            new GuestId(guestId),
+                            request.FirstName,
+                            request.LastName);
+                        var updateGuestResult = await mediator.Send(command);
+
+                        return updateGuestResult.Match(
+                            result =>
+                            {
+                                var user = mapper.Map<UserInfosResponse>(result);
+                                return Results.Ok(user);
+                            },
+                            error => error.Result()
+                        );
+                    })
+                .WithName("UpdateGuest")
+                .RequireAuthorization("IsAdmin")
+                .WithOpenApi();
+
+            endpoints.MapDelete("/user-infos/{userId}/guests/{guestId}",
+                    async (IMediator mediator, IMapper mapper, Guid userId, Guid guestId) =>
+                    {
+                        var command = new DeleteGuestCommand(
+                            UserId.Create(userId),
+                            new GuestId(guestId));
+                        var deleteGuestResult = await mediator.Send(command);
+
+                        return deleteGuestResult.Match(
+                            result =>
+                            {
+                                var user = mapper.Map<UserInfosResponse>(result);
+                                return Results.Ok(user);
+                            },
+                            error => error.Result()
+                        );
+                    })
+                .WithName("DeleteGuest")
+                .RequireAuthorization("IsAdmin")
+                .WithOpenApi();
         });
     }
 }

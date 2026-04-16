@@ -32,6 +32,12 @@ public class UserRepository(MariageDbContext mariageDbContext) : IUserRepository
         mariageDbContext.SaveChanges();
     }
 
+    public void DeleteUser(User user)
+    {
+        mariageDbContext.Remove(user);
+        mariageDbContext.SaveChanges();
+    }
+
     public List<User> GetAllUsers()
     {
         return mariageDbContext.Users.ToList();

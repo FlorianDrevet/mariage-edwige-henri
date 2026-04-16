@@ -11,4 +11,6 @@ public interface IGiftRepository
     ErrorOr<List<Gift>> GetGifts();
     Gift? GetGiftById(GiftId requestGiftId);
     Gift AddGiftGiver(GiftId giftId, GiftGiver giftGiver);
+    void UpdateGift(Gift gift);
+    void DeleteGift(Gift gift);
 }
