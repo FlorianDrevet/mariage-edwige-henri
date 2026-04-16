@@ -1,10 +1,8 @@
 import {Injectable} from '@angular/core';
 import {AxiosService} from "../services/axios.service";
 import {MethodEnum} from "../enums/method.enum";
-import {UserModel} from "../models/user.model";
-import {GuestModel, PostGuestModel} from "../models/guest.model";
 import {PictureModel} from "../models/picture.model";
-import {HttpHeaders} from "@angular/common/http";
+import {PaginatedResponse} from "../models/paginated-response.model";
 import {PhotoBoothModel} from "../models/phoroBooth.model";
 
 @Injectable({
@@ -17,9 +15,9 @@ export class PicturesApi {
   constructor(private axiosService: AxiosService) {
   }
 
-  public getPictures(pageIndex: number, filter: string): Promise<PictureModel[]> {
+  public getPictures(pageNumber: number, filter: string): Promise<PaginatedResponse<PictureModel>> {
     return this.axiosService.request(MethodEnum.GET, '/pictures/' + filter, {
-      "page": pageIndex,
+      "pageNumber": pageNumber,
       "pageSize": PicturesApi.pageSize
     });
   }

@@ -1,8 +1,9 @@
 using Mariage.Application.Common.Interfaces.Persistence;
-using Mariage.Application.Pictures.Common;
+using Mariage.Application.Common.Models;
 using Mariage.Domain.PictureAggregate;
 using Mariage.Domain.PictureAggregate.ValueObject;
 using Mariage.Domain.UserAggregate.ValueObjects;
+using Mariage.Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Mariage.Infrastructure.Persistence.Repositories;
@@ -21,10 +22,10 @@ public class PictureRepository(MariageDbContext mariageDbContext): IPictureRepos
         return picture;
     }
 
-    public List<Picture> GetPictures(int page, int pageSize)
+    public async Task<PaginatedList<Picture>> GetPicturesAsync(int pageNumber, int pageSize, CancellationToken cancellationToken)
     {
-        return mariageDbContext.Pictures.OrderByDescending(p => p.CreatedAt)
-            .Skip(page * pageSize).Take(pageSize).ToList();
+        var query = mariageDbContext.Pictures.OrderByDescending(p => p.CreatedAt);
+        return await query.ToPaginatedListAsync(pageNumber, pageSize, cancellationToken);
     }
 
     public Picture? GetPictureById(PictureId pictureId)
@@ -32,9 +33,12 @@ public class PictureRepository(MariageDbContext mariageDbContext): IPictureRepos
         return mariageDbContext.Pictures.FirstOrDefault(p => p.Id == pictureId);
     }
 
-    public List<Picture> GetPicturesTookByUser(int page, int pageSize, UserId userId)
+    public async Task<PaginatedList<Picture>> GetPicturesTookByUserAsync(int pageNumber, int pageSize, UserId userId, CancellationToken cancellationToken)
     {
-        return mariageDbContext.Pictures.Where(p => p.UserId == userId).Skip(page * pageSize).Take(pageSize).ToList();
+        var query = mariageDbContext.Pictures
+            .Where(p => p.UserId == userId)
+            .OrderByDescending(p => p.CreatedAt);
+        return await query.ToPaginatedListAsync(pageNumber, pageSize, cancellationToken);
     }
 
     public bool RemovePicture(PictureId pictureId)
