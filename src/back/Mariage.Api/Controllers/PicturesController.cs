@@ -9,6 +9,7 @@ using Mariage.Application.Pictures.Commands.RemovePictureFromFavorites;
 using Mariage.Application.Pictures.Queries;
 using Mariage.Application.Pictures.Queries.GetFavoritesPictures;
 using Mariage.Application.Pictures.Queries.GetPicturesTookByUser;
+using Mariage.Contracts.Common;
 using Mariage.Contracts.Pictures;
 using Mariage.Domain.PictureAggregate.ValueObject;
 using Mariage.Domain.UserAggregate.ValueObjects;
@@ -83,16 +84,24 @@ public static class PicturesController
                 .WithOpenApi();
 
             endpoints.MapGet("/pictures",
-                    async (IMediator mediator, IMapper mapper, int page, int pageSize) =>
+                    async (IMediator mediator, IMapper mapper, int pageNumber = 1, int pageSize = 10) =>
                     {
-                        var query = new GetPictureQuery(page, pageSize);
+                        var query = new GetPictureQuery(pageNumber, pageSize);
                         var getPictureResult = await mediator.Send(query);
 
                         return getPictureResult.Match(
-                            getPictureResult =>
+                            paginatedResult =>
                             {
-                                var pictures = mapper.Map<List<PictureResponse>>(getPictureResult);
-                                return Results.Ok(pictures);
+                                var pictures = mapper.Map<List<PictureResponse>>(paginatedResult.Items);
+                                var response = new PaginatedResponse<PictureResponse>(
+                                    pictures,
+                                    paginatedResult.PageNumber,
+                                    paginatedResult.PageSize,
+                                    paginatedResult.TotalCount,
+                                    paginatedResult.TotalPages,
+                                    paginatedResult.HasPreviousPage,
+                                    paginatedResult.HasNextPage);
+                                return Results.Ok(response);
                             },
                             error => error.Result()
                         );
@@ -132,7 +141,7 @@ public static class PicturesController
                 .WithOpenApi();
 
             endpoints.MapGet("/pictures/took-by-user",
-                    async (IMediator mediator, IMapper mapper, HttpContext httpContext, int page, int pageSize) =>
+                    async (IMediator mediator, IMapper mapper, HttpContext httpContext, int pageNumber = 1, int pageSize = 10) =>
                     {
                         var userId = httpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
                         if (userId == null)
@@ -140,14 +149,22 @@ public static class PicturesController
                             return Results.BadRequest("User ID claim not found in token.");
                         }
 
-                        var query = mapper.Map<GetPicturesTookByUserQuery>((page, pageSize, Guid.Parse(userId)));
+                        var query = mapper.Map<GetPicturesTookByUserQuery>((pageNumber, pageSize, Guid.Parse(userId)));
                         var getPictureResult = await mediator.Send(query);
 
                         return getPictureResult.Match(
-                            getPictureResult =>
+                            paginatedResult =>
                             {
-                                var pictures = mapper.Map<List<PictureResponse>>(getPictureResult);
-                                return Results.Ok(pictures);
+                                var pictures = mapper.Map<List<PictureResponse>>(paginatedResult.Items);
+                                var response = new PaginatedResponse<PictureResponse>(
+                                    pictures,
+                                    paginatedResult.PageNumber,
+                                    paginatedResult.PageSize,
+                                    paginatedResult.TotalCount,
+                                    paginatedResult.TotalPages,
+                                    paginatedResult.HasPreviousPage,
+                                    paginatedResult.HasNextPage);
+                                return Results.Ok(response);
                             },
                             error => error.Result()
                         );
@@ -157,7 +174,7 @@ public static class PicturesController
                 .WithOpenApi();
 
             endpoints.MapGet("/pictures/favorites",
-                    async (IMediator mediator, IMapper mapper, HttpContext httpContext, int page, int pageSize) =>
+                    async (IMediator mediator, IMapper mapper, HttpContext httpContext, int pageNumber = 1, int pageSize = 10) =>
                     {
                         var userId = httpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
                         if (userId == null)
@@ -165,14 +182,22 @@ public static class PicturesController
                             return Results.BadRequest("User ID claim not found in token.");
                         }
 
-                        var query = mapper.Map<GetFavoritePicturesQuery>((page, pageSize, Guid.Parse(userId)));
+                        var query = mapper.Map<GetFavoritePicturesQuery>((pageNumber, pageSize, Guid.Parse(userId)));
                         var getPictureResult = await mediator.Send(query);
 
                         return getPictureResult.Match(
-                            getPictureResult =>
+                            paginatedResult =>
                             {
-                                var pictures = mapper.Map<List<PictureResponse>>(getPictureResult);
-                                return Results.Ok(pictures);
+                                var pictures = mapper.Map<List<PictureResponse>>(paginatedResult.Items);
+                                var response = new PaginatedResponse<PictureResponse>(
+                                    pictures,
+                                    paginatedResult.PageNumber,
+                                    paginatedResult.PageSize,
+                                    paginatedResult.TotalCount,
+                                    paginatedResult.TotalPages,
+                                    paginatedResult.HasPreviousPage,
+                                    paginatedResult.HasNextPage);
+                                return Results.Ok(response);
                             },
                             error => error.Result()
                         );

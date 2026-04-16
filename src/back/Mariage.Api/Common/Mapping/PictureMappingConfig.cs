@@ -21,17 +21,17 @@ public class PictureMappingConfig : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {
-        config.NewConfig<(int Page, int PageSize, Guid User), GetPicturesTookByUserQuery>()
-            .Map(dest => dest.Page, src => src.Page)
+        config.NewConfig<(int PageNumber, int PageSize, Guid User), GetPicturesTookByUserQuery>()
+            .Map(dest => dest.PageNumber, src => src.PageNumber)
             .Map(dest => dest.UserId, src => UserId.Create(src.User))
             .Map(dest => dest.PageSize, src => src.PageSize);
         
         config.NewConfig<(GetPicturesPaginated Picture, Guid User), GetPictureQuery>()
-            .Map(dest => dest.Page, src => src.Picture.Page)
+            .Map(dest => dest.PageNumber, src => src.Picture.PageNumber)
             .Map(dest => dest.PageSize, src => src.Picture.PageSize);
         
-        config.NewConfig<(int Page, int PageSize, Guid User), GetFavoritePicturesQuery>()
-            .Map(dest => dest.Page, src => src.Page)
+        config.NewConfig<(int PageNumber, int PageSize, Guid User), GetFavoritePicturesQuery>()
+            .Map(dest => dest.PageNumber, src => src.PageNumber)
             .Map(dest => dest.UserId, src => UserId.Create(src.User))
             .Map(dest => dest.PageSize, src => src.PageSize);
         
