@@ -6,14 +6,15 @@
 @layer base {
   html {
     overflow-x: hidden !important;
-    min-height: 100vh !important;
+    min-height: 100% !important;
     height: 100% !important;
     font-size: 16px;
   }
   body {
     overflow-x: hidden !important;
     min-height: 100vh !important;
-    height: 100% !important;
+    min-height: 100dvh !important;
+    height: auto !important;
     @apply m-0 p-0;
     color: #dabb7f;
     position: relative;
@@ -61,7 +62,7 @@
         rgba(0,0,0,0)     80px,
         rgba(0,0,0,0)     120px
       );
-    background-attachment: fixed;
+    background-attachment: scroll;
   }
   body.modal-open, body.login {
     overflow: hidden;
@@ -84,6 +85,14 @@
   ::selection {
     background-color: #1a3c34;
     color: #dabb7f;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  @layer base {
+    body {
+      background-attachment: fixed;
+    }
   }
 }
 
