@@ -1,15 +1,18 @@
 name: notify
 
 on:
+  push:
+    branches:
+      - main
   pull_request:
     branches:
       - main
     types: [closed]
 
 jobs:
-  build:
-    if: ${{ github.event.pull_request.merged == true }}
-    name: Build
+  notify-push:
+    if: ${{ github.event_name == 'push' }}
+    name: Notify Push
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -20,4 +23,19 @@ jobs:
           webhook_token: ${{ secrets.DISCORD_WEBHOOK_TOKEN }}
           color: "#48f442"
           username: "The Lab Bot"
-          message: "🎉 New update on main !\n\n**${{ github.event.pull_request.title }}**\n\n${{ github.event.pull_request.body }}."
+          message: "🚀 New commit on main !\n\n**${{ github.event.head_commit.message }}**\n\nAuthor: ${{ github.event.head_commit.author.name }}\nCommit: ${{ github.sha }}"
+
+  notify-merged-pr:
+    if: ${{ github.event_name == 'pull_request' && github.event.pull_request.merged == true }}
+    name: Notify Merged PR
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: send custom message with args
+        uses: appleboy/discord-action@master
+        with:
+          webhook_id: ${{ secrets.DISCORD_WEBHOOK_ID }}
+          webhook_token: ${{ secrets.DISCORD_WEBHOOK_TOKEN }}
+          color: "#48f442"
+          username: "The Lab Bot"
+          message: "🎉 PR merged on main !\n\n**${{ github.event.pull_request.title }}**\n\n${{ github.event.pull_request.body }}\n\nMerged by: ${{ github.event.pull_request.merged_by.login }}"
