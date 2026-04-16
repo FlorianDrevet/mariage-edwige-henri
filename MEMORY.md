@@ -61,11 +61,12 @@ docs/                                   — Learning wiki (pagination, lazy load
 
 | Aggregate | Class | Key Properties |
 |-----------|-------|----------------|
-| **User** | `UserAggregate/User.cs` | Username, Email?, Password, Salt, Role, PictureIds (favorites), Guests (owned) |
+| **User** | `UserAggregate/User.cs` | Username, Email?, Password, Salt, Role, PictureIds (favorites), Guests (owned), AccommodationId?, IsAccommodationAccepted? |
 | └ Guest | `UserAggregate/Entities/Guest.cs` | FirstName, LastName, IsComing |
 | **Gift** | `GiftAggregate/Gift.cs` | Name, Price, Participation, UrlImage, Category (VO), GiftGivers (owned) |
 | └ GiftGiver | `GiftAggregate/Entities/GiftGiver.cs` | FirstName, LastName, Email?, Amount |
 | **Picture** | `PictureAggregate/Picture.cs` | UserId, UrlImage, CreatedAt |
+| **Accommodation** | `AccommodationAggregate/Accommodation.cs` | Title, Description, UrlImage |
 
 ### 3.2 Value Objects
 
@@ -77,6 +78,7 @@ docs/                                   — Learning wiki (pagination, lazy load
 | `GiftGiverId` | `GiftAggregate/ValueObjects/` | Guid wrapper |
 | `GiftCategory` | `GiftAggregate/ValueObjects/` | Enum VO (HomeAppliances, Decorations, TableArts, Digestives, Furniture, HouseholdLinens, Kitchenware, Santons, Honeymoon) |
 | `PictureId` | `PictureAggregate/ValueObject/` | Guid wrapper |
+| `AccommodationId` | `AccommodationAggregate/ValueObjects/` | Guid wrapper |
 
 ### 3.3 Base Classes
 
@@ -136,7 +138,18 @@ All in `Mariage.Domain/Common/Errors/` as `partial class Errors`.
 | Query | `GetAllUsersInfosQuery` | `Application/UserInfos/Queries/AllUsers/` |
 | Query | `GetUserByIdQuery` | `Application/UserInfos/Queries/GetUserById/` |
 
-### 4.5 Behaviors
+### 4.5 Accommodations
+| Type | Class | Location |
+|------|-------|----------|
+| Command | `CreateAccommodationCommand` | `Application/Accommodations/Commands/CreateAccommodation/` |
+| Command | `UpdateAccommodationCommand` | `Application/Accommodations/Commands/UpdateAccommodation/` |
+| Command | `DeleteAccommodationCommand` | `Application/Accommodations/Commands/DeleteAccommodation/` |
+| Command | `AssignAccommodationToUserCommand` | `Application/Accommodations/Commands/AssignAccommodationToUser/` |
+| Command | `RemoveAccommodationFromUserCommand` | `Application/Accommodations/Commands/RemoveAccommodationFromUser/` |
+| Command | `RespondToAccommodationCommand` | `Application/Accommodations/Commands/RespondToAccommodation/` |
+| Query | `GetAllAccommodationsQuery` | `Application/Accommodations/Queries/GetAllAccommodations/` |
+
+### 4.6 Behaviors
 - `ValidationBehavior<TRequest, TResponse>` — FluentValidation pipeline via `IPipelineBehavior`
 
 ### 4.6 Key Interfaces
@@ -146,6 +159,7 @@ All in `Mariage.Domain/Common/Errors/` as `partial class Errors`.
 | `IUserRepository` | `Application/Common/Interfaces/Persistence/` |
 | `IGiftRepository` | `Application/Common/Interfaces/Persistence/` |
 | `IPictureRepository` | `Application/Common/Interfaces/Persistence/` |
+| `IAccommodationRepository` | `Application/Common/Interfaces/Persistence/` |
 | `IJwtGenerator` | `Application/Common/Interfaces/Authentication/` |
 | `IHashPassword` | `Application/Common/Interfaces/Authentication/` |
 | `IBlobService` | `Application/Common/Interfaces/Services/` |
@@ -203,6 +217,13 @@ All in `Mariage.Domain/Common/Errors/` as `partial class Errors`.
 | `/user-infos` | GET | GetAllUsersInfosQuery | Admin |
 | `/user-infos/profils` | GET | GetUserByIdQuery | Auth |
 | `/user-infos/guests` | POST | AddGuestsCommand | Admin |
+| `/accommodations` | GET | GetAllAccommodationsQuery | Admin |
+| `/accommodations` | POST | CreateAccommodationCommand | Admin |
+| `/accommodations/{accommodationId}` | PUT | UpdateAccommodationCommand | Admin |
+| `/accommodations/{accommodationId}` | DELETE | DeleteAccommodationCommand | Admin |
+| `/accommodations/assign` | POST | AssignAccommodationToUserCommand | Admin |
+| `/accommodations/assign/{userId}` | DELETE | RemoveAccommodationFromUserCommand | Admin |
+| `/accommodations/respond` | PUT | RespondToAccommodationCommand | Auth |
 
 ### Routing conventions
 - Minimal API via static `Use{Feature}Controller()` extension methods on `IApplicationBuilder`
@@ -222,14 +243,16 @@ All in `Mariage.Domain/Common/Errors/` as `partial class Errors`.
   - `DbSet<Gift> Gifts`
   - `DbSet<User> Users`
   - `DbSet<Picture> Pictures`
+  - `DbSet<Accommodation> Accommodations`
 
 ### 7.3 Configurations (Fluent API)
-- `UserConfiguration.cs` — UserId conversion, PictureIds as comma-separated string, Guests owned collection
+- `UserConfiguration.cs` — UserId conversion, PictureIds as comma-separated string, Guests owned collection, AccommodationId nullable conversion, IsAccommodationAccepted nullable
 - `GiftConfiguration.cs` — GiftId conversion, GiftGivers owned collection, Category as ComplexProperty
 - `PictureConfiguration.cs` — PictureId/UserId conversions
+- `AccommodationConfiguration.cs` — AccommodationId conversion, Title/Description/UrlImage with max lengths
 
 ### 7.4 Repositories
-- `UserRepository`, `GiftRepository`, `PictureRepository` in `Infrastructure/Persistence/Repositories/`
+- `UserRepository`, `GiftRepository`, `PictureRepository`, `AccommodationRepository` in `Infrastructure/Persistence/Repositories/`
 
 ### 7.5 External Services
 - `BlobService` — Azure Blob Storage (upload, delete, list photo booth/photograph)
@@ -237,7 +260,8 @@ All in `Mariage.Domain/Common/Errors/` as `partial class Errors`.
 - `DateTimeProvider` — `IDateTimeProvider` implementation
 
 ### 7.6 Migrations
-- `20251125124802_Initial` — single migration
+- `20251125124802_Initial` — initial schema
+- `20260416100250_AddAccommodation` — Accommodations table + AccommodationId/IsAccommodationAccepted columns on Users
 - Auto-migration via `MigrateDbContextExtensions` (runs on startup as `IHostedService`)
 
 ### 7.7 Known Persistence Pitfalls
@@ -470,3 +494,4 @@ cd src/back && dotnet ef database update --project Mariage.Infrastructure --star
 | 2026-04-02 | **Vert sapin + dégradé titre doré** — secondaire `#0a4b52`→`#1a3c34` (vert sapin foncé), `#0d6370`→`#2d5a3f` (vert sapin clair). Gradient titre "Edwige & Henri" revu : `#b8954f→#dabb7f→#e8d4a8→#dabb7f→#b8954f` (shimmer doré). 12 fichiers SCSS/Tailwind mis à jour. |
 | 2026-04-16 | **Refactoring pagination** — Generic `PaginatedList<T>` (Application), `PaginatedResponse<T>` (Contracts), `QueryableExtensions.ToPaginatedListAsync` (Infrastructure). All picture endpoints now return paginated responses with totalCount/hasNextPage metadata. 1-based pageNumber with defaults. FluentValidation for pagination params. Frontend updated: `PaginatedResponse<T>` model, `hasNextPage` tracking, `loading="lazy"` on images, `trackBy` on ngFor. Documentation wiki initialized in `docs/` (backend pagination, frontend lazy loading, clean architecture). |
 | 2026-04-16 | **Skeleton loading photos** — Remplacement `mat-spinner` par `SkeletonPhotoCardComponent` avec shimmer doré personnalisé sur fond bordeaux. Animation CSS custom (gold gradient sweep). FadeIn transition sur photo-items. Composant réutilisable avec `@Input() count`. Documentation complète dans `docs/frontend/skeleton-loading.md` (comparatif 4 approches : ngx-skeleton-loader, @defer, animate-pulse, shimmer maison). `MatProgressSpinner` supprimé du SharedModule. |
+| 2026-04-16 | **Feature logement (Accommodation)** — Nouvel agrégat `Accommodation` (Title, Description, UrlImage). User étendu avec `AccommodationId?` et `IsAccommodationAccepted?`. CQRS complet : Create/Update/Delete accommodation (Admin), Assign/Remove accommodation to user (Admin), Respond to accommodation (User), GetAll query. API endpoints sous `/accommodations`. Migration EF `AddAccommodation`. Frontend : page admin `/logements` (CRUD + assignation), section logement sur profil utilisateur (accepter/refuser), navigation desktop + mobile. |

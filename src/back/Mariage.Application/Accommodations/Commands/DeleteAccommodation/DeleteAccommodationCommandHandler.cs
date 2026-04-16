@@ -20,9 +20,9 @@ public class DeleteAccommodationCommandHandler(
             return Errors.Accommodation.NotFound();
         }
 
-        // Remove accommodation assignment from all users that have it
-        var users = userRepository.GetAllUsers();
-        foreach (var user in users.Where(u => u.AccommodationId == request.AccommodationId))
+        // Remove accommodation assignment from users that have it
+        var affectedUsers = userRepository.GetUsersByAccommodationId(request.AccommodationId);
+        foreach (var user in affectedUsers)
         {
             user.RemoveAccommodation();
             userRepository.UpdateUser(user);

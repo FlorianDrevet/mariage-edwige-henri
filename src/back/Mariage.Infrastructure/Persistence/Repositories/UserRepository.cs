@@ -1,4 +1,5 @@
 using Mariage.Application.Common.Interfaces.Persistence;
+using Mariage.Domain.AccommodationAggregate.ValueObjects;
 using Mariage.Domain.PictureAggregate.ValueObject;
 using Mariage.Domain.UserAggregate;
 using Mariage.Domain.UserAggregate.Entities;
@@ -56,5 +57,12 @@ public class UserRepository(MariageDbContext mariageDbContext) : IUserRepository
         user!.AddGuests(guests);
         mariageDbContext.SaveChanges();
         return user;
+    }
+
+    public List<User> GetUsersByAccommodationId(AccommodationId accommodationId)
+    {
+        return mariageDbContext.Users
+            .Where(user => user.AccommodationId == accommodationId)
+            .ToList();
     }
 }
