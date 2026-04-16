@@ -1,0 +1,23 @@
+name: notify
+
+on:
+  pull_request:
+    branches:
+      - main
+    types: [closed]
+
+jobs:
+  build:
+    if: ${{ github.event.pull_request.merged == true }}
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: send custom message with args
+        uses: appleboy/discord-action@master
+        with:
+          webhook_id: ${{ secrets.DISCORD_WEBHOOK_ID }}
+          webhook_token: ${{ secrets.DISCORD_WEBHOOK_TOKEN }}
+          color: "#48f442"
+          username: "The Lab Bot"
+          message: "🎉 New update on main !\n\n**${{ github.event.pull_request.title }}**\n\n${{ github.event.pull_request.body }}."
