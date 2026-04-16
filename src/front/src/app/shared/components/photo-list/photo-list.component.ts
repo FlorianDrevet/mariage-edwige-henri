@@ -12,8 +12,9 @@ import {PictureFilterEnum} from "../../enums/pictureFilter.enum";
 })
 export class PhotoListComponent implements OnInit{
   photos: PictureModel[] = [];
-  page: number = 0;
+  pageNumber: number = 1;
   isLoading = false;
+  hasNextPage = true;
 
   selectedFilter: PictureFilterEnum = PictureFilterEnum.PHOTOGRAPH;
 
@@ -26,14 +27,14 @@ export class PhotoListComponent implements OnInit{
   loadPhotos(filter: PictureFilterEnum) {
     this.selectedFilter = filter;
 
-    if (this.isLoading) return;
+    if (this.isLoading || !this.hasNextPage) return;
     this.isLoading = true;
 
-    let url = "";
     if(filter === PictureFilterEnum.OWN) {
       this.pictureApi.getPicturesPhotoBooth().then((photos) => {
-        this.photos = photos
-        this.page = 0
+        this.photos = photos;
+        this.pageNumber = 1;
+        this.hasNextPage = false;
         this.isLoading = false;
         }
       );
@@ -41,25 +42,29 @@ export class PhotoListComponent implements OnInit{
     }
     if(filter === PictureFilterEnum.PHOTOGRAPH) {
       this.pictureApi.getPicturesPhotograph().then((photos) => {
-          this.photos = photos
-          this.page = 0
+          this.photos = photos;
+          this.pageNumber = 1;
+          this.hasNextPage = false;
           this.isLoading = false;
         }
       );
       return;
     }
+
+    let url = "";
     if(filter === PictureFilterEnum.FAVORITE) {
       url = "favorites";
     }
 
-    this.pictureApi.getPictures(this.page, url).then((photos) => {
-        this.photos = this.photos.concat(photos);
+    this.pictureApi.getPictures(this.pageNumber, url).then((response) => {
+        this.photos = this.photos.concat(response.items);
         this.photos = this.photos.filter((photo, index, self) =>
           index === self.findIndex((t) => (
             t.id === photo.id
           ))
         );
-        this.page++;
+        this.hasNextPage = response.hasNextPage;
+        this.pageNumber++;
         this.isLoading = false;
       }
     );
@@ -67,7 +72,8 @@ export class PhotoListComponent implements OnInit{
 
   public Reset(filter: PictureFilterEnum) {
     this.photos = [];
-    this.page = 0;
+    this.pageNumber = 1;
+    this.hasNextPage = true;
     this.loadPhotos(filter);
   }
 
@@ -118,5 +124,9 @@ export class PhotoListComponent implements OnInit{
     if(pos >= max) {
       this.loadPhotos(this.selectedFilter);
     }
+  }
+
+  trackById(index: number, photo: PictureModel): string {
+    return photo.id;
   }
 }
