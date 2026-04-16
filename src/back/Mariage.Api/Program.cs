@@ -8,6 +8,11 @@ using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>();
+var databaseConnectionString =
+    builder.Configuration.GetConnectionString("postgresdb") ??
+    builder.Configuration.GetConnectionString("MariageDatabase") ??
+    throw new InvalidOperationException("A database connection string must be configured.");
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -18,11 +23,15 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("CorsPolicy", policy =>
     {
-        policy.AllowAnyHeader().AllowAnyMethod().WithOrigins(
-            "http://localhost:4200",
-            "https://www.mariage-astrid-florian.fr",
-            "https://mariage-astrid-florian.onrender.com"
-        );
+        policy.AllowAnyHeader().AllowAnyMethod();
+
+        if (allowedOrigins is { Length: > 0 })
+        {
+            policy.WithOrigins(allowedOrigins);
+            return;
+        }
+
+        policy.AllowAnyOrigin();
     });
 });
 
@@ -33,6 +42,8 @@ builder.Services
     .AddPresentation()
     .AddApplication()
     .AddInfrastructure(builder.Configuration)
+    .AddDbContextPool<MariageDbContext>(options =>
+        options.UseSqlServer(databaseConnectionString, sqlOptions => sqlOptions.EnableRetryOnFailure()))
     .AddRateLimiter(options =>
     {
         options.AddFixedWindowLimiter("Login", opt =>
@@ -43,8 +54,6 @@ builder.Services
     });
 
 builder.AddServiceDefaults();
-builder.AddNpgsqlDataSource(connectionName: "postgresdb");
-builder.AddNpgsqlDbContext<MariageDbContext>(connectionName: "postgresdb");
 
 var app = builder.Build();
 
