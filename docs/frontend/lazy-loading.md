@@ -189,17 +189,17 @@ public Reset(filter: PictureFilterEnum) {
 
 ### 5.1 Skeleton Loading / Placeholders
 
-Afficher des placeholders pendant le chargement au lieu d'un simple spinner :
+> ✅ **Implémenté !** Voir la documentation complète → [`skeleton-loading.md`](./skeleton-loading.md)
+
+Afficher des skeleton cards pendant le chargement au lieu d'un simple spinner :
 
 ```html
-@if (isLoading) {
-  <div *ngFor="let _ of [1,2,3,4]" class="photo-skeleton animate-pulse">
-    <div class="bg-gray-300 h-48 rounded"></div>
-  </div>
+@if (isLoading && photos.length === 0) {
+  <app-skeleton-photo-card [count]="6"></app-skeleton-photo-card>
 }
 ```
 
-<!-- TODO: Implémenter des skeleton cards pour le chargement des photos -->
+Le composant `SkeletonPhotoCardComponent` utilise un shimmer doré personnalisé intégré au thème du site.
 
 ### 5.2 Prefetch de la page suivante
 
