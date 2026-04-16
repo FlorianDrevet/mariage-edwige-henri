@@ -96,9 +96,8 @@ Quand un agent crée une PR, il doit :
 4. **S'assurer que le build passe** (`dotnet build .\src\back\Mariage.slnx`) avant de soumettre.
 5. **Vérifier et mettre à jour la documentation** si les changements concernent la documentation ou s'il y a des informations à ajouter :
    - Parcourir les changements effectués (architecture, conventions, nouvelles APIs, etc.)
-   - Vérifier les sections pertinentes dans `docs/`, `docs/azure/`, `README.md` ou `MEMORY.md`
+   - Vérifier les sections pertinentes dans `docs/`, `README.md` ou `MEMORY.md`
    - Créer des sections manquantes ou mettre à jour les informations existantes
-   - Si la feature est documentée dans une page wiki ADO, mettre à jour également
    - Indiquer les fichiers docs modifiés/créés dans la description de PR sous la section "Docs"
 6. **Mettre à jour `MEMORY.md`** et inclure cette mise à jour dans la même PR.
 
@@ -127,57 +126,3 @@ Quand un agent crée une PR, il doit :
 1. Vérifier que le titre et la description de la PR sont conformes aux sections ci-dessus.
 2. Vérifier que le build passe.
 3. Mettre à jour `MEMORY.md` si la PR introduit des changements structurels.
-
-**Mettre à jour plusieurs items en une fois :**
-```
-outil : mcp_microsoft_azu_wit_update_work_items_batch
-  updates:
-    - id   : <ID_TASK_1>
-      path : "/fields/System.State"
-      value: "Closed"
-    - id   : <ID_TASK_2>
-      path : "/fields/System.State"
-      value: "Closed"
-```
-
----
-
-### 5.7 Résumé du protocole DevOps — ordre d'exécution
-
-```
-1. mcp_microsoft_azu_search_workitem  → chercher Epic correspondante
-   ├─ Trouvée → retenir son ID
-   └─ Non trouvée → mcp_microsoft_azu_wit_create_work_item (Epic)
-
-2. mcp_microsoft_azu_search_workitem  → chercher US correspondante
-   ├─ Trouvée → retenir son ID + mettre à jour son état → Active
-   └─ Non trouvée → mcp_microsoft_azu_wit_create_work_item (User Story)
-                  + mcp_microsoft_azu_wit_work_items_link (US enfant de l'Epic)
-
-3. mcp_microsoft_azu_wit_add_child_work_items → créer toutes les Tasks sur l'US
-
-4. Injecter `Fixes AB#<ID_US>` et `AB#<ID_EPIC>` dans la description de la PR GitHub
-   via mcp_io_github_git_create_pull_request ou mcp_io_github_git_update_pull_request
-   → crée le lien bidirectionnel officiel dans la section "Development" d'ADO
-   → `Fixes` déclenche la transition vers Resolved à la fusion dans main
-
-5. mcp_microsoft_azu_wit_update_work_item (ou _batch) → mettre à jour les statuts
-
-6. Vérifier que la section "Issues / tickets liés" de la PR contient `Fixes AB#<ID_US>` et `AB#<ID_EPIC>`
-```
-
----
-
-### 5.8 Référence des outils MCP utilisés
-
-| Outil MCP | Usage |
-|-----------|-------|
-| `mcp_microsoft_azu_search_workitem` | Rechercher Epics et US existantes par mots-clés |
-| `mcp_microsoft_azu_wit_create_work_item` | Créer une Epic ou une US |
-| `mcp_microsoft_azu_wit_add_child_work_items` | Créer toutes les Tasks en batch sous une US |
-| `mcp_microsoft_azu_wit_work_items_link` | Lier l'US à l'Epic (relation enfant/parent) |
-| `mcp_io_github_git_create_pull_request` ou `mcp_io_github_git_update_pull_request` | Créer/mettre à jour la PR GitHub avec `Fixes AB#<ID>` dans la description |
-| `mcp_microsoft_azu_wit_update_work_item` | Mettre à jour l'état d'un item unique |
-| `mcp_microsoft_azu_wit_update_work_items_batch` | Mettre à jour l'état de plusieurs items |
-
-> **Note :** `mcp_microsoft_azu_wit_add_artifact_link` n'est **pas** utilisé pour les repos GitHub — la syntaxe `AB#` dans la description de la PR est la méthode officielle et bidirectionnelle.
