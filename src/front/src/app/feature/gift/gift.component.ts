@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {ProductInterface} from "../../shared/interfaces/product.interface";
 import {ActivatedRoute, Router} from "@angular/router";
 import {GiftApi} from "../../shared/apis/gift.api";
@@ -15,6 +15,7 @@ import {cilGift, cilMoney} from "@coreui/icons";
   styleUrl: './gift.component.scss'
 })
 export class GiftComponent implements OnInit {
+  @ViewChild('editFileInput') editFileInput!: ElementRef<HTMLInputElement>;
   gift: ProductInterface | null = null;
   value: number = 0;
   choosingAmount: boolean = true;
@@ -103,14 +104,15 @@ export class GiftComponent implements OnInit {
   }
 
   onEditFileSelected() {
-    const inputNode: any = document.querySelector('#editFile');
-    this.editFile = inputNode.files[0];
-    if (typeof (FileReader) !== 'undefined') {
+    const inputNode = this.editFileInput?.nativeElement;
+    if (!inputNode) return;
+    this.editFile = inputNode.files?.[0];
+    if (typeof (FileReader) !== 'undefined' && this.editFile) {
       const reader = new FileReader();
       reader.onload = (e: any) => {
         this.editImage = e.target!.result;
       };
-      reader.readAsDataURL(inputNode.files[0]);
+      reader.readAsDataURL(this.editFile);
     }
   }
 

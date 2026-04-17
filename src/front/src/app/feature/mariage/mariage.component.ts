@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit, PLATFORM_ID} from '@angular/core';
-import {isPlatformBrowser} from '@angular/common';
+import {isPlatformBrowser, DOCUMENT} from '@angular/common';
 import {ScreenService} from "../../shared/services/screen.service";
 import {CookieService} from "ngx-cookie-service";
 import {Role} from "../../shared/enums/role.enum";
@@ -16,11 +16,13 @@ export class MariageComponent implements OnInit{
 
   constructor(protected screenService: ScreenService,
               private cookieService: CookieService,
+              @Inject(DOCUMENT) private document: Document,
               @Inject(PLATFORM_ID) private platformId: Object) {
   }
 
   scrollIntoView(id: string) {
-    document.getElementById(id)?.scrollIntoView(
+    if (!isPlatformBrowser(this.platformId)) return;
+    this.document.getElementById(id)?.scrollIntoView(
       {
         behavior: "smooth",
         block: "start",

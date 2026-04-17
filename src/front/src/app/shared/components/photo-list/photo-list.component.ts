@@ -1,4 +1,5 @@
-import {Component, HostListener, OnInit} from '@angular/core';
+import {Component, HostListener, Inject, OnInit, PLATFORM_ID} from '@angular/core';
+import {isPlatformBrowser, DOCUMENT} from '@angular/common';
 import {PicturesApi} from "../../apis/pictures.api";
 import {PictureModel} from "../../models/picture.model";
 import {AuthService} from "../../services/auth.service";
@@ -18,7 +19,14 @@ export class PhotoListComponent implements OnInit{
 
   selectedFilter: PictureFilterEnum = PictureFilterEnum.PHOTOGRAPH;
 
-  constructor(private pictureApi: PicturesApi, protected AuthService: AuthService) {}
+  private isBrowser: boolean;
+
+  constructor(private pictureApi: PicturesApi,
+              protected AuthService: AuthService,
+              @Inject(DOCUMENT) private document: Document,
+              @Inject(PLATFORM_ID) private platformId: Object) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
 
   ngOnInit() {
     this.loadPhotos(PictureFilterEnum.PHOTOGRAPH);
@@ -78,12 +86,13 @@ export class PhotoListComponent implements OnInit{
   }
 
   downloadPicture(picture: PictureModel) {
-    const link = document.createElement('a');
+    if (!this.isBrowser) return;
+    const link = this.document.createElement('a');
     link.href = picture.urlImage;
     link.download =  "photo_mariage." + picture.urlImage.substring(picture.urlImage.lastIndexOf('.'));
-    document.body.appendChild(link);
+    this.document.body.appendChild(link);
     link.click();
-    document.body.removeChild(link);
+    this.document.body.removeChild(link);
   }
 
   deletePicture(picture: PictureModel) {
@@ -118,8 +127,9 @@ export class PhotoListComponent implements OnInit{
 
   @HostListener('window:scroll', ['$event'])
   onScroll(event: Event) {
-    const pos = (document.documentElement.scrollTop || document.body.scrollTop) + window.innerHeight;
-    const max = document.documentElement.scrollHeight;
+    if (!this.isBrowser) return;
+    const pos = (this.document.documentElement.scrollTop || this.document.body.scrollTop) + window.innerHeight;
+    const max = this.document.documentElement.scrollHeight;
 
     if(pos >= max) {
       this.loadPhotos(this.selectedFilter);

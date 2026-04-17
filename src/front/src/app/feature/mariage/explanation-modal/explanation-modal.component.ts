@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, Inject, PLATFORM_ID} from '@angular/core';
-import {isPlatformBrowser} from '@angular/common';
+import {isPlatformBrowser, DOCUMENT} from '@angular/common';
 
 @Component({
   standalone: false,
@@ -10,18 +10,19 @@ import {isPlatformBrowser} from '@angular/common';
 export class ExplanationModalComponent implements AfterViewInit {
   showModal = true;
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+  constructor(@Inject(DOCUMENT) private document: Document,
+              @Inject(PLATFORM_ID) private platformId: Object) {}
 
   closeModal() {
     this.showModal = false;
     if (isPlatformBrowser(this.platformId)) {
-      document.body.classList.remove('modal-open');
+      this.document.body.classList.remove('modal-open');
     }
   }
 
   ngAfterViewInit(): void {
     if (isPlatformBrowser(this.platformId)) {
-      document.body.classList.add('modal-open');
+      this.document.body.classList.add('modal-open');
     }
   }
 }

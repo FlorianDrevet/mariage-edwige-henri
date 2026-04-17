@@ -1,5 +1,5 @@
 import {NgModule} from '@angular/core';
-import {BrowserModule, provideClientHydration} from '@angular/platform-browser';
+import {BrowserModule, provideClientHydration, withIncrementalHydration} from '@angular/platform-browser';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
@@ -81,7 +81,7 @@ import { ExplanationModalComponent } from './feature/mariage/explanation-modal/e
     ButtonDirective,
   ],
   providers: [
-    provideClientHydration(),
+    provideClientHydration(withIncrementalHydration()),
     provideAnimationsAsync()
   ],
   bootstrap: [AppComponent]

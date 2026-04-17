@@ -19,54 +19,82 @@
       [products]="allProducts"
     ></app-category-gift>
 
-    <app-category-gift
-      class="mt-12"
-      [title]="'Cuisine'"
-      [category]="CategoryEnum.Kitchen"
-      [products]="allProducts"
-    ></app-category-gift>
+    @defer (on viewport; hydrate on viewport) {
+      <app-category-gift
+        class="mt-12"
+        [title]="'Cuisine'"
+        [category]="CategoryEnum.Kitchen"
+        [products]="allProducts"
+      ></app-category-gift>
+    } @placeholder {
+      <div class="mt-12 h-48"></div>
+    }
 
-    <app-category-gift
-      class="mt-12"
-      [title]="'Electroménager'"
-      [category]="CategoryEnum.HomeAppliances"
-      [products]="allProducts"
-    ></app-category-gift>
+    @defer (on viewport; hydrate on viewport) {
+      <app-category-gift
+        class="mt-12"
+        [title]="'Electroménager'"
+        [category]="CategoryEnum.HomeAppliances"
+        [products]="allProducts"
+      ></app-category-gift>
+    } @placeholder {
+      <div class="mt-12 h-48"></div>
+    }
 
-    <app-category-gift
-      class="mt-12"
-      [title]="'Ameublement'"
-      [category]="CategoryEnum.Furniture"
-      [products]="allProducts"
-    ></app-category-gift>
+    @defer (on viewport; hydrate on viewport) {
+      <app-category-gift
+        class="mt-12"
+        [title]="'Ameublement'"
+        [category]="CategoryEnum.Furniture"
+        [products]="allProducts"
+      ></app-category-gift>
+    } @placeholder {
+      <div class="mt-12 h-48"></div>
+    }
 
-    <app-category-gift
-      class="mt-12"
-      [title]="'Décorations'"
-      [category]="CategoryEnum.Decorations"
-      [products]="allProducts"
-    ></app-category-gift>
+    @defer (on viewport; hydrate on viewport) {
+      <app-category-gift
+        class="mt-12"
+        [title]="'Décorations'"
+        [category]="CategoryEnum.Decorations"
+        [products]="allProducts"
+      ></app-category-gift>
+    } @placeholder {
+      <div class="mt-12 h-48"></div>
+    }
 
-    <app-category-gift
-      class="mt-12"
-      [title]="'Linge de maison'"
-      [category]="CategoryEnum.HouseholdLinens"
-      [products]="allProducts"
-    ></app-category-gift>
+    @defer (on viewport; hydrate on viewport) {
+      <app-category-gift
+        class="mt-12"
+        [title]="'Linge de maison'"
+        [category]="CategoryEnum.HouseholdLinens"
+        [products]="allProducts"
+      ></app-category-gift>
+    } @placeholder {
+      <div class="mt-12 h-48"></div>
+    }
 
-    <app-category-gift
-      class="mt-12"
-      [title]="'Digestifs'"
-      [category]="CategoryEnum.Digestives"
-      [products]="allProducts"
-    ></app-category-gift>
+    @defer (on viewport; hydrate on viewport) {
+      <app-category-gift
+        class="mt-12"
+        [title]="'Digestifs'"
+        [category]="CategoryEnum.Digestives"
+        [products]="allProducts"
+      ></app-category-gift>
+    } @placeholder {
+      <div class="mt-12 h-48"></div>
+    }
 
-    <app-category-gift
-      class="mt-12"
-      [title]="'Santons'"
-      [category]="CategoryEnum.Santons"
-      [products]="allProducts"
-    ></app-category-gift>
+    @defer (on viewport; hydrate on viewport) {
+      <app-category-gift
+        class="mt-12"
+        [title]="'Santons'"
+        [category]="CategoryEnum.Santons"
+        [products]="allProducts"
+      ></app-category-gift>
+    } @placeholder {
+      <div class="mt-12 h-48"></div>
+    }
   </div>
 </div>
 

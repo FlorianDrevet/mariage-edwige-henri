@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, ElementRef, ViewChild} from '@angular/core';
 import {cilGift, cilMoney} from "@coreui/icons";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AxiosService} from "../../../../shared/services/axios.service";
@@ -12,6 +12,7 @@ import {CategoryEnum} from "../../../../shared/enums/category.enum";
   styleUrl: './model-create-gift.component.scss'
 })
 export class ModelCreateGiftComponent {
+  @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
   icon = {cilGift, cilMoney};
   createGiftForm: FormGroup;
   image: File | undefined;
@@ -28,16 +29,17 @@ export class ModelCreateGiftComponent {
   }
 
   onFileSelected() {
-    const inputNode: any = document.querySelector('#file');
-    this.file = inputNode.files[0];
-    if (typeof (FileReader) !== 'undefined') {
+    const inputNode = this.fileInput?.nativeElement;
+    if (!inputNode) return;
+    this.file = inputNode.files?.[0];
+    if (typeof (FileReader) !== 'undefined' && this.file) {
       const reader = new FileReader();
 
       reader.onload = (e: any) => {
         this.image = e.target!.result;
       };
 
-      reader.readAsDataURL(inputNode.files[0]);
+      reader.readAsDataURL(this.file);
     }
   }
 

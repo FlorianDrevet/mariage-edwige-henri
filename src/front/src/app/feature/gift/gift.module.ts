@@ -4,8 +4,6 @@ import {GiftComponent} from "./gift.component";
 import {SharedModule} from "../../shared/shared.module";
 import {WeddingListModule} from "../wedding-list/wedding-list.module";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {BrowserModule} from "@angular/platform-browser";
-import {HttpClientModule} from "@angular/common/http";
 import { ModalCreateGiftGiverComponent } from './components/modal-create-gift-giver/modal-create-gift-giver.component';
 import {
   ModalBodyComponent,
@@ -24,8 +22,6 @@ import {
     ModalCreateGiftGiverComponent,
   ],
   imports: [
-    HttpClientModule,
-    BrowserModule,
     CommonModule,
     NgOptimizedImage,
     SharedModule,

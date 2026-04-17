@@ -1,4 +1,5 @@
-import {Injectable} from '@angular/core';
+import {Inject, Injectable, PLATFORM_ID} from '@angular/core';
+import {isPlatformBrowser} from '@angular/common';
 import {JwtHelperService} from "@auth0/angular-jwt";
 import {CookieService} from "ngx-cookie-service";
 import {BehaviorSubject} from "rxjs";
@@ -12,11 +13,16 @@ export class AuthService {
   public isAdmin$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public isModerator$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public Name: string = "";
+  private isBrowser: boolean;
 
 
   constructor(public jwtHelper: JwtHelperService,
-              private cookieService: CookieService) {
-    this.isAuthenticated()
+              private cookieService: CookieService,
+              @Inject(PLATFORM_ID) private platformId: Object) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+    if (this.isBrowser) {
+      this.isAuthenticated();
+    }
   }
 
   public isAuthenticated(): boolean {
