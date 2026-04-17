@@ -13,7 +13,7 @@
     </tr>
     </thead>
     <tbody>
-      @for (user of users; track user) {
+      @for (user of users(); track user) {
         <tr>
           <td class="flex flex-row justify-between">
             {{ user.username }} <app-button (click)="onModalGuestClick(user.id)"
@@ -41,7 +41,7 @@
     </thead>
     <tbody>
 
-      @for (user of users; track user) {
+      @for (user of users(); track user) {
         @for (guest of user.guests; track guest) {
           <tr>
             <td>{{ user.username }}</td>

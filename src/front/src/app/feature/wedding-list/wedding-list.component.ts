@@ -1,8 +1,7 @@
-import {AfterViewInit, Component} from '@angular/core';
-import {GiftApi} from "../../shared/apis/gift.api";
-import {ProductInterface} from "../../shared/interfaces/product.interface";
+import {Component, OnInit} from '@angular/core';
 import {AuthService} from "../../shared/services/auth.service";
 import {CategoryEnum} from "../../shared/enums/category.enum";
+import {GiftStateService} from "../../shared/services/gift-state.service";
 
 @Component({
   standalone: false,
@@ -10,20 +9,13 @@ import {CategoryEnum} from "../../shared/enums/category.enum";
   templateUrl: './wedding-list.component.html',
   styleUrl: './wedding-list.component.scss'
 })
-export class WeddingListComponent implements AfterViewInit{
-  allProducts: ProductInterface[] = [];
-  isLoading: boolean = true;
+export class WeddingListComponent implements OnInit {
 
-  constructor(private productApi: GiftApi,
-              protected authService: AuthService, ) {
-  }
+  constructor(protected giftState: GiftStateService,
+              protected authService: AuthService) {}
 
-  ngAfterViewInit(): void {
-    this.productApi.getProducts().then(products => {
-      this.allProducts = products;
-      console.log(this.allProducts)
-      this.isLoading = false;
-    });
+  ngOnInit(): void {
+    this.giftState.loadProducts();
   }
 
   protected readonly CategoryEnum = CategoryEnum;

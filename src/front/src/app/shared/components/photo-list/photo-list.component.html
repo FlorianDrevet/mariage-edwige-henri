@@ -8,7 +8,7 @@
       <button class="button-download" (click)="downloadPicture(photo)">
         <img src="assets/icons/telecharger.png">
       </button>
-      @if ((AuthService.isAdmin$ | async) || AuthService.Name === photo.username) {
+      @if ((AuthService.isAdmin()) || AuthService.Name === photo.username) {
         <button class="button-delete" (click)="deletePicture(photo)">
           <img src="assets/icons/poubelle-de-recyclage.png">
         </button>

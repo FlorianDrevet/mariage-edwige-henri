@@ -20,10 +20,10 @@
   </nav>
 
   <div (click)="onCloseNavClicked()" class="mt-auto mb-10 ml-auto mr-auto flex flex-col">
-    @if (authService.isAdmin$ | async) {
+    @if (authService.isAdmin()) {
       <app-button routerUrl="/utilisateurs" class="w-full">Invités</app-button>
     }
-    @if (authService.isAuthenticated$ | async) {
+    @if (authService.isAuthenticated()) {
       <app-button routerUrl="/profils" class="w-full">Profil</app-button>
       <app-button (click)="onLogoutClick()" class="w-full">Déconnexion</app-button>
     }

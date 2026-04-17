@@ -1,4 +1,4 @@
-import {AfterViewInit, Component} from '@angular/core';
+import {AfterViewInit, Component, signal, WritableSignal} from '@angular/core';
 import {UsersApi} from "../../shared/apis/users.api";
 import {UserModel} from "../../shared/models/user.model";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
@@ -12,7 +12,7 @@ import {GuestModel} from "../../shared/models/guest.model";
   styleUrl: './users.component.scss'
 })
 export class UsersComponent implements AfterViewInit {
-  users: UserModel[] = [];
+  readonly users: WritableSignal<UserModel[]> = signal<UserModel[]>([]);
   selectedUserId!: string;
   icon = {cilGroup, cilLockLocked, cilPencil, cilTrash};
   registerForm: FormGroup;
@@ -42,8 +42,7 @@ export class UsersComponent implements AfterViewInit {
 
   public getUsers(): void {
     this.usersApi.getUsers().then(users => {
-      this.users = users;
-      console.log(users)
+      this.users.set(users);
     })
   }
 
@@ -65,7 +64,7 @@ export class UsersComponent implements AfterViewInit {
 
   NbrOfYes(): number {
     let res = 0;
-    this.users.forEach(user => {
+    this.users().forEach(user => {
       user.guests.forEach(guest => {
         if (guest.isComing) {
           res++;

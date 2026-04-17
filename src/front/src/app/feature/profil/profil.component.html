@@ -1,4 +1,4 @@
-@if (profils) {
+@if (profil()) {
   <div class="flex flex-col items-center relative mt-6">
     <app-title-wedding class="mt-6">Vos informations</app-title-wedding>
     <form [formGroup]="profilForm" class="relative w-4/5 lg:w-2/5 flex flex-column">
@@ -9,7 +9,7 @@
           class="ml-auto mr-auto lg:mr-0 lg:ml-0"
           [form]="profilForm"
           [icon]="icon.cilEnvelopeClosed"
-          [valueInput]="profils.email"
+          [valueInput]="profil()!.email"
           controlName="email"
           placeholder="Email"
         ></app-input>
@@ -24,7 +24,7 @@
     <app-title-wedding class="mt-14">Les personnes invitées</app-title-wedding>
     <p class="font-montserrat text-sm w-4/5 text-center">Réponses des personnes invitées :</p>
     <div class="flex flex-col w-4/5 lg:w-2/5 mt-6">
-      @for(guest of profils.guests; track profils.guests) {
+      @for(guest of profil()!.guests; track guest.id) {
         <div class="flex flex-row justify-between items-center">
           <p class="font-montserrat text-sm text-justify mt-2">{{guest.firstName}} {{guest.lastName}}</p>
           <app-toggle-button [disabled]="false" [guest]="guest"></app-toggle-button>

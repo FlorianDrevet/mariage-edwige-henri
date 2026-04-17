@@ -268,7 +268,7 @@ All in `Mariage.Domain/Common/Errors/` as `partial class Errors`.
 - All components have explicit `standalone: false` (required for Angular 19+ where default changed to `true`)
 
 ### 9.1b SSR Configuration (Angular 21)
-- **Hydration**: `provideClientHydration(withIncrementalHydration())` in `AppModule` — enables incremental hydration + event replay
+- **Hydration**: `provideClientHydration(withIncrementalHydration())` in `AppModule` — enables incremental hydration + event replay + **HTTP Transfer Cache** (activé par défaut en Angular 19+, désactiver avec `withNoHttpTransferCache()` si besoin)
 - **Server engine**: `AngularNodeAppEngine` in `server.ts` (modern pattern, replaces `CommonEngine`)
 - **Server routing**: `app.routes.server.ts` with `provideServerRendering(withRoutes(serverRoutes))` in `AppServerModule`
   - **Prerender (SSG)**: `/accueil`, `/mariage/*`, `/staff-officiel`, `/contact` (static content)
@@ -279,6 +279,8 @@ All in `Mariage.Domain/Common/Errors/` as `partial class Errors`.
 - **Platform guards**: `isPlatformBrowser` checks on `AuthService`, `AxiosService`, `AuthGuardService`, `LoginComponent`, `MariageComponent`, `ExplanationModalComponent`, `ExplanationProfilModalComponent`, `PhotoListComponent`
 - **DOCUMENT DI token**: Used in `PhotoListComponent`, `MariageComponent`, `ExplanationModalComponent`, `ExplanationProfilModalComponent` instead of global `document`
 - **Pitfall**: `BrowserModule` must ONLY be imported in `AppModule`, never in feature modules (was removed from `GiftModule`)
+- **Transfer State (SSR)**: `GiftStateService` uses `HttpClient` + `WritableSignal` for SSR pages. `provideHttpClient(withFetch())` activé dans `AppModule`. `SERVER_API_URL` token injectable pour l'URL absolue backend côté serveur (lu depuis `process.env` Aspire dans `AppServerModule`). `withHttpTransferCache()` (intégré à `provideClientHydration`) gère le cache HTTP serveur→client automatiquement.
+- **Signals (AuthService)**: `isAuthenticated`, `isAdmin`, `isModerator` sont des `WritableSignal<boolean>` — remplacent les anciens `BehaviorSubject`. Templates : `authService.isAuthenticated()` (pas de pipe `async`).
 
 ### 9.2 Structure
 ```
@@ -322,9 +324,11 @@ src/app/
 - `UsersApi` — User list, profile, add guests
 
 ### 9.5 HTTP & Auth
-- **Axios** wrapped in `AxiosService` (not Angular HttpClient)
-- `AuthService` — BehaviorSubjects for `isAuthenticated$`, `isAdmin$`, `isModerator$`
-- Token stored in cookie with `ngx-cookie-service`
+- **Axios** wrapped in `AxiosService` (not Angular HttpClient) — utilisé pour toutes les mutations et appels authentifiés
+- **HttpClient** (`provideHttpClient(withFetch())`) — utilisé par `GiftStateService` pour les GET publics SSR avec TransferCache automatique
+- `AuthService` — **WritableSignals** `isAuthenticated`, `isAdmin`, `isModerator` (plus de BehaviorSubject). Méthode `refreshAuth()` (anciennement `isAuthenticated()`). Dans les templates : `authService.isAuthenticated()` (appel du signal getter).
+- Token stocké en cookie avec `ngx-cookie-service`
+- `GiftStateService` — service SSR-aware : HttpClient pour les GET publics, signals pour l'état partagé, `SERVER_API_URL` token pour URL absolue côté serveur
 
 ### 9.6 Design system
 - **Tailwind CSS 3.4** + SCSS + custom fonts (Viga `font-viga` → accents, GFSDidot `font-gfsdidot` → titres élégants, Montserrat `font-montserrat` → corps/nav)
@@ -494,3 +498,4 @@ cd src/back && dotnet ef database update --project Mariage.Infrastructure --star
 | 2026-04-16 | **Key Vault secrets** — Créé `kv-weh` (Azure Key Vault, RBAC, francecentral). 6 secrets migrés depuis plain-text env vars. System Assigned Managed Identity activée sur `aca-backend-weh` avec rôle Key Vault Secrets User. Toutes les env vars utilisent désormais `secretRef` → KV references. Plus aucun secret en clair dans la config ACA. |
 | 2026-04-17 | **Fix SSR + Axios hydration** — AxiosService: ajout `isPlatformBrowser` guard (skip requêtes côté serveur via `new Promise(() => {})`), wrapping `resolve`/`reject` dans `ngZone.run()` pour garantir la change detection. AuthGuardService: bypass SSR pour éviter redirection `/login` côté serveur. MariageComponent: guard cookies dans `ngOnInit`. |
 | 2026-04-17 | **Audit SSR complet Angular 21** — `provideClientHydration(withIncrementalHydration())` (hydration incrémentale + event replay). `server.ts` modernisé (`AngularNodeAppEngine` + `createNodeRequestHandler`). Server routes (`app.routes.server.ts`) avec `RenderMode.Prerender` (pages statiques), `RenderMode.Client` (pages auth), `RenderMode.Server` (pages dynamiques). `@defer (on viewport; hydrate on viewport)` sur 7 catégories cadeaux dans wedding-list. Guards `isPlatformBrowser` + `DOCUMENT` DI token sur 6 composants (photo-list, mariage, modals). `ViewChild` remplace `document.querySelector` sur 2 composants (model-create-gift, gift). `BrowserModule` + `HttpClientModule` retirés de GiftModule. AuthService: guard SSR sur constructor. |
+| 2026-04-17 | **Angular Signals + SSR Transfer State** — `AuthService` migré BehaviorSubject→WritableSignal (`isAuthenticated`, `isAdmin`, `isModerator`), méthode `isAuthenticated()` renommée `refreshAuth()`. `GiftStateService` créé (HttpClient + signals, `loadProducts`, `loadProductById`, `refreshGiftById`). `SERVER_API_URL` InjectionToken fourni dans `AppServerModule` (service discovery Aspire). `WeddingListComponent` migré AfterViewInit→OnInit+GiftStateService. `GiftComponent` migré vers GiftStateService (GET) + GiftApi (mutations). `provideHttpClient(withFetch())` ajouté à AppModule. HttpClient TransferCache activé par défaut (Angular 19+). 5 templates migrés de `| async` vers appels signal `()`. |
