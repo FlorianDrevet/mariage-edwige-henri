@@ -25,16 +25,15 @@
   </div>
 }
 @else {
-  <header class="flex flex-col items-center w-full relative container h-[19rem]">
-    <div class="w-full flex flex-row justify-between">
-      <img
-        priority
-        ngSrc="assets/layout/gold_flowers.webp"
-        class="inset-0 w-1/2 max-h-[240px]"
-        alt="decoration doré"
-        width="1024"
-        height="469">
-      <div class="flex flex-col gap-1 ml-auto">
+  <header class="flex flex-col items-center w-full relative h-[19rem]">
+    <img
+      priority
+      ngSrc="assets/layout/gold_flowers.webp"
+      class="absolute top-0 left-0 h-[240px] w-auto pointer-events-none z-0"
+      alt="decoration doré"
+      width="1024"
+      height="469">
+    <div class="absolute top-0 right-0 flex flex-col gap-1">
         @if (AuthService.isAuthenticated$ | async) {
           <app-button class="m-6 mb-0" routerUrl="/profils">Profil</app-button>
           <app-button class="m-6 mb-0 mt-0" (click)="onLogoutClick()">Déconnexion</app-button>
@@ -45,7 +44,6 @@
           <app-model-create-gift class="m-6 mt-0 mb-0"></app-model-create-gift>
           <app-button class="m-6 mt-0" routerUrl="/utilisateurs">Invités</app-button>
         }
-      </div>
     </div>
     <div class="absolute top-24 flex flex-col items-center">
       <h1 class="font-montserrat text-[40px] flex items-center uppercase gradient-text tracking-[0.15em]" id="title">Edwige & Henri</h1>
