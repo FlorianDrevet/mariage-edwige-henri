@@ -1,42 +1,48 @@
-import {Inject, Injectable, PLATFORM_ID} from '@angular/core';
+import {Inject, Injectable, PLATFORM_ID, signal, WritableSignal} from '@angular/core';
 import {isPlatformBrowser} from '@angular/common';
 import {JwtHelperService} from "@auth0/angular-jwt";
 import {CookieService} from "ngx-cookie-service";
-import {BehaviorSubject} from "rxjs";
 import {Role} from "../enums/role.enum";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  public isAuthenticated$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  public isAdmin$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  public isModerator$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  /** Signal — true si l'utilisateur possède un JWT valide. */
+  public isAuthenticated: WritableSignal<boolean> = signal<boolean>(false);
+  /** Signal — true si le rôle JWT est ADMIN. */
+  public isAdmin: WritableSignal<boolean> = signal<boolean>(false);
+  /** Signal — true si le rôle JWT est MODERATOR. */
+  public isModerator: WritableSignal<boolean> = signal<boolean>(false);
   public Name: string = "";
   private isBrowser: boolean;
-
 
   constructor(public jwtHelper: JwtHelperService,
               private cookieService: CookieService,
               @Inject(PLATFORM_ID) private platformId: Object) {
     this.isBrowser = isPlatformBrowser(this.platformId);
     if (this.isBrowser) {
-      this.isAuthenticated();
+      this.refreshAuth();
     }
   }
 
-  public isAuthenticated(): boolean {
+  /**
+   * Lit le cookie JWT, met à jour les signaux et retourne l'état d'authentification.
+   * Appelé automatiquement dans le constructeur et peut être invoqué manuellement
+   * (ex. après un changement de token).
+   */
+  public refreshAuth(): boolean {
     const token = this.getAuthToken();
     if (token === null) {
-      this.isAuthenticated$.next(false);
-      this.isAdmin$.next(false);
-      this.isModerator$.next(false);
+      this.isAuthenticated.set(false);
+      this.isAdmin.set(false);
+      this.isModerator.set(false);
       return false;
     }
     const authenticated = !this.jwtHelper.isTokenExpired(token);
-    this.isAuthenticated$.next(authenticated);
-    this.isAdmin$.next(this.jwtHelper.decodeToken(token).role === Role.ADMIN);
-    this.isModerator$.next(this.jwtHelper.decodeToken(token).role === Role.MODERATOR);
+    this.isAuthenticated.set(authenticated);
+    this.isAdmin.set(this.jwtHelper.decodeToken(token).role === Role.ADMIN);
+    this.isModerator.set(this.jwtHelper.decodeToken(token).role === Role.MODERATOR);
     this.Name = this.jwtHelper.decodeToken(token).given_name;
     return authenticated;
   }
@@ -53,13 +59,13 @@ export class AuthService {
       return;
     }
     this.cookieService.set("auth_token", token, decodedTokenDate, "/");
-    this.isAuthenticated$.next(true);
-    this.isAdmin$.next(this.jwtHelper.decodeToken(token).role === Role.ADMIN);
+    this.isAuthenticated.set(true);
+    this.isAdmin.set(this.jwtHelper.decodeToken(token).role === Role.ADMIN);
   }
 
   public logout() {
     this.cookieService.delete("auth_token", "/");
-    this.isAuthenticated$.next(false);
-    this.isAdmin$.next(false);
+    this.isAuthenticated.set(false);
+    this.isAdmin.set(false);
   }
 }

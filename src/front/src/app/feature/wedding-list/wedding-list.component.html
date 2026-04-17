@@ -3,20 +3,20 @@
 
     <app-title-wedding>Notre liste de mariage</app-title-wedding>
 
-    @if (isLoading) {
+    @if (giftState.isLoading()) {
       <app-loader text="Chargement de la liste" class="mt-12"></app-loader>
     }
 
     <app-category-gift
       [title]="'Voyage de Noces'"
       [category]="CategoryEnum.HoneyMoon"
-      [products]="allProducts"
+      [products]="giftState.products()"
     ></app-category-gift>
 
     <app-category-gift
       [title]="'Arts de la table'"
       [category]="CategoryEnum.TableArts"
-      [products]="allProducts"
+      [products]="giftState.products()"
     ></app-category-gift>
 
     @defer (on viewport; hydrate on viewport) {
@@ -24,7 +24,7 @@
         class="mt-12"
         [title]="'Cuisine'"
         [category]="CategoryEnum.Kitchen"
-        [products]="allProducts"
+        [products]="giftState.products()"
       ></app-category-gift>
     } @placeholder {
       <div class="mt-12 h-48"></div>
@@ -35,7 +35,7 @@
         class="mt-12"
         [title]="'Electroménager'"
         [category]="CategoryEnum.HomeAppliances"
-        [products]="allProducts"
+        [products]="giftState.products()"
       ></app-category-gift>
     } @placeholder {
       <div class="mt-12 h-48"></div>
@@ -46,7 +46,7 @@
         class="mt-12"
         [title]="'Ameublement'"
         [category]="CategoryEnum.Furniture"
-        [products]="allProducts"
+        [products]="giftState.products()"
       ></app-category-gift>
     } @placeholder {
       <div class="mt-12 h-48"></div>
@@ -57,7 +57,7 @@
         class="mt-12"
         [title]="'Décorations'"
         [category]="CategoryEnum.Decorations"
-        [products]="allProducts"
+        [products]="giftState.products()"
       ></app-category-gift>
     } @placeholder {
       <div class="mt-12 h-48"></div>
@@ -68,7 +68,7 @@
         class="mt-12"
         [title]="'Linge de maison'"
         [category]="CategoryEnum.HouseholdLinens"
-        [products]="allProducts"
+        [products]="giftState.products()"
       ></app-category-gift>
     } @placeholder {
       <div class="mt-12 h-48"></div>
@@ -79,7 +79,7 @@
         class="mt-12"
         [title]="'Digestifs'"
         [category]="CategoryEnum.Digestives"
-        [products]="allProducts"
+        [products]="giftState.products()"
       ></app-category-gift>
     } @placeholder {
       <div class="mt-12 h-48"></div>
@@ -90,7 +90,7 @@
         class="mt-12"
         [title]="'Santons'"
         [category]="CategoryEnum.Santons"
-        [products]="allProducts"
+        [products]="giftState.products()"
       ></app-category-gift>
     } @placeholder {
       <div class="mt-12 h-48"></div>

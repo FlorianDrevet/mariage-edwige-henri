@@ -7,6 +7,7 @@ import {DiscordNotificationService} from "../../shared/services/discord-notifica
 import {CategoryEnum} from "../../shared/enums/category.enum";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {cilGift, cilMoney} from "@coreui/icons";
+import {GiftStateService} from "../../shared/services/gift-state.service";
 
 @Component({
   standalone: false,
@@ -16,7 +17,6 @@ import {cilGift, cilMoney} from "@coreui/icons";
 })
 export class GiftComponent implements OnInit {
   @ViewChild('editFileInput') editFileInput!: ElementRef<HTMLInputElement>;
-  gift: ProductInterface | null = null;
   value: number = 0;
   choosingAmount: boolean = true;
   clickedLydia: boolean = false;
@@ -25,12 +25,19 @@ export class GiftComponent implements OnInit {
   editImage: File | undefined;
   editFile: any | undefined;
 
+  private currentId: string | null = null;
+
+  /** Raccourci vers le signal gift pour simplifier le template. */
+  get gift(): ProductInterface | null {
+    return this.giftState.gift();
+  }
 
   constructor(private route: ActivatedRoute,
               private discord: DiscordNotificationService,
               private giftApi: GiftApi,
               private fb: FormBuilder,
               private router: Router,
+              protected giftState: GiftStateService,
               protected authService: AuthService) {
     this.editGiftForm = this.fb.group({
       name: ['', Validators.required],
@@ -40,28 +47,26 @@ export class GiftComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getProduct()
+    this.loadProduct();
   }
 
   onClickedLydia() {
-    if (this.authService.isAuthenticated$) {
+    if (this.authService.isAuthenticated()) {
       this.discord.sendNotification(this.authService.Name + " clicked on Lydia button for " + this.gift?.name + " with " + this.value + "€").subscribe();
-    }
-    else {
+    } else {
       this.discord.sendNotification("Someone clicked on Lydia button for " + this.gift?.name + " with " + this.value + "€").subscribe();
     }
     this.clickedLydia = true;
   }
 
-  getProduct() {
+  loadProduct() {
     this.route.paramMap.subscribe(params => {
-      if (params.get('id') !== null)
-      {
-        this.giftApi.getProductById(params.get('id')!).then(response => {
-          this.gift = response;
-        })
+      const id = params.get('id');
+      if (id !== null) {
+        this.currentId = id;
+        this.giftState.loadProductById(id);
       }
-    })
+    });
   }
 
   public onUpClick() {
@@ -76,17 +81,17 @@ export class GiftComponent implements OnInit {
   }
 
   public onParticipateClick() {
-    if (this.gift !== null)
-    {
-      if (this.value <= this.gift.price - this.gift.participation && this.value > 0)
-      {
+    if (this.gift !== null) {
+      if (this.value <= this.gift.price - this.gift.participation && this.value > 0) {
         this.choosingAmount = false;
       }
     }
   }
 
   onCloseModal() {
-    this.getProduct()
+    if (this.currentId) {
+      this.giftState.refreshGiftById(this.currentId);
+    }
     this.choosingAmount = true;
     this.value = 0;
   }
@@ -127,7 +132,9 @@ export class GiftComponent implements OnInit {
       formData.append("ImageFile", this.editFile);
     }
     this.giftApi.updateGift(this.gift.id, formData).then(_ => {
-      this.getProduct();
+      if (this.currentId) {
+        this.giftState.refreshGiftById(this.currentId);
+      }
     });
   }
 

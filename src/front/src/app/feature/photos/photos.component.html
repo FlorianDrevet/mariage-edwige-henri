@@ -1,8 +1,8 @@
 <div class="flex flex-col w-full items-center mt-12 lg:mb-0">
   <app-title-wedding>Les photos</app-title-wedding>
-  @if ((AuthService.isAuthenticated$ | async))
+  @if ((AuthService.isAuthenticated()))
   {
-    @if(daysLeft <= 0 || (AuthService.isAdmin$ | async)|| (AuthService.isModerator$ | async)) {
+    @if(daysLeft <= 0 || (AuthService.isAdmin())|| (AuthService.isModerator())) {
       <app-button style="margin-bottom: 20px" (click)="fileInput.click()">Ajouter une photo</app-button>
       <input type="file" #fileInput (change)="onFileSelected($event)" accept="image/*" style="display: none;">
         <ul class="flex flex-row justify-around space-x-8">

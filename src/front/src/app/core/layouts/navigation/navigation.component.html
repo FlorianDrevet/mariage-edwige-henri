@@ -34,13 +34,13 @@
       width="1024"
       height="469">
     <div class="absolute top-0 right-0 flex flex-col gap-1">
-        @if (AuthService.isAuthenticated$ | async) {
+        @if (AuthService.isAuthenticated()) {
           <app-button class="m-6 mb-0" routerUrl="/profils">Profil</app-button>
           <app-button class="m-6 mb-0 mt-0" (click)="onLogoutClick()">Déconnexion</app-button>
         } @else {
           <app-button class="m-6 mb-0" routerUrl="/login">Connexion</app-button>
         }
-        @if (AuthService.isAdmin$ | async) {
+        @if (AuthService.isAdmin()) {
           <app-model-create-gift class="m-6 mt-0 mb-0"></app-model-create-gift>
           <app-button class="m-6 mt-0" routerUrl="/utilisateurs">Invités</app-button>
         }
