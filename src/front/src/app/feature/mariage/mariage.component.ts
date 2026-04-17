@@ -1,4 +1,5 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Inject, OnInit, PLATFORM_ID} from '@angular/core';
+import {isPlatformBrowser} from '@angular/common';
 import {ScreenService} from "../../shared/services/screen.service";
 import {CookieService} from "ngx-cookie-service";
 import {Role} from "../../shared/enums/role.enum";
@@ -14,7 +15,8 @@ export class MariageComponent implements OnInit{
   displayExplanations: boolean = false;
 
   constructor(protected screenService: ScreenService,
-              private cookieService: CookieService) {
+              private cookieService: CookieService,
+              @Inject(PLATFORM_ID) private platformId: Object) {
   }
 
   scrollIntoView(id: string) {
@@ -43,7 +45,9 @@ export class MariageComponent implements OnInit{
   }
 
   ngOnInit() {
-    this.getExplanationCookie()
-    this.setExplanationCookie()
+    if (isPlatformBrowser(this.platformId)) {
+      this.getExplanationCookie()
+      this.setExplanationCookie()
+    }
   }
 }
