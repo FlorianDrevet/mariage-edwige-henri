@@ -37,7 +37,8 @@ import {PhotosMariageComponent} from "./feature/photos/photos.component";
 import { TimelineMariageComponent } from './feature/mariage/timeline-mariage/timeline-mariage.component';
 import { TimelineMariageMobileComponent } from './feature/mariage/timeline-mariage-mobile/timeline-mariage-mobile.component';
 import { ExplanationModalComponent } from './feature/mariage/explanation-modal/explanation-modal.component';
-import {provideHttpClient, withFetch} from "@angular/common/http";
+import {provideHttpClient, withFetch, withInterceptors} from "@angular/common/http";
+import {authInterceptor} from "./shared/interceptors/auth.interceptor";
 
 @NgModule({
   declarations: [
@@ -84,7 +85,7 @@ import {provideHttpClient, withFetch} from "@angular/common/http";
   providers: [
     provideClientHydration(withIncrementalHydration()),
     provideAnimationsAsync(),
-    provideHttpClient(withFetch()),
+    provideHttpClient(withFetch(), withInterceptors([authInterceptor])),
   ],
   bootstrap: [AppComponent]
 })

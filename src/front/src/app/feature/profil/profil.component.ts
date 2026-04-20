@@ -1,82 +1,60 @@
-import {Component, OnInit, signal, WritableSignal} from '@angular/core';
-import {UsersApi} from "../../shared/apis/users.api";
-import {UserModel} from "../../shared/models/user.model";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {cilEnvelopeClosed} from "@coreui/icons";
-import {isComing} from "./type/is-coming.type";
-import {MethodEnum} from "../../shared/enums/method.enum";
-import {AxiosService} from "../../shared/services/axios.service";
-import {DiscordNotificationService} from "../../shared/services/discord-notification.service";
+import { ChangeDetectionStrategy, Component, computed, effect, inject } from '@angular/core';
+import { rxResource } from '@angular/core/rxjs-interop';
+import { FormBuilder, Validators } from '@angular/forms';
+import { cilEnvelopeClosed } from '@coreui/icons';
+import { UsersApi } from '../../shared/apis/users.api';
+import { DiscordNotificationService } from '../../shared/services/discord-notification.service';
 
 @Component({
   standalone: false,
   selector: 'app-profil',
   templateUrl: './profil.component.html',
-  styleUrl: './profil.component.scss'
+  styleUrl: './profil.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProfilComponent implements OnInit {
-  readonly profil: WritableSignal<UserModel | null> = signal<UserModel | null>(null);
-  readonly isLoading: WritableSignal<boolean> = signal<boolean>(true);
-  profilForm: FormGroup;
-  isComing!: isComing;
+export class ProfilComponent {
+  private readonly usersApi = inject(UsersApi);
+  private readonly discord = inject(DiscordNotificationService);
+  private readonly fb = inject(FormBuilder);
 
-  icon = {cilEnvelopeClosed};
+  readonly icon = { cilEnvelopeClosed };
 
-  constructor(private usersApi: UsersApi,
-              private discord: DiscordNotificationService,
-              private fb: FormBuilder,
-              private axiosService: AxiosService,) {
-    this.profilForm = this.fb.group({
-      email: ['', Validators.required],
+  /** Signal-based async resource — auto-loads on creation, exposes value/error/status. */
+  readonly profilResource = rxResource({
+    stream: () => this.usersApi.getUserProfils(),
+  });
+
+  readonly profil = computed(() => this.profilResource.value() ?? null);
+  readonly isLoading = computed(() => this.profilResource.isLoading());
+
+  readonly profilForm = this.fb.nonNullable.group({
+    email: ['', Validators.required],
+  });
+
+  constructor() {
+    // When data lands, sync the form + send a one-shot Discord notification.
+    let notified = false;
+    effect(() => {
+      const user = this.profil();
+      if (!user) return;
+      this.profilForm.setValue({ email: user.email ?? '' });
+      if (!notified) {
+        notified = true;
+        this.discord.sendNotification(`${user.username} clicked on profil page`).subscribe();
+      }
     });
   }
 
-  ngOnInit(): void {
-    this.usersApi.getUserProfils().then(userModel => {
-      this.profil.set(userModel);
-      this.isLoading.set(false);
-      this.profilForm.setValue({
-        email: userModel.email ?? '',
-      });
-      this.discord.sendNotification(userModel.username + " clicked on profil page").subscribe();
-    });
-  }
-
-  onUpdateClick() {
-    const pro = this.profilForm.value;
+  onUpdateClick(): void {
     const current = this.profil();
     if (!current) return;
 
-    if (pro.email !== current.email) {
-      this.axiosService.request(
-        MethodEnum.PUT,
-        "/user-infos/email",
-        {
-          "email": pro.email === '' ? null : pro.email,
-        }
-      ).then(() => {
-        this.profil.update(p => p ? {...p, email: pro.email} : p);
-      });
-    }
-  }
+    const newEmail = this.profilForm.controls.email.value || null;
+    if (newEmail === current.email) return;
 
-  private isComingValue(value: string | null): isComing {
-    if (value === null) {
-      return 'maybe';
-    }
-    if (value === 'True') {
-      return 'yes';
-    }
-    return 'no';
-  }
-
-  private isComingBoolean(value: isComing): boolean | null {
-    if (value === 'maybe') {
-      return null;
-    }
-    if (value === 'yes') {
-      return true;
-    }
-    return false;
+    this.usersApi.changeEmail(newEmail).subscribe(updated => {
+      this.profilResource.set(updated);
+    });
   }
 }
+

@@ -1,10 +1,10 @@
-<div class="radio-container mt-3 ml-auto mr-auto" [ngClass]="{'disabled': disabled}">
-  <input [disabled]="disabled" [checked]="guest.isComing" class="hidden-input" [id]="'yes_' + guest.firstName + guest.lastName" [name]="guest.firstName + guest.lastName"
+<div class="radio-container mt-3 ml-auto mr-auto" [ngClass]="{'disabled': disabled()}">
+  <input [disabled]="disabled()" [checked]="guest().isComing" class="hidden-input" [id]="'yes_' + guest().firstName + guest().lastName" [name]="guest().firstName + guest().lastName"
          type="radio" value="yes" (click)="yesClicked()">
-  <label class="custom-radio" [for]="'yes_' + guest.firstName + guest.lastName">Oui</label>
+  <label class="custom-radio" [for]="'yes_' + guest().firstName + guest().lastName">Oui</label>
 
-  <input [disabled]="disabled" [checked]="!guest.isComing" class="hidden-input" [id]="'no_' + guest.firstName + guest.lastName" [name]="guest.firstName + guest.lastName"
+  <input [disabled]="disabled()" [checked]="!guest().isComing" class="hidden-input" [id]="'no_' + guest().firstName + guest().lastName" [name]="guest().firstName + guest().lastName"
          type="radio" value="no" (click)="noClicked()">
-  <label class="custom-radio" [for]="'no_' + guest.firstName + guest.lastName">Non</label>
+  <label class="custom-radio" [for]="'no_' + guest().firstName + guest().lastName">Non</label>
 </div>
 

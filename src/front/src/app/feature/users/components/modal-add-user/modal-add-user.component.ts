@@ -1,40 +1,31 @@
-import {Component} from '@angular/core';
-import {cilGroup, cilLockLocked} from "@coreui/icons";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {AxiosService} from "../../../../shared/services/axios.service";
-import {AuthService} from "../../../../shared/services/auth.service";
-import {Router} from "@angular/router";
-import {MethodEnum} from "../../../../shared/enums/method.enum";
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { FormBuilder, Validators } from '@angular/forms';
+import { cilGroup, cilLockLocked } from '@coreui/icons';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   standalone: false,
   selector: 'app-modal-add-user',
   templateUrl: './modal-add-user.component.html',
-  styleUrl: './modal-add-user.component.scss'
+  styleUrl: './modal-add-user.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ModalAddUserComponent {
-  icon = {cilGroup, cilLockLocked};
-  registerForm: FormGroup;
+  private readonly fb = inject(FormBuilder);
+  private readonly http = inject(HttpClient);
+  private readonly baseUrl = environment['API_URL'] as string;
 
-  constructor(private fb: FormBuilder,
-              private axiosService: AxiosService,
-              private authService: AuthService,
-              private router: Router) {
-    this.registerForm = this.fb.group({
-      username: ['', Validators.required],
-      password: ['', Validators.required],
-    });
-  }
+  readonly icon = { cilGroup, cilLockLocked };
 
-  onAddGuestClick() {
-    const register = this.registerForm.value
-    this.axiosService.request(
-      MethodEnum.POST,
-      "/auth/register",
-      {
-        "username": register.username,
-        "password": register.password
-      }
-    )
+  readonly registerForm = this.fb.nonNullable.group({
+    username: ['', Validators.required],
+    password: ['', Validators.required],
+  });
+
+  onAddGuestClick(): void {
+    const { username, password } = this.registerForm.getRawValue();
+    this.http.post(`${this.baseUrl}/auth/register`, { username, password }).subscribe();
   }
 }
+

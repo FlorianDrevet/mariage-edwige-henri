@@ -2,7 +2,7 @@
   <app-modal-add-user class="mb-10"></app-modal-add-user>
   <div class="flex lg:flex-row flex-col mb-20">
     <h1 class="font-montserrat text-3xl text-center">Nombre de personnes ayant répondu "oui": </h1>
-    <p class="font-montserrat text-3xl ml-5 text-center">{{ NbrOfYes() }} + 3</p>
+    <p class="font-montserrat text-3xl ml-5 text-center">{{ nbrOfYes() }} + 3</p>
   </div>
   <table class="w-2/3 ml-auto mr-auto" id="users">
     <thead>
@@ -111,7 +111,7 @@
     <h5 cModalTitle class="font-montserrat text-2xl">Confirmer la suppression</h5>
   </c-modal-header>
   <c-modal-body>
-    <p class="font-montserrat text-sm">Êtes-vous sûr de vouloir supprimer l'utilisateur <strong>{{deleteUserName}}</strong> et tous ses invités ? Cette action est irréversible.</p>
+    <p class="font-montserrat text-sm">Êtes-vous sûr de vouloir supprimer l'utilisateur <strong>{{ deleteUserName() }}</strong> et tous ses invités ? Cette action est irréversible.</p>
   </c-modal-body>
   <c-modal-footer>
     <app-button [cModalToggle]="deleteUserModal.id">Annuler</app-button>
@@ -169,7 +169,7 @@
     <h5 cModalTitle class="font-montserrat text-2xl">Confirmer la suppression</h5>
   </c-modal-header>
   <c-modal-body>
-    <p class="font-montserrat text-sm">Êtes-vous sûr de vouloir supprimer l'invité <strong>{{deleteGuestName}}</strong> ? Cette action est irréversible.</p>
+    <p class="font-montserrat text-sm">Êtes-vous sûr de vouloir supprimer l'invité <strong>{{ deleteGuestName() }}</strong> ? Cette action est irréversible.</p>
   </c-modal-body>
   <c-modal-footer>
     <app-button [cModalToggle]="deleteGuestModal.id">Annuler</app-button>

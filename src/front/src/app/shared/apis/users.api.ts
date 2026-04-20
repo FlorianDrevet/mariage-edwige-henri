@@ -1,42 +1,49 @@
-import {Injectable} from '@angular/core';
-import {AxiosService} from "../services/axios.service";
-import {MethodEnum} from "../enums/method.enum";
-import {UserModel} from "../models/user.model";
-import {GuestModel, PostGuestModel} from "../models/guest.model";
+import { inject, Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
+import { UserModel } from '../models/user.model';
+import { GuestModel, PostGuestModel } from '../models/guest.model';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class UsersApi {
+  private readonly http = inject(HttpClient);
+  private readonly baseUrl = environment['API_URL'] as string;
 
-  constructor(private axiosService: AxiosService) {
+  getUsers(): Observable<UserModel[]> {
+    return this.http.get<UserModel[]>(`${this.baseUrl}/user-infos`);
   }
 
-  public getUsers(): Promise<UserModel[]> {
-    return this.axiosService.request(MethodEnum.GET, '/user-infos', null);
+  getUserProfils(): Observable<UserModel> {
+    return this.http.get<UserModel>(`${this.baseUrl}/user-infos/profils`);
   }
 
-  public getUserProfils(): Promise<UserModel> {
-    return this.axiosService.request(MethodEnum.GET, '/user-infos/profils', null);
-  }
-
-  public postAddGuests(userId: string, guests: PostGuestModel[]): Promise<UserModel> {
-    console.log(userId)
-    return this.axiosService.request(MethodEnum.POST, '/user-infos/guests', {
-      "userId": userId,
-      "guests": guests
+  postAddGuests(userId: string, guests: PostGuestModel[]): Observable<UserModel> {
+    return this.http.post<UserModel>(`${this.baseUrl}/user-infos/guests`, {
+      userId,
+      guests,
     });
   }
 
-  public deleteUser(userId: string): Promise<void> {
-    return this.axiosService.request(MethodEnum.DELETE, `/user-infos/${userId}`, null);
+  deleteUser(userId: string): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/user-infos/${userId}`);
   }
 
-  public updateGuest(userId: string, guestId: string, guest: PostGuestModel): Promise<UserModel> {
-    return this.axiosService.request(MethodEnum.PUT, `/user-infos/${userId}/guests/${guestId}`, guest);
+  updateGuest(userId: string, guestId: string, guest: PostGuestModel): Observable<UserModel> {
+    return this.http.put<UserModel>(
+      `${this.baseUrl}/user-infos/${userId}/guests/${guestId}`,
+      guest
+    );
   }
 
-  public deleteGuest(userId: string, guestId: string): Promise<UserModel> {
-    return this.axiosService.request(MethodEnum.DELETE, `/user-infos/${userId}/guests/${guestId}`, null);
+  deleteGuest(userId: string, guestId: string): Observable<UserModel> {
+    return this.http.delete<UserModel>(
+      `${this.baseUrl}/user-infos/${userId}/guests/${guestId}`
+    );
+  }
+
+  changeEmail(email: string | null): Observable<UserModel> {
+    return this.http.put<UserModel>(`${this.baseUrl}/user-infos/email`, { email });
   }
 }
+

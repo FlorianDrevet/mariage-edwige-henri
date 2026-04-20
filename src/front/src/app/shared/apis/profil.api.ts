@@ -1,19 +1,19 @@
-import { Injectable } from '@angular/core';
-import {AxiosService} from "../services/axios.service";
-import {UserModel} from "../models/user.model";
-import {MethodEnum} from "../enums/method.enum";
+import { inject, Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
+import { UserModel } from '../models/user.model';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class ProfilApi {
+  private readonly http = inject(HttpClient);
+  private readonly baseUrl = environment['API_URL'] as string;
 
-  constructor(private axiosService: AxiosService) { }
-
-  public putGuestIsComing(guestId: string, isComing: boolean): Promise<UserModel[]> {
-    return this.axiosService.request(MethodEnum.PUT, `/user-infos/is-coming`, {
-      "isComing": isComing,
-      "guestId": guestId
+  putGuestIsComing(guestId: string, isComing: boolean): Observable<UserModel[]> {
+    return this.http.put<UserModel[]>(`${this.baseUrl}/user-infos/is-coming`, {
+      guestId,
+      isComing,
     });
   }
 }
+
