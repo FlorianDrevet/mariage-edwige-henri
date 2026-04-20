@@ -1,3 +1,22 @@
+/* ── Desktop: fill remaining viewport below nav, no scroll ── */
+:host {
+  display: block;
+}
+
+.desktop-accueil {
+  /* 19rem = nav header height */
+  height: calc(100dvh - 19rem);
+  overflow: hidden;
+  justify-content: center;
+}
+
+/* ── Mobile: fill remaining viewport below nav, equal spacing ── */
+.mobile-accueil {
+  /* ~20rem ≈ hamburger + flowers + titles + date on mobile */
+  height: calc(100dvh - 20rem);
+  overflow: hidden;
+}
+
 /* ── Diagonal powder snow patch behind hero photo ── */
 .powder-snow {
   position: absolute;
@@ -30,16 +49,4 @@
     radial-gradient(circle 6%  at 75% 45%, rgba(255,255,255,0.30) 0%, transparent 70%),
     radial-gradient(circle 5%  at 50% 22%, rgba(255,255,255,0.28) 0%, transparent 70%),
     radial-gradient(circle 4%  at 48% 78%, rgba(255,255,255,0.28) 0%, transparent 70%);
-}
-
-html, body::-webkit-scrollbar {
-  display: none !important;
-  overflow-x: hidden !important;
-}
-
-/* For IE, Edge and Firefox */
-body, html {
-  -ms-overflow-style: none !important;  /* IE and Edge */
-  scrollbar-width: none !important;  /* Firefox */
-  overflow-x: hidden !important;
 }

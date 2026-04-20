@@ -2,21 +2,37 @@
   <app-explanation-profil-modal></app-explanation-profil-modal>
 }
 
-<div class="flex flex-col w-full items-center relative">
-  <div class="w-3/4 lg:w-1/4 px-6 pt-2 pb-0 z-50 relative">
-    <div class="powder-snow" aria-hidden="true"></div>
-    <img
-      src="assets/pictures/edwige_henri.jpg"
-      alt="Photo d'Edwige et Henri"
-      class="w-full object-cover rounded-lg shadow-lg max-h-[calc(100vh-30rem)] lg:max-h-[calc(100vh-22rem)] relative z-10" />
-  </div>
-  @if(screenService.isSmallScreen$ | async) {
+@if(screenService.isSmallScreen$ | async) {
+  <!-- ── MOBILE ── -->
+  <div class="flex flex-col w-full items-center mobile-accueil">
+    <div class="flex-1"></div>
     <img
       alt="image de fleurs gold"
-      class="mr-auto ml-auto rotate-180 -mt-10"
+      class="mx-auto"
       height="80" ngSrc="assets/layout/gold_flowers_straight.webp" priority width="280">
-  }
-  @else {
+    <div class="w-3/4 px-6 pt-2 pb-0 z-50 relative">
+      <div class="powder-snow" aria-hidden="true"></div>
+      <img
+        src="assets/pictures/edwige_henri.jpg"
+        alt="Photo d'Edwige et Henri"
+        class="w-full object-cover rounded-lg shadow-lg max-h-[calc(100dvh-28rem)] relative z-10" />
+    </div>
+    <img
+      alt="image de fleurs gold"
+      class="mx-auto rotate-180"
+      height="80" ngSrc="assets/layout/gold_flowers_straight.webp" width="280">
+    <div class="flex-1"></div>
+  </div>
+} @else {
+  <!-- ── DESKTOP ── -->
+  <div class="desktop-accueil flex flex-col items-center">
+    <div class="w-1/4 px-6 pt-2 pb-0 z-50 relative">
+      <div class="powder-snow" aria-hidden="true"></div>
+      <img
+        src="assets/pictures/edwige_henri.jpg"
+        alt="Photo d'Edwige et Henri"
+        class="w-full object-cover rounded-lg shadow-lg max-h-[calc(100dvh-22rem)] relative z-10" />
+    </div>
     <img
       priority
       ngSrc="assets/layout/gold_flowers.webp"
@@ -24,6 +40,6 @@
       alt="decoration doré"
       width="1024"
       height="469">
-  }
-</div>
+  </div>
+}
 
