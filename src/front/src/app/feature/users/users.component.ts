@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, signal, WritableSignal} from '@angular/core';
+import {Component, OnInit, signal, WritableSignal} from '@angular/core';
 import {UsersApi} from "../../shared/apis/users.api";
 import {UserModel} from "../../shared/models/user.model";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
@@ -11,7 +11,7 @@ import {GuestModel} from "../../shared/models/guest.model";
   templateUrl: './users.component.html',
   styleUrl: './users.component.scss'
 })
-export class UsersComponent implements AfterViewInit {
+export class UsersComponent implements OnInit {
   readonly users: WritableSignal<UserModel[]> = signal<UserModel[]>([]);
   selectedUserId!: string;
   icon = {cilGroup, cilLockLocked, cilPencil, cilTrash};
@@ -36,7 +36,7 @@ export class UsersComponent implements AfterViewInit {
     });
   }
 
-  ngAfterViewInit(): void {
+  ngOnInit(): void {
     this.getUsers();
   }
 

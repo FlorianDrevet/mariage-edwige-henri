@@ -1,4 +1,4 @@
-import {Inject, Injectable, NgZone, PLATFORM_ID} from '@angular/core';
+import {ApplicationRef, Inject, Injectable, PLATFORM_ID} from '@angular/core';
 import {isPlatformBrowser} from '@angular/common';
 import axios from 'axios'
 import {JwtHelperService} from "@auth0/angular-jwt";
@@ -12,15 +12,30 @@ import {MethodEnum} from "../enums/method.enum";
 export class AxiosService {
 
   private isBrowser: boolean;
+  private tickScheduled = false;
 
   constructor(private jwtHelper: JwtHelperService,
               private authService: AuthService,
-              private ngZone: NgZone,
+              private appRef: ApplicationRef,
               @Inject(PLATFORM_ID) private platformId: Object) {
     this.isBrowser = isPlatformBrowser(this.platformId);
     if (this.isBrowser) {
       axios.defaults.baseURL = environment['API_URL'];
     }
+  }
+
+  /**
+   * Schedule a single change detection tick after all pending microtasks
+   * (promise .then() handlers) have executed, so that signal/property
+   * updates made by consumers are rendered.
+   */
+  private scheduleTick(): void {
+    if (this.tickScheduled) return;
+    this.tickScheduled = true;
+    Promise.resolve().then(() => {
+      this.tickScheduled = false;
+      this.appRef.tick();
+    });
   }
 
   public request(method: MethodEnum, url: string, data: any, headers: object = {}, isFormFile: boolean = false): Promise<any> {
@@ -49,8 +64,14 @@ export class AxiosService {
         headers: headers,
         params: method === MethodEnum.GET ? data : {}
       }).then(
-        response => this.ngZone.run(() => resolve(response.data)),
-        error => this.ngZone.run(() => reject(error))
+        response => {
+          resolve(response.data);
+          this.scheduleTick();
+        },
+        error => {
+          reject(error);
+          this.scheduleTick();
+        }
       );
     });
   }
