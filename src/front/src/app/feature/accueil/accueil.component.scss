@@ -20,8 +20,8 @@
 
 /* ── Mobile: fill remaining viewport below nav, equal spacing ── */
 .mobile-accueil {
-  /* ~20rem ≈ hamburger + flowers + titles + date on mobile */
-  height: calc(100dvh - 20rem);
+  /* ~16rem ≈ hamburger + flowers + titles + date on mobile (compact) */
+  height: calc(100dvh - 16rem);
   overflow: hidden;
 }
 
