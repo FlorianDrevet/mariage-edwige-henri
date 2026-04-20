@@ -25,18 +25,27 @@
   </div>
 } @else {
   <!-- ── DESKTOP ── -->
-  <div class="desktop-accueil flex flex-col items-center">
-    <div class="w-1/4 px-6 pt-2 pb-0 z-50 relative">
+  <div class="desktop-accueil flex items-center justify-center">
+    <div class="relative z-50 px-4">
       <div class="powder-snow" aria-hidden="true"></div>
       <img
         src="assets/pictures/edwige_henri.jpg"
         alt="Photo d'Edwige et Henri"
-        class="w-full object-cover rounded-lg shadow-lg max-h-[calc(100dvh-22rem)] relative z-10" />
+        class="hero-photo rounded-lg shadow-lg relative z-10" />
     </div>
+    <!-- Coin bas-droite -->
     <img
       priority
       ngSrc="assets/layout/gold_flowers.webp"
-      class="fixed bottom-0 right-0 h-[240px] w-auto rotate-180 pointer-events-none z-0"
+      class="fixed bottom-0 right-0 h-[360px] w-auto rotate-180 pointer-events-none z-0"
+      alt="decoration doré"
+      width="1024"
+      height="469">
+    <!-- Coin bas-gauche -->
+    <img
+      priority
+      ngSrc="assets/layout/gold_flowers.webp"
+      class="fixed bottom-0 left-0 h-[360px] w-auto [transform:scaleY(-1)] pointer-events-none z-0"
       alt="decoration doré"
       width="1024"
       height="469">

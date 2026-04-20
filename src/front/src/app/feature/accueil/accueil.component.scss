@@ -7,7 +7,14 @@
   /* 19rem = nav header height */
   height: calc(100dvh - 19rem);
   overflow: hidden;
-  justify-content: center;
+}
+
+/* Hero photo fills viewport height on desktop */
+.hero-photo {
+  height: calc(100dvh - 21rem);
+  width: auto;
+  max-width: 50vw;
+  object-fit: contain;
 }
 
 /* ── Mobile: fill remaining viewport below nav, equal spacing ── */
