@@ -18,12 +18,17 @@ const engineReady: Promise<AngularNodeAppEngine> = (() => {
   return (import(/* @vite-ignore */ manifestUrl) as Promise<{ default: any }>).then(
     ({ default: manifest }) => {
       setAngularAppEngineManifest(manifest);
-      return new AngularNodeAppEngine();
+      // allowedHosts allows these production hostnames; NG_ALLOWED_HOSTS env var also works at runtime
+      const allowedHosts = (process.env['NG_ALLOWED_HOSTS'] ?? '').split(',').map(h => h.trim()).filter(Boolean);
+      return new AngularNodeAppEngine(allowedHosts.length ? { allowedHosts } : undefined);
     },
   );
 })();
 
 const app = express();
+
+// Trust reverse proxy headers (ACA, nginx) so Angular SSR gets the real hostname
+app.set('trust proxy', true);
 
 app.get('**', express.static(browserDistFolder, {
   maxAge: '1y',
