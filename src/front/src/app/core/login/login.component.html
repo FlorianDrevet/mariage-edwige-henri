@@ -1,52 +1,56 @@
-<form [formGroup]="loginForm" class="relative flex flex-row w-full h-screen">
-  <button type="button" (click)="goBack()" class="absolute top-4 left-4 flex items-center gap-1 font-montserrat text-sm text-gold-light hover:text-gold transition-colors">
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-    </svg>
-    Retour
-  </button>
+<form [formGroup]="loginForm" class="flex flex-row w-full h-screen">
   @if(!(screenService.isSmallScreen$ | async)) {
     <div class="container-2 w-2/3"></div>
   }
-  <div class="w-4/5 lg:w-1/3 flex flex-col items-center mt-auto mb-auto ml-auto mr-auto">
-    <img alt="Fleurs decoratives"
-         priority
-         height="200" ngSrc="assets/layout/middle_gold_flower.webp" width="800">
+  <div class="w-4/5 lg:w-1/3 flex flex-col ml-auto mr-auto h-full">
+    <div class="pt-4 pl-4">
+      <button type="button" (click)="goBack()" class="flex items-center gap-1 font-montserrat text-sm text-gold-light hover:text-gold transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+        </svg>
+        Retour
+      </button>
+    </div>
+    <div class="flex flex-col items-center my-auto">
+      <img alt="Fleurs decoratives"
+           priority
+           height="200" ngSrc="assets/layout/middle_gold_flower.webp" width="800">
 
-    <h1 class="font-montserrat text-3xl text-gold tracking-wider">Connexion</h1>
-    <p class="w-4/5 mt-12 font-montserrat text-justify mb-6 text-gold-light text-sm leading-relaxed">
-      En vous connectant, vous pourrez accéder aux informations concernant
-      la réception. Vous retrouverez les identifiants dans le faire part,
-      sur le carton de la réception.
-    </p>
+      <h1 class="font-montserrat text-3xl text-gold tracking-wider">Connexion</h1>
+      <p class="w-4/5 mt-12 font-montserrat text-justify mb-6 text-gold-light text-sm leading-relaxed">
+        En vous connectant, vous pourrez accéder aux informations concernant
+        la réception. Vous retrouverez les identifiants dans le faire part,
+        sur le carton de la réception.
+      </p>
 
-    <app-input
-      [icon]="icon.cilGroup"
-      [form]="loginForm"
-      [required]="true"
-      controlName="username"
-      class="mt-6"
-      placeholder="Identifiant"
-    ></app-input>
+      <app-input
+        [icon]="icon.cilGroup"
+        [form]="loginForm"
+        [required]="true"
+        controlName="username"
+        class="mt-6"
+        placeholder="Identifiant"
+      ></app-input>
 
-    <app-input
-      [icon]="icon.cilLockLocked"
-      [isPassword]="true"
-      [form]="loginForm"
-      [required]="true"
-      controlName="password"
-      class="mt-6"
-      placeholder="Mot de passe"
-    ></app-input>
+      <app-input
+        [icon]="icon.cilLockLocked"
+        [isPassword]="true"
+        [form]="loginForm"
+        [required]="true"
+        controlName="password"
+        class="mt-6"
+        placeholder="Mot de passe"
+      ></app-input>
 
-    @if (error) {
-      <p class="text-gold-light font-montserrat text-sm mt-6 w-4/5 text-center">{{error.toString()}}</p>
-    }
+      @if (error) {
+        <p class="text-gold-light font-montserrat text-sm mt-6 w-4/5 text-center">{{error.toString()}}</p>
+      }
 
-    @if (isLoading) {
-      <app-loader text="Connexion en cours" class="mt-8"></app-loader>
-    } @else {
-      <app-button (click)="onLoginClick()" class="mt-8">Connexion</app-button>
-    }
+      @if (isLoading) {
+        <app-loader text="Connexion en cours" class="mt-8"></app-loader>
+      } @else {
+        <app-button (click)="onLoginClick()" class="mt-8">Connexion</app-button>
+      }
+    </div>
   </div>
 </form>

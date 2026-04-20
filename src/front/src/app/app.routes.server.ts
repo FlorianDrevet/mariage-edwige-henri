@@ -1,38 +1,38 @@
 import {RenderMode, ServerRoute} from '@angular/ssr';
 
 export const serverRoutes: ServerRoute[] = [
-  // Static pages — prerender at build time (SSG)
+  // Static pages — rendered server-side (SSG prerender yields 0 routes with NgModules, use Server)
   {
     path: 'accueil',
-    renderMode: RenderMode.Prerender,
+    renderMode: RenderMode.Server,
   },
   {
     path: 'mariage',
-    renderMode: RenderMode.Prerender,
+    renderMode: RenderMode.Server,
   },
   {
     path: 'mariage/ceremonie-religieuse',
-    renderMode: RenderMode.Prerender,
+    renderMode: RenderMode.Server,
   },
   {
     path: 'mariage/vin-honneur',
-    renderMode: RenderMode.Prerender,
+    renderMode: RenderMode.Server,
   },
   {
     path: 'mariage/reception',
-    renderMode: RenderMode.Prerender,
+    renderMode: RenderMode.Server,
   },
   {
     path: 'mariage/photos',
-    renderMode: RenderMode.Prerender,
+    renderMode: RenderMode.Server,
   },
   {
     path: 'staff-officiel',
-    renderMode: RenderMode.Prerender,
+    renderMode: RenderMode.Server,
   },
   {
     path: 'contact',
-    renderMode: RenderMode.Prerender,
+    renderMode: RenderMode.Server,
   },
 
   // Auth-required pages — client-side rendering (no SSR needed)

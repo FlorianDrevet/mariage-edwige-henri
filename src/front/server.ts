@@ -8,7 +8,8 @@ import {
 import { ɵsetAngularAppEngineManifest as setAngularAppEngineManifest } from '@angular/ssr';
 import express from 'express';
 import { fileURLToPath } from 'node:url';
-import { dirname, resolve } from 'node:path';
+import { dirname, resolve, join } from 'node:path';
+import { readFile } from 'node:fs/promises';
 
 const serverDistFolder = dirname(fileURLToPath(import.meta.url));
 const browserDistFolder = resolve(serverDistFolder, '../browser');
@@ -40,10 +41,12 @@ app.get('**', (req, res, next) => {
     .then(engine => engine.handle(req))
     .then((response) => {
       if (response) {
-        writeResponseToNodeResponse(response, res);
-      } else {
-        next();
+        return writeResponseToNodeResponse(response, res);
       }
+      // Angular returns null for CSR routes or SSRF-rejected hosts → serve index.html
+      // so the Angular client-side router can take over.
+      res.sendFile('index.html', { root: browserDistFolder });
+      return;
     })
     .catch(next);
 });
@@ -56,12 +59,15 @@ app.listen(port, () => {
 export const reqHandler = createNodeRequestHandler((req, res, next) => {
   engineReady
     .then(engine => engine.handle(req))
-    .then((response) => {
+    .then((response): Promise<void> => {
       if (response) {
-        writeResponseToNodeResponse(response, res);
-      } else {
-        next();
+        return writeResponseToNodeResponse(response, res);
       }
+      // Raw Node.js ServerResponse — read index.html and send it for CSR fallback
+      return readFile(join(browserDistFolder, 'index.html')).then((content) => {
+        res.setHeader('Content-Type', 'text/html; charset=utf-8');
+        res.end(content);
+      });
     })
     .catch(next);
 });
