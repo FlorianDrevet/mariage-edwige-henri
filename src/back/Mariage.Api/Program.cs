@@ -43,7 +43,7 @@ builder.Services
     .AddApplication()
     .AddInfrastructure(builder.Configuration)
     .AddDbContextPool<MariageDbContext>(options =>
-        options.UseSqlServer(databaseConnectionString, sqlOptions => sqlOptions.EnableRetryOnFailure()))
+        options.UseNpgsql(databaseConnectionString, npgsqlOptions => npgsqlOptions.EnableRetryOnFailure()))
     .AddRateLimiter(options =>
     {
         options.AddFixedWindowLimiter("Login", opt =>

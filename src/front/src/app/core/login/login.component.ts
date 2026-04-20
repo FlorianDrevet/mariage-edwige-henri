@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, Inject, PLATFORM_ID} from '@angular/core';
-import {isPlatformBrowser} from '@angular/common';
+import {isPlatformBrowser, Location} from '@angular/common';
 import {cilGroup, cilLockLocked} from "@coreui/icons";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AxiosService} from "../../shared/services/axios.service";
@@ -26,6 +26,7 @@ export class LoginComponent implements AfterViewInit{
               private authService: AuthService,
               protected screenService: ScreenService,
               private router: Router,
+              private location: Location,
               @Inject(PLATFORM_ID) private platformId: Object) {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
@@ -49,6 +50,10 @@ export class LoginComponent implements AfterViewInit{
         });
       }
     })
+  }
+
+  public goBack(): void {
+    this.location.back();
   }
 
   public onLoginClick(): void {

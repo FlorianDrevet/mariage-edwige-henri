@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "dev": "ng serve --configuration=development --proxy-config proxy.conf.js",
+    "dev": "ng serve --configuration=development --proxy-config proxy.conf.js --port 4010",
     "serve:ssr:mariage-edwige-henri": "node dist/mariage-edwige-henri/server/server.mjs"
   },
   "private": true,
@@ -39,6 +39,7 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^21.2.6",
+    "@angular/build": "^21.2.7",
     "@angular/cli": "^21.2.6",
     "@angular/compiler-cli": "^21.2.7",
     "@types/express": "^4.17.25",

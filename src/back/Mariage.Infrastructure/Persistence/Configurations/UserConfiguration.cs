@@ -3,6 +3,7 @@ using Mariage.Domain.UserAggregate;
 using Mariage.Domain.UserAggregate.Entities;
 using Mariage.Domain.UserAggregate.ValueObjects;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Mariage.Infrastructure.Persistence.Configurations;
@@ -29,8 +30,13 @@ public class UserConfiguration: IEntityTypeConfiguration<User>
         builder.Property(picture => picture.PictureIds)
             .HasConversion(
                 ids => string.Join(',', ids.Select(id => id.Value)),
-                value => value.Split(',', StringSplitOptions.RemoveEmptyEntries).Select( id => PictureId.Create(Guid.Parse(id))).ToList()
-            );
+                value => value.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(id => PictureId.Create(Guid.Parse(id))).ToList()
+            )
+            .Metadata.SetValueComparer(new ValueComparer<List<PictureId>>(
+                (a, b) => a != null && b != null && a.SequenceEqual(b),
+                v => v.Aggregate(0, (h, id) => HashCode.Combine(h, id.Value.GetHashCode())),
+                v => v.ToList()
+            ));
     }
     
     private void ConfigureGuest(EntityTypeBuilder<User> builder)

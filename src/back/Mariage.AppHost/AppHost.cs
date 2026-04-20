@@ -21,6 +21,6 @@ var frontend = builder.AddJavaScriptApp("frontend", "./../../front", "dev")
     .WithNpm()
     .WithReference(api)
     .WaitFor(api)
-    .WithHttpEndpoint(port: 4200, targetPort: 4200, env: "NG_PORT", isProxied: false);
+    .WithHttpEndpoint(port: 4010, targetPort: 4010, env: "NG_PORT", isProxied: false);
 
 builder.Build().Run();

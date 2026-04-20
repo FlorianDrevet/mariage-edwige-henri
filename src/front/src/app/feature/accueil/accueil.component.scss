@@ -6,12 +6,13 @@
 .desktop-accueil {
   /* 19rem = nav header height */
   height: calc(100dvh - 19rem);
+  padding-bottom: 9rem;
   overflow: hidden;
 }
 
 /* Hero photo fills viewport height on desktop */
 .hero-photo {
-  height: calc(100dvh - 21rem);
+  height: calc(100dvh - 29rem);
   width: auto;
   max-width: 50vw;
   object-fit: contain;
