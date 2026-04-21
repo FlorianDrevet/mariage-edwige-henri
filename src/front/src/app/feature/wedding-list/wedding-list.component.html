@@ -13,6 +13,12 @@
       <app-loader text="Chargement de la liste" class="mt-12"></app-loader>
     }
 
+    @if (!giftState.isLoading() && giftState.categories().length === 0) {
+      <div class="mt-12 text-center">
+        <p class="text-base font-montserrat opacity-75">La liste de mariage sera bientôt disponible.</p>
+      </div>
+    }
+
     @for (cat of giftState.categories(); track cat.id; let i = $index) {
       @if (i === 0) {
         <app-category-gift
