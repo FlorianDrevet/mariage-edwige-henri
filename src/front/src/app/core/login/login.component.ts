@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Inject, PLATFORM_ID} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, Inject, PLATFORM_ID} from '@angular/core';
 import {isPlatformBrowser, Location} from '@angular/common';
 import {cilGroup, cilLockLocked} from "@coreui/icons";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
@@ -27,6 +27,7 @@ export class LoginComponent implements AfterViewInit{
               protected screenService: ScreenService,
               private router: Router,
               private location: Location,
+              private cdr: ChangeDetectorRef,
               @Inject(PLATFORM_ID) private platformId: Object) {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
@@ -97,6 +98,7 @@ export class LoginComponent implements AfterViewInit{
           else {
             console.error('Erreur de requête :', error.message);
           }
+          this.cdr.detectChanges();
         });
     } else {
       console.error("Form is invalid");
