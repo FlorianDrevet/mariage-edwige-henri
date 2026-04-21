@@ -69,3 +69,12 @@
 .image-from-wedding {
   @apply sm:h-[400px] h-auto w-auto
 }
+
+.empty-photos {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 48px 0;
+}

@@ -44,8 +44,9 @@ export class PhotoListComponent implements OnInit{
         this.pageNumber = 1;
         this.hasNextPage = false;
         this.isLoading = false;
-        }
-      );
+        }).catch(() => {
+          this.isLoading = false;
+        });
       return;
     }
     if(filter === PictureFilterEnum.PHOTOGRAPH) {
@@ -54,8 +55,9 @@ export class PhotoListComponent implements OnInit{
           this.pageNumber = 1;
           this.hasNextPage = false;
           this.isLoading = false;
-        }
-      );
+        }).catch(() => {
+          this.isLoading = false;
+        });
       return;
     }
 
@@ -74,14 +76,16 @@ export class PhotoListComponent implements OnInit{
         this.hasNextPage = response.hasNextPage;
         this.pageNumber++;
         this.isLoading = false;
-      }
-    );
+      }).catch(() => {
+        this.isLoading = false;
+      });
   }
 
   public Reset(filter: PictureFilterEnum) {
     this.photos = [];
     this.pageNumber = 1;
     this.hasNextPage = true;
+    this.isLoading = false;
     this.loadPhotos(filter);
   }
 
