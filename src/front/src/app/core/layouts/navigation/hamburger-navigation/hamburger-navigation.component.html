@@ -19,17 +19,17 @@
     </ul>
   </nav>
 
-  <div (click)="onCloseNavClicked()" class="mt-auto mb-10 w-full flex flex-col items-center">
+  <div (click)="onCloseNavClicked()" class="mt-auto mb-10 w-full flex flex-col items-center gap-1">
     @if (authService.isAdmin()) {
-      <app-button routerUrl="/utilisateurs" class="w-full">Invités</app-button>
-      <app-button routerUrl="/hebergements" class="w-full">Hébergements</app-button>
+      <app-button routerUrl="/utilisateurs">Invités</app-button>
+      <app-button routerUrl="/hebergements">Hébergements</app-button>
     }
     @if (authService.isAuthenticated()) {
-      <app-button routerUrl="/profils" class="w-full">Profil</app-button>
-      <app-button (click)="onLogoutClick()" class="w-full">Déconnexion</app-button>
+      <app-button routerUrl="/profils">Profil</app-button>
+      <app-button (click)="onLogoutClick()">Déconnexion</app-button>
     }
     @else {
-      <app-button routerUrl="/login" class="w-full">Connexion</app-button>
+      <app-button routerUrl="/login">Connexion</app-button>
     }
   </div>
 
