@@ -16,8 +16,8 @@ export class ModelCreateGiftComponent {
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
   icon = {cilGift, cilMoney};
   createGiftForm: FormGroup;
-  image: File | undefined;
-  file: any | undefined;
+  imagePreview: string | null = null;
+  file: File | null = null;
   newCategoryName = '';
 
   constructor(private fb: FormBuilder,
@@ -34,23 +34,35 @@ export class ModelCreateGiftComponent {
 
   onFileSelected() {
     const inputNode = this.fileInput?.nativeElement;
-    if (!inputNode) return;
-    this.file = inputNode.files?.[0];
-    if (typeof (FileReader) !== 'undefined' && this.file) {
-      const reader = new FileReader();
+    if (!inputNode?.files?.[0]) return;
+    this.loadFile(inputNode.files[0]);
+  }
 
-      reader.onload = (e: any) => {
-        this.image = e.target!.result;
-      };
+  onDragOver(event: DragEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
 
-      reader.readAsDataURL(this.file);
+  onDrop(event: DragEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+    const droppedFile = event.dataTransfer?.files?.[0];
+    if (droppedFile && droppedFile.type.startsWith('image/')) {
+      this.loadFile(droppedFile);
+      this.createGiftForm.patchValue({imageFile: droppedFile.name});
+      this.createGiftForm.get('imageFile')?.markAsTouched();
     }
   }
 
+  private loadFile(file: File) {
+    this.file = file;
+    this.imagePreview = URL.createObjectURL(file);
+  }
+
   createGift() {
-    const gift = this.createGiftForm.value
+    const gift = this.createGiftForm.value;
     const formData = new FormData();
-    formData.append("ImageFile", this.file);
+    formData.append("ImageFile", this.file!);
     formData.append("name", gift.name);
     formData.append("price", gift.price.toString());
     formData.append("category", gift.category);
@@ -58,7 +70,7 @@ export class ModelCreateGiftComponent {
   }
 
   onCreateGiftClick() {
-    const formData = this.createGift()
+    const formData = this.createGift();
     this.axiosService.request(
       MethodEnum.POST,
       "/wedding-list",
@@ -66,9 +78,8 @@ export class ModelCreateGiftComponent {
       {"Content-Type": "multipart/form-data"},
       true
     ).then(_ => {
-      this.image = undefined
-      this.createGiftForm.reset()
-    })
+      this.resetForm();
+    });
   }
 
   onAddCategory(): void {
@@ -84,5 +95,14 @@ export class ModelCreateGiftComponent {
     this.giftApi.deleteCategory(id).then(() => {
       this.giftState.refreshCategories();
     });
+  }
+
+  private resetForm() {
+    if (this.imagePreview) {
+      URL.revokeObjectURL(this.imagePreview);
+    }
+    this.imagePreview = null;
+    this.file = null;
+    this.createGiftForm.reset();
   }
 }

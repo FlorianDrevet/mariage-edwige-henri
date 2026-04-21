@@ -10,21 +10,27 @@ namespace Mariage.Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "Category",
-                table: "Gifts",
-                type: "nvarchar(100)",
-                maxLength: 100,
-                nullable: false,
-                defaultValue: "");
+            // The DB may have the old owned-type column "Category_Value" instead of "Category".
+            // Rename it if it exists; otherwise add the column fresh.
+            migrationBuilder.Sql("""
+                IF COL_LENGTH('Gifts', 'Category_Value') IS NOT NULL
+                BEGIN
+                    EXEC sp_rename 'Gifts.Category_Value', 'Category', 'COLUMN';
+                END
+                ELSE IF COL_LENGTH('Gifts', 'Category') IS NULL
+                BEGIN
+                    ALTER TABLE [Gifts] ADD [Category] nvarchar(100) NOT NULL DEFAULT '';
+                END
+                """);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
+            migrationBuilder.RenameColumn(
                 name: "Category",
-                table: "Gifts");
+                table: "Gifts",
+                newName: "Category_Value");
         }
     }
 }

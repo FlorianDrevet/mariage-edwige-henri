@@ -1,0 +1,23 @@
+:host ::ng-deep .modal-content {
+  background-color: #6f0523;
+  border: 1px solid rgba(218, 187, 127, 0.2);
+  border-radius: 1rem;
+}
+
+:host ::ng-deep .modal-header {
+  border-bottom: 1px solid rgba(218, 187, 127, 0.15);
+  padding: 1.25rem 1.5rem;
+}
+
+:host ::ng-deep .modal-body {
+  padding: 1.5rem;
+}
+
+:host ::ng-deep .modal-footer {
+  border-top: 1px solid rgba(218, 187, 127, 0.15);
+  padding: 1rem 1.5rem;
+}
+
+:host ::ng-deep .btn-close {
+  filter: invert(0.8) sepia(1) saturate(3) hue-rotate(10deg);
+}
