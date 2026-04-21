@@ -1,7 +1,7 @@
 <div class="sidenav flex flex-col" [ngClass]="{'open': isOpen}">
   <button type="button"
           (click)="onCloseNavClicked()"
-          class="bg-primary-light rounded-md p-2 inline-flex items-center text-gold m-2 mr-auto">
+          class="self-start rounded-md p-2 inline-flex items-center text-gold m-2">
     <span class="sr-only">Close menu</span>
     <svg class="h-8 w-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -19,7 +19,7 @@
     </ul>
   </nav>
 
-  <div (click)="onCloseNavClicked()" class="mt-auto mb-10 ml-auto mr-auto flex flex-col">
+  <div (click)="onCloseNavClicked()" class="mt-auto mb-10 w-full flex flex-col items-center">
     @if (authService.isAdmin()) {
       <app-button routerUrl="/utilisateurs" class="w-full">Invités</app-button>
       <app-button routerUrl="/hebergements" class="w-full">Hébergements</app-button>
