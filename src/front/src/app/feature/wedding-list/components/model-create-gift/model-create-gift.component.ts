@@ -79,6 +79,7 @@ export class ModelCreateGiftComponent {
       true
     ).then(_ => {
       this.resetForm();
+      this.giftState.loadProducts();
     });
   }
 
