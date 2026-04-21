@@ -9,6 +9,7 @@ namespace Mariage.Infrastructure.Persistence;
 public class MariageDbContext(DbContextOptions<MariageDbContext> options) : DbContext(options)
 {
     public DbSet<Gift> Gifts { get; set; } = null!;
+    public DbSet<GiftCategory> GiftCategories { get; set; } = null!;
     public DbSet<User> Users { get; set; } = null!;
     public DbSet<Picture> Pictures { get; set; } = null!;
     public DbSet<Accommodation> Accommodations { get; set; } = null!;

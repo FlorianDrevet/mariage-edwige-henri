@@ -1,11 +1,4 @@
-export enum  CategoryEnum {
-  HomeAppliances,
-  Decorations,
-  TableArts,
-  Digestives,
-  Furniture,
-  HouseholdLinens,
-  Kitchen,
-  Santons,
-  HoneyMoon,
+export interface GiftCategoryInterface {
+  id: string;
+  name: string;
 }

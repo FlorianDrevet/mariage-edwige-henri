@@ -21,8 +21,7 @@
     <PackageReference Include="Aspire.Hosting.Azure.ContainerRegistry"/>
     <PackageReference Include="Aspire.Hosting.Azure.Storage" />
     <PackageReference Include="Aspire.Hosting.JavaScript" />
-    <PackageReference Include="Aspire.Hosting.PostgreSQL" />
-    <PackageReference Include="CommunityToolkit.Aspire.Hosting.PostgreSQL.Extensions" />
+    <PackageReference Include="Aspire.Hosting.SqlServer" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" />
   </ItemGroup>
 

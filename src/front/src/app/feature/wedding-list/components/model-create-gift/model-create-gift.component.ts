@@ -3,7 +3,7 @@ import {cilGift, cilMoney} from "@coreui/icons";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AxiosService} from "../../../../shared/services/axios.service";
 import {MethodEnum} from "../../../../shared/enums/method.enum";
-import {CategoryEnum} from "../../../../shared/enums/category.enum";
+import {GiftStateService} from "../../../../shared/services/gift-state.service";
 
 @Component({
   standalone: false,
@@ -19,7 +19,8 @@ export class ModelCreateGiftComponent {
   file: any | undefined;
 
   constructor(private fb: FormBuilder,
-              private axiosService: AxiosService) {
+              private axiosService: AxiosService,
+              protected giftState: GiftStateService) {
     this.createGiftForm = this.fb.group({
       name: ['', Validators.required],
       price: ['', Validators.required],
@@ -66,6 +67,4 @@ export class ModelCreateGiftComponent {
       this.createGiftForm.reset()
     })
   }
-
-  protected readonly CategoryEnum = CategoryEnum;
 }

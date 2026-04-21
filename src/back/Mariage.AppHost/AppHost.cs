@@ -5,12 +5,11 @@ var acr = builder.AddAzureContainerRegistry("wedding-acr");
 var acaEnv = builder.AddAzureContainerAppEnvironment("aca-wedding-env")
     .WithAzureContainerRegistry(acr);
 
-var postgres = builder.AddPostgres("postgres")
-    .WithDbGate()
+var sqlServer = builder.AddSqlServer("sql")
     .WithDataVolume(isReadOnly: false)
     .WithLifetime(ContainerLifetime.Persistent);
 
-var postgresdb = postgres.AddDatabase("postgresdb");
+var sqldb = sqlServer.AddDatabase("sqldb");
 
 var storage = builder.AddAzureStorage("storage")
     .RunAsEmulator(emulator => emulator
@@ -21,8 +20,8 @@ var blobs = storage.AddBlobs("blobs");
 
 var api = builder.AddProject<Projects.Mariage_Api>("api")
     .WithExternalHttpEndpoints()
-    .WithReference(postgresdb)
-    .WaitFor(postgresdb)
+    .WithReference(sqldb)
+    .WaitFor(sqldb)
     .WithReference(blobs)
     .WaitFor(blobs)
     .WithEnvironment(ctx =>

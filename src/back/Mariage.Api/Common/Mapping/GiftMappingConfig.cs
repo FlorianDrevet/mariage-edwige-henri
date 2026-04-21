@@ -1,4 +1,3 @@
-using Azure.Core;
 using Mapster;
 using Mariage.Application.Gifts.Commands.CreateGift;
 using Mariage.Application.Gifts.Commands.CreateGiftParticipation;
@@ -17,18 +16,18 @@ public class GiftMappingConfig: IRegister
         config.NewConfig<(CreateGiftRequest Request, string urlImage), CreateGiftCommand>()
             .Map(dest => dest.Name, src => src.Request.Name)
             .Map(dest => dest.Price, src => src.Request.Price)
-            .Map(dest => dest.Category, src => new GiftCategory(src.Request.Category))
+            .Map(dest => dest.Category, src => src.Request.Category)
             .Map(dest => dest.UrlImage, src => src.urlImage);
 
         config.NewConfig<(UpdateGiftRequest Request, string urlImage, GiftId GiftId), UpdateGiftCommand>()
             .Map(dest => dest.GiftId, src => src.GiftId)
             .Map(dest => dest.Name, src => src.Request.Name)
             .Map(dest => dest.Price, src => src.Request.Price)
-            .Map(dest => dest.Category, src => new GiftCategory(src.Request.Category))
+            .Map(dest => dest.Category, src => src.Request.Category)
             .Map(dest => dest.UrlImage, src => src.urlImage);
 
         config.NewConfig<Gift, GiftResponse>()
-            .Map(dest => dest.Category, src => (int)src.Category.Value)
+            .Map(dest => dest.Category, src => src.Category)
             .Map(dest => dest.Id, src => src.Id.Value);
 
         config.NewConfig<GiftGiver, GiftGiverResponse>()
@@ -38,5 +37,9 @@ public class GiftMappingConfig: IRegister
             .Map(dest => dest.GiftId,
                 src => new GiftId(src.GiftId))
             .Map(dest => dest, src => src.Request);
+
+        config.NewConfig<GiftCategory, GiftCategoryResponse>()
+            .Map(dest => dest.Id, src => src.Id.Value.ToString())
+            .Map(dest => dest.Name, src => src.Name);
     }
 }

@@ -42,6 +42,8 @@ public class GiftConfiguration: IEntityTypeConfiguration<Gift>
                 id => id.Value,
                 value => GiftId.Create(value)
             );
-        builder.ComplexProperty(gift => gift.Category);
+        builder.Property(gift => gift.Category)
+            .IsRequired()
+            .HasMaxLength(100);
     }
 }

@@ -63,7 +63,8 @@ docs/                                   — Learning wiki (pagination, lazy load
 |-----------|-------|----------------|
 | **User** | `UserAggregate/User.cs` | Username, Email?, Password, Salt, Role, PictureIds (favorites), Guests (owned) |
 | └ Guest | `UserAggregate/Entities/Guest.cs` | FirstName, LastName, IsComing |
-| **Gift** | `GiftAggregate/Gift.cs` | Name, Price, Participation, UrlImage, Category (VO), GiftGivers (owned) |
+| **Gift** | `GiftAggregate/Gift.cs` | Name, Price, Participation, UrlImage, Category (string), GiftGivers (owned) |
+| **GiftCategory** | `GiftAggregate/GiftCategory.cs` | Name (unique) — dynamic categories managed via admin UI |
 | └ GiftGiver | `GiftAggregate/Entities/GiftGiver.cs` | FirstName, LastName, Email?, Amount |
 | **Picture** | `PictureAggregate/Picture.cs` | UserId, UrlImage, CreatedAt |
 | **Accommodation** | `AccommodationAggregate/Accommodation.cs` | Title, Description, UrlImage, AccommodationAssignments (owned) |
@@ -77,7 +78,7 @@ docs/                                   — Learning wiki (pagination, lazy load
 | `GuestId` | `UserAggregate/ValueObjects/` | Guid wrapper |
 | `GiftId` | `GiftAggregate/ValueObjects/` | Guid wrapper |
 | `GiftGiverId` | `GiftAggregate/ValueObjects/` | Guid wrapper |
-| `GiftCategory` | `GiftAggregate/ValueObjects/` | Enum VO (HomeAppliances, Decorations, TableArts, Digestives, Furniture, HouseholdLinens, Kitchenware, Santons, Honeymoon) |
+| `GiftCategoryId` | `GiftAggregate/ValueObjects/` | Guid wrapper |
 | `PictureId` | `PictureAggregate/ValueObject/` | Guid wrapper |
 | `AccommodationId` | `AccommodationAggregate/ValueObjects/` | Guid wrapper |
 | `AccommodationAssignmentId` | `AccommodationAggregate/ValueObjects/` | Guid wrapper |
@@ -116,8 +117,11 @@ All in `Mariage.Domain/Common/Errors/` as `partial class Errors`.
 |------|-------|----------|
 | Command | `CreateGiftCommand` | `Application/Gifts/Commands/CreateGift/` |
 | Command | `CreateGiftParticipationCommand` | `Application/Gifts/Commands/CreateGiftParticipation/` |
+| Command | `CreateGiftCategoryCommand` | `Application/Gifts/Commands/CreateGiftCategory/` |
+| Command | `DeleteGiftCategoryCommand` | `Application/Gifts/Commands/DeleteGiftCategory/` |
 | Query | `GetGiftQuery` | `Application/Gifts/Queries/GetGifts/` |
 | Query | `GetGiftByIdQuery` | `Application/Gifts/Queries/GetGiftById/` |
+| Query | `GetGiftCategoriesQuery` | `Application/Gifts/Queries/GetGiftCategories/` |
 
 ### 4.3 Pictures
 | Type | Class | Location |
@@ -543,4 +547,5 @@ cd src/back && dotnet ef database update --project Mariage.Infrastructure --star
 | 2026-04-20 | **Refactor profil/users → Angular 21 best practices** — Fix bug "page vide à la 1ère navigation" (cause : axios+Promise hors zone après hydration). Pattern cible : `HttpClient` + `Observable` + `rxResource({ stream })` + `inject()` + `signals` + `computed()` + `ChangeDetectionStrategy.OnPush`. Créé `auth.interceptor.ts` (functional `HttpInterceptorFn`, JWT Bearer, SSR-safe). `UsersApi` + `ProfilApi` réécrits HttpClient/Observable. `ProfilComponent` : `rxResource` + `computed` (profil, isLoading) + `effect` (sync FormGroup + Discord notif one-shot). `UsersComponent` : `rxResource` + tout l'état modal en signals (`selectedUserId`, `deleteUserName`…). `ToggleButtonComponent` : `input.required<>()` signal-based + `.subscribe()` ajouté (était manquant, requête ne partait pas). `ModalAddUserComponent` : AxiosService→HttpClient direct. AppModule : `withInterceptors([authInterceptor])` ajouté. AxiosService conservé pour code legacy non-refacto (login, gift.api, pictures.api, model-create-gift). |
 | 2026-04-20 | **Fix "Cannot GET /accueil" en production** — `AngularNodeAppEngine.handle()` retourne `null` pour les routes CSR ou quand SSRF bloque le hostname ; l'ancien code appelait `next()` sans middleware suivant → "Cannot GET". Fix : fallback `res.sendFile('index.html', { root: browserDistFolder })` dans le handler Express + `readFile(join(browserDistFolder, 'index.html'))` dans `createNodeRequestHandler` (raw Node `ServerResponse`, pas d'Express `sendFile`). Toutes les routes `RenderMode.Prerender` → `RenderMode.Server` (Prerender non supporté avec NgModules). Piège ACA : si on redéploie avec le même image tag et qu'un `az containerapp update` sans `--revision-suffix` retourne une révision existante dont le container a été créé AVANT le nouveau push → la vieille image tourne encore. Solution : forcer une nouvelle révision avec `--revision-suffix`. Build ACR `ddd`, révision `fix-cannotget` déployée. Toutes les routes testées 200 OK. |
 | 2026-04-20 | **Feature hébergements (Accommodation)** — Nouvel agrégat DDD `Accommodation` + `AccommodationAssignment` (owned). 6 commands + 2 queries CQRS (create, update, delete, assign, unassign, respond, getAll, getMy). 8 endpoints API REST (`/accommodations/*`). EF Core config + migration `AddAccommodation`. Frontend : page admin `/hebergements` (CRUD chambres + assign/unassign utilisateurs), section profil utilisateur (voir chambre assignée + accepter/refuser). AccommodationsModule + routing + navigation admin. |
+| 2026-04-21 | **Dynamic gift categories + remove Honeymoon** — `GiftCategory` converted from enum VO to `AggregateRoot<GiftCategoryId>` (Name, unique index). `Gift.Category` changed from `GiftCategory` VO to `string`. 3 new CQRS operations: `GetGiftCategories`, `CreateGiftCategory`, `DeleteGiftCategory` (blocked if in use). 3 new API endpoints (`GET/POST/DELETE /wedding-list/categories`). `IGiftCategoryRepository` + EF config + migration `DynamicGiftCategories`. Frontend: `CategoryEnum` removed, replaced by dynamic categories from API. Admin UI panel to add/delete categories. All Honeymoon special-case code removed (product, gift detail, category-gift components). `FormsModule` added to `WeddingListModule`. |
 | 2026-04-20 | **Fix Angular SSR manifest + Aspire/Azure infrastructure** — (1) `angular.json` builder changé de `@angular-devkit/build-angular:application` vers `@angular/build:application` (nécessaire pour générer `angular-app-engine-manifest.mjs` et résoudre "Angular app engine manifest is not set"). (2) `server.ts` réécrit : lazy manifest init via IIFE Promise, `app.set('trust proxy', true)`, `allowedHosts` depuis `NG_ALLOWED_HOSTS` env var. (3) `@angular/build` installé avec `--legacy-peer-deps` ; `Dockerfile` mis à jour (`npm ci --legacy-peer-deps`) ; `package-lock.json` régénéré. (4) `Program.cs` : `UseSqlServer` → `UseNpgsql`. (5) `UserConfiguration.cs` : `ValueComparer<List<PictureId>>` ajouté (corrige NullReferenceException dans MigrationsModelDiffer). (6) Migration `InitialSqlServer` supprimée, `InitialCreate` recréée avec types PostgreSQL. (7) `AppHost.cs` + `package.json` : port frontend 4200→4010. (8) Azure ACA `aca-frontend-weh` : `NG_ALLOWED_HOSTS` env var configurée, image déployée (révision 0000012), serveur opérationnel sans erreur. |

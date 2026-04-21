@@ -1,5 +1,4 @@
 import {GiftGiverInterface} from "./giftGiver.interface";
-import {CategoryEnum} from "../enums/category.enum";
 
 export interface ProductInterface {
   id: string,
@@ -8,5 +7,5 @@ export interface ProductInterface {
   urlImage: string,
   participation: number,
   giftGivers: GiftGiverInterface[],
-  category: CategoryEnum,
+  category: string,
 }

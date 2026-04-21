@@ -3,98 +3,53 @@
 
     <app-title-wedding>Notre liste de mariage</app-title-wedding>
 
+    @if (authService.isAdmin()) {
+      <div class="mb-8 p-4 gradient-box">
+        <h3 class="font-montserrat text-base mb-4">Gérer les catégories</h3>
+        <div class="flex flex-row flex-wrap gap-2 mb-4">
+          @for (cat of giftState.categories(); track cat.id) {
+            <div class="flex items-center gap-1 px-3 py-1 rounded-full bg-primary-dark text-gold text-sm font-montserrat">
+              <span>{{ cat.name }}</span>
+              <button (click)="onDeleteCategory(cat.id)" class="ml-1 text-gold-light hover:text-gold cursor-pointer">&times;</button>
+            </div>
+          }
+        </div>
+        <div class="flex flex-row gap-2">
+          <input
+            type="text"
+            [(ngModel)]="newCategoryName"
+            placeholder="Nouvelle catégorie"
+            class="px-3 py-2 rounded bg-primary-dark text-gold border border-gold-dark font-montserrat text-sm"
+            (keyup.enter)="onAddCategory()"
+          >
+          <app-button (click)="onAddCategory()">Ajouter</app-button>
+        </div>
+      </div>
+    }
+
     @if (giftState.isLoading()) {
       <app-loader text="Chargement de la liste" class="mt-12"></app-loader>
     }
 
-    <app-category-gift
-      [title]="'Voyage de Noces'"
-      [category]="CategoryEnum.HoneyMoon"
-      [products]="giftState.products()"
-    ></app-category-gift>
-
-    <app-category-gift
-      [title]="'Arts de la table'"
-      [category]="CategoryEnum.TableArts"
-      [products]="giftState.products()"
-    ></app-category-gift>
-
-    @defer (on viewport; hydrate on viewport) {
-      <app-category-gift
-        class="mt-12"
-        [title]="'Cuisine'"
-        [category]="CategoryEnum.Kitchen"
-        [products]="giftState.products()"
-      ></app-category-gift>
-    } @placeholder {
-      <div class="mt-12 h-48"></div>
-    }
-
-    @defer (on viewport; hydrate on viewport) {
-      <app-category-gift
-        class="mt-12"
-        [title]="'Electroménager'"
-        [category]="CategoryEnum.HomeAppliances"
-        [products]="giftState.products()"
-      ></app-category-gift>
-    } @placeholder {
-      <div class="mt-12 h-48"></div>
-    }
-
-    @defer (on viewport; hydrate on viewport) {
-      <app-category-gift
-        class="mt-12"
-        [title]="'Ameublement'"
-        [category]="CategoryEnum.Furniture"
-        [products]="giftState.products()"
-      ></app-category-gift>
-    } @placeholder {
-      <div class="mt-12 h-48"></div>
-    }
-
-    @defer (on viewport; hydrate on viewport) {
-      <app-category-gift
-        class="mt-12"
-        [title]="'Décorations'"
-        [category]="CategoryEnum.Decorations"
-        [products]="giftState.products()"
-      ></app-category-gift>
-    } @placeholder {
-      <div class="mt-12 h-48"></div>
-    }
-
-    @defer (on viewport; hydrate on viewport) {
-      <app-category-gift
-        class="mt-12"
-        [title]="'Linge de maison'"
-        [category]="CategoryEnum.HouseholdLinens"
-        [products]="giftState.products()"
-      ></app-category-gift>
-    } @placeholder {
-      <div class="mt-12 h-48"></div>
-    }
-
-    @defer (on viewport; hydrate on viewport) {
-      <app-category-gift
-        class="mt-12"
-        [title]="'Digestifs'"
-        [category]="CategoryEnum.Digestives"
-        [products]="giftState.products()"
-      ></app-category-gift>
-    } @placeholder {
-      <div class="mt-12 h-48"></div>
-    }
-
-    @defer (on viewport; hydrate on viewport) {
-      <app-category-gift
-        class="mt-12"
-        [title]="'Santons'"
-        [category]="CategoryEnum.Santons"
-        [products]="giftState.products()"
-      ></app-category-gift>
-    } @placeholder {
-      <div class="mt-12 h-48"></div>
+    @for (cat of giftState.categories(); track cat.id; let i = $index) {
+      @if (i === 0) {
+        <app-category-gift
+          [title]="cat.name"
+          [categoryName]="cat.name"
+          [products]="giftState.products()"
+        ></app-category-gift>
+      } @else {
+        @defer (on viewport; hydrate on viewport) {
+          <app-category-gift
+            class="mt-12"
+            [title]="cat.name"
+            [categoryName]="cat.name"
+            [products]="giftState.products()"
+          ></app-category-gift>
+        } @placeholder {
+          <div class="mt-12 h-48"></div>
+        }
+      }
     }
   </div>
 </div>
-

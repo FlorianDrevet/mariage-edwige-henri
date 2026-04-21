@@ -1,6 +1,5 @@
 import {Component, Input} from '@angular/core';
 import {ProductInterface} from "../../../../shared/interfaces/product.interface";
-import { CategoryEnum } from '../../../../shared/enums/category.enum';
 
 @Component({
   standalone: false,
@@ -9,9 +8,7 @@ import { CategoryEnum } from '../../../../shared/enums/category.enum';
   styleUrl: './category-gift.component.scss'
 })
 export class CategoryGiftComponent {
-    @Input() public category!: CategoryEnum;
+    @Input() public categoryName!: string;
     @Input() public title!: string;
     @Input() public products!: ProductInterface[];
-
-    protected readonly CategoryEnum = CategoryEnum;
 }

@@ -15,7 +15,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Npgsql;
 
 namespace Mariage.Infrastructure;
 
@@ -42,6 +41,7 @@ public static class DependencyInjection
         {
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IGiftRepository, GiftRepository>();
+            services.AddScoped<IGiftCategoryRepository, GiftCategoryRepository>();
             services.AddScoped<IPictureRepository, PictureRepository>();
             services.AddScoped<IAccommodationRepository, AccommodationRepository>();
             return services;

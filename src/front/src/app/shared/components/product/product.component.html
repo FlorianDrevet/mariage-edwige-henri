@@ -12,18 +12,12 @@
           </a>
         </h3>
       </div>
-      @if (product.category != CategoryEnum.HoneyMoon) {
-        <p class="text-xs font-medium text-gold-light">{{product.participation}} / {{product.price | price}}</p>
-      }
+      <p class="text-xs font-medium text-gold-light">{{product.participation}} / {{product.price | price}}</p>
     </div>
-    @if (product.category != CategoryEnum.HoneyMoon) {
-      <c-progress class="mb-2 mt-2">
-        <c-progress-bar color="warning" [value]="product.participation/product.price * 100">
-          {{product.participation/product.price * 100 | percentage}}%
-        </c-progress-bar>
-      </c-progress>
-    }
+    <c-progress class="mb-2 mt-2">
+      <c-progress-bar color="warning" [value]="product.participation/product.price * 100">
+        {{product.participation/product.price * 100 | percentage}}%
+      </c-progress-bar>
+    </c-progress>
   </div>
 </div>
-
-

@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from "../../shared/services/auth.service";
-import {CategoryEnum} from "../../shared/enums/category.enum";
 import {GiftStateService} from "../../shared/services/gift-state.service";
+import {GiftApi} from "../../shared/apis/gift.api";
 
 @Component({
   standalone: false,
@@ -11,12 +11,29 @@ import {GiftStateService} from "../../shared/services/gift-state.service";
 })
 export class WeddingListComponent implements OnInit {
 
+  newCategoryName = '';
+
   constructor(protected giftState: GiftStateService,
-              protected authService: AuthService) {}
+              protected authService: AuthService,
+              private giftApi: GiftApi) {}
 
   ngOnInit(): void {
     this.giftState.loadProducts();
+    this.giftState.loadCategories();
   }
 
-  protected readonly CategoryEnum = CategoryEnum;
+  onAddCategory(): void {
+    const name = this.newCategoryName.trim();
+    if (!name) return;
+    this.giftApi.createCategory(name).then(() => {
+      this.newCategoryName = '';
+      this.giftState.refreshCategories();
+    });
+  }
+
+  onDeleteCategory(id: string): void {
+    this.giftApi.deleteCategory(id).then(() => {
+      this.giftState.refreshCategories();
+    });
+  }
 }

@@ -13,21 +13,21 @@ public sealed class Gift : AggregateRoot<GiftId>
     public float Price { get; private set; }
     public float Participation { get; private set; } = 0;
     public string UrlImage { get; private set; } = null!;
-    public GiftCategory Category { get; private set; } = null!;
+    public string Category { get; private set; } = null!;
     
     public IReadOnlyList<GiftGiver> GiftGivers => _giftGivers.AsReadOnly();
     
-    private Gift(GiftId giftId, string name, float price, string urlImage, GiftCategory giftCategory) : base(giftId)
+    private Gift(GiftId giftId, string name, float price, string urlImage, string category) : base(giftId)
     {
         Name = name;
         Price = price;
         UrlImage = urlImage;
-        Category = giftCategory;
+        Category = category;
     }
     
-    public static Gift Create(string name, float price, string urlImage, GiftCategory giftCategory)
+    public static Gift Create(string name, float price, string urlImage, string category)
     {
-        return new Gift(GiftId.CreateUnique(), name, price, urlImage, giftCategory);
+        return new Gift(GiftId.CreateUnique(), name, price, urlImage, category);
     }
     
     public Gift(){}
@@ -38,7 +38,7 @@ public sealed class Gift : AggregateRoot<GiftId>
         Participation += giftGiver.Amount;
     }
 
-    public void Update(string name, float price, string urlImage, GiftCategory category)
+    public void Update(string name, float price, string urlImage, string category)
     {
         Name = name;
         Price = price;

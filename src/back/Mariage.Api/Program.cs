@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>();
 var databaseConnectionString =
-    builder.Configuration.GetConnectionString("postgresdb") ??
+    builder.Configuration.GetConnectionString("sqldb") ??
     builder.Configuration.GetConnectionString("MariageDatabase") ??
     throw new InvalidOperationException("A database connection string must be configured.");
 
@@ -43,7 +43,7 @@ builder.Services
     .AddApplication()
     .AddInfrastructure(builder.Configuration)
     .AddDbContextPool<MariageDbContext>(options =>
-        options.UseNpgsql(databaseConnectionString, npgsqlOptions => npgsqlOptions.EnableRetryOnFailure()))
+        options.UseSqlServer(databaseConnectionString, sqlOptions => sqlOptions.EnableRetryOnFailure()))
     .AddRateLimiter(options =>
     {
         options.AddFixedWindowLimiter("Login", opt =>

@@ -4,7 +4,6 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {GiftApi} from "../../shared/apis/gift.api";
 import {AuthService} from "../../shared/services/auth.service";
 import {DiscordNotificationService} from "../../shared/services/discord-notification.service";
-import {CategoryEnum} from "../../shared/enums/category.enum";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {cilGift, cilMoney} from "@coreui/icons";
 import {GiftStateService} from "../../shared/services/gift-state.service";
@@ -27,7 +26,6 @@ export class GiftComponent implements OnInit {
 
   private currentId: string | null = null;
 
-  /** Raccourci vers le signal gift pour simplifier le template. */
   get gift(): ProductInterface | null {
     return this.giftState.gift();
   }
@@ -48,6 +46,7 @@ export class GiftComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadProduct();
+    this.giftState.loadCategories();
   }
 
   onClickedLydia() {
@@ -144,6 +143,4 @@ export class GiftComponent implements OnInit {
       this.router.navigate(['/liste-de-mariage']);
     });
   }
-
-  protected readonly CategoryEnum = CategoryEnum;
 }

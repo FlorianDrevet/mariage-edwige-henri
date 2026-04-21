@@ -20,7 +20,6 @@
         <PackageReference Include="Microsoft.Extensions.Configuration" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
         <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />
-        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.Design" />
         <PackageReference Include="Swashbuckle.AspNetCore" />
         <PackageReference Include="System.IdentityModel.Tokens.Jwt" />
     </ItemGroup>

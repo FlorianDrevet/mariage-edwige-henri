@@ -6,5 +6,5 @@ public record UpdateGiftRequest(
     string Name,
     float Price,
     IFormFile? ImageFile,
-    int Category
+    string Category
 );

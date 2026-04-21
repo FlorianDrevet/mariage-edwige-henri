@@ -35,13 +35,11 @@
                        appNoCommaInput appNumberInput [(ngModel)]="value"/>
                 <button class="btn btn-right" (click)="onUpClick()">+</button>
               </div>
-              @if(gift.category != CategoryEnum.HoneyMoon) {
-                <p class="font-viga mt-2 text-sm" [ngClass]="{
-                  'error' : value > (gift.price - gift.participation) || value < 0
-                }">
-                  Maximum: {{(gift.price - gift.participation) | price}}
-                </p>
-              }
+              <p class="font-viga mt-2 text-sm" [ngClass]="{
+                'error' : value > (gift.price - gift.participation) || value < 0
+              }">
+                Maximum: {{(gift.price - gift.participation) | price}}
+              </p>
             </div>
             <app-button (click)="onParticipateClick()" class="mt-6 lg:mt-0">Participer</app-button>
           }
@@ -103,15 +101,9 @@
       ></app-input>
 
       <select aria-label="Category" cSelect formControlName="category" class="mt-24" [required]="true">
-        <option [value]="CategoryEnum.TableArts">Arts de la table</option>
-        <option [value]="CategoryEnum.HouseholdLinens">Linge de maison</option>
-        <option [value]="CategoryEnum.Decorations">Décorations</option>
-        <option [value]="CategoryEnum.HomeAppliances">Electroménager</option>
-        <option [value]="CategoryEnum.Kitchen">Cuisine</option>
-        <option [value]="CategoryEnum.Digestives">Digestifs</option>
-        <option [value]="CategoryEnum.Furniture">Meubles</option>
-        <option [value]="CategoryEnum.Santons">Santons</option>
-        <option [value]="CategoryEnum.HoneyMoon">Voyage de Noces</option>
+        @for (cat of giftState.categories(); track cat.id) {
+          <option [value]="cat.name">{{ cat.name }}</option>
+        }
       </select>
 
       <div class="h-10"></div>

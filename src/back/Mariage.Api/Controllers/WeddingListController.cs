@@ -2,14 +2,15 @@ using MapsterMapper;
 using Mariage.Api.Errors;
 using Mariage.Application.Common.Interfaces.Services;
 using Mariage.Application.Gifts.Commands.CreateGift;
+using Mariage.Application.Gifts.Commands.CreateGiftCategory;
 using Mariage.Application.Gifts.Commands.CreateGiftParticipation;
 using Mariage.Application.Gifts.Commands.DeleteGift;
+using Mariage.Application.Gifts.Commands.DeleteGiftCategory;
 using Mariage.Application.Gifts.Commands.UpdateGift;
 using Mariage.Application.Gifts.Queries.GetGiftById;
+using Mariage.Application.Gifts.Queries.GetGiftCategories;
 using Mariage.Application.Gifts.Queries.GetGifts;
-using Mariage.Application.Pictures.Queries;
 using Mariage.Contracts.Gift;
-using Mariage.Contracts.Pictures;
 using Mariage.Domain.GiftAggregate.ValueObjects;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -74,9 +75,7 @@ public static class WeddingListController
                         await using var stream = request.ImageFile.OpenReadStream();
                         var imageUrl = await blobService.UploadFileAsync(stream, fileName);
                         
-                        Console.WriteLine(request.Category + 1);
                         var command = mapper.Map<CreateGiftCommand>((request, imageUrl));
-                        Console.WriteLine(command.Category.Value);
                         var createGiftResult = await mediator.Send(command);
                         
                         return createGiftResult.Match(
@@ -161,6 +160,60 @@ public static class WeddingListController
                     })
                 .RequireAuthorization("IsAdmin")
                 .WithName("DeleteGift")
+                .WithOpenApi();
+
+            // ── Gift Categories ──────────────────────────────────────────
+
+            endpoints.MapGet("/wedding-list/categories",
+                    async (IMediator mediator, IMapper mapper) =>
+                    {
+                        var query = new GetGiftCategoriesQuery();
+                        var result = await mediator.Send(query);
+
+                        return result.Match(
+                            categories =>
+                            {
+                                var response = mapper.Map<List<GiftCategoryResponse>>(categories);
+                                return Results.Ok(response);
+                            },
+                            error => error.Result()
+                        );
+                    })
+                .WithName("GetGiftCategories")
+                .WithOpenApi();
+
+            endpoints.MapPost("/wedding-list/categories",
+                    async (IMediator mediator, IMapper mapper, CreateGiftCategoryRequest request) =>
+                    {
+                        var command = new CreateGiftCategoryCommand(request.Name);
+                        var result = await mediator.Send(command);
+
+                        return result.Match(
+                            category =>
+                            {
+                                var response = mapper.Map<GiftCategoryResponse>(category);
+                                return Results.Created($"/wedding-list/categories/{response.Id}", response);
+                            },
+                            error => error.Result()
+                        );
+                    })
+                .RequireAuthorization("IsAdmin")
+                .WithName("CreateGiftCategory")
+                .WithOpenApi();
+
+            endpoints.MapDelete("/wedding-list/categories/{categoryId}",
+                    async (IMediator mediator, Guid categoryId) =>
+                    {
+                        var command = new DeleteGiftCategoryCommand(GiftCategoryId.Create(categoryId));
+                        var result = await mediator.Send(command);
+
+                        return result.Match(
+                            _ => Results.NoContent(),
+                            error => error.Result()
+                        );
+                    })
+                .RequireAuthorization("IsAdmin")
+                .WithName("DeleteGiftCategory")
                 .WithOpenApi();
         });
     }

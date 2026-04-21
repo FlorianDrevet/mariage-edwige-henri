@@ -17,7 +17,7 @@ import {
 } from "@coreui/angular";
 import {SharedModule} from "../../shared/shared.module";
 import {ModelCreateGiftComponent} from './components/model-create-gift/model-create-gift.component';
-import {ReactiveFormsModule} from "@angular/forms";
+import {ReactiveFormsModule, FormsModule} from "@angular/forms";
 import {RouterLink} from "@angular/router";
 import { CategoryGiftComponent } from './components/category-gift/category-gift.component';
 
@@ -43,6 +43,7 @@ import { CategoryGiftComponent } from './components/category-gift/category-gift.
         ButtonCloseDirective,
         ModalTitleDirective,
         ReactiveFormsModule,
+        FormsModule,
         RouterLink,
         FormSelectDirective,
     ],

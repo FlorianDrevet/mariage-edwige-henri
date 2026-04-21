@@ -10,5 +10,5 @@ public record UpdateGiftCommand(
     string Name,
     float Price,
     string UrlImage,
-    GiftCategory Category
+    string Category
 ) : IRequest<ErrorOr<Gift>>;

@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ProductInterface} from "../../interfaces/product.interface";
-import {CategoryEnum} from "../../enums/category.enum";
 
 @Component({
   standalone: false,
@@ -13,6 +12,4 @@ export class ProductComponent implements OnInit{
   ngOnInit(): void {
     console.log(this.product);
   }
-
-  protected readonly CategoryEnum = CategoryEnum;
 }

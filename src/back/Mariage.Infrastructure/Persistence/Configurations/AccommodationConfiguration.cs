@@ -49,5 +49,7 @@ public class AccommodationConfiguration : IEntityTypeConfiguration<Accommodation
             .HasConversion(
                 id => id.Value,
                 value => AccommodationId.Create(value));
+        builder.Property(a => a.Price)
+            .HasPrecision(18, 2);
     }
 }

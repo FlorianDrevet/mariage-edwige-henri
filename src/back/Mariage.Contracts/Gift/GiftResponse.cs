@@ -1,5 +1,3 @@
-using Mariage.Domain.GiftAggregate.ValueObjects;
-
 namespace Mariage.Contracts.Gift;
 
 public record GiftResponse(
@@ -8,7 +6,7 @@ public record GiftResponse(
     float Price,
     float Participation,
     string UrlImage,
-    int Category,
+    string Category,
     List<GiftGiverResponse> GiftGivers);
 
 public record GiftGiverResponse(
@@ -17,6 +15,3 @@ public record GiftGiverResponse(
     string LastName,
     string Email,
     float Amount);
-    
-    
-    

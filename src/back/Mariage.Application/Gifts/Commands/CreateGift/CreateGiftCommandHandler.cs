@@ -12,7 +12,6 @@ public class CreateGiftCommandHandler(IGiftRepository giftRepository):
         CreateGiftCommand request,
         CancellationToken cancellationToken)
     {
-        Console.WriteLine(request.Category.Value + " " + request.Name);
         var gift = Domain.GiftAggregate.Gift.Create(request.Name, request.Price, request.UrlImage, request.Category);
         giftRepository.AddGift(gift);
         return gift;
