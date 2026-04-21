@@ -45,25 +45,62 @@
           }
           @else {
             <p class="font-montserrat text-sm text-justify mt-12 lg:mt-0 leading-relaxed">
-              Afin de sécuriser la participation nous avons ouvert une cagnotte lydia. <br>
-              Une fois que vous avez validé la participation, revenez sur cette page et cliquez sur le bouton
-              valider afin que nous puissions vous envoyer un remerciement une fois que nous aurons acheté le cadeau.
+              Choisissez simplement comment vous voulez participer à ce cadeau.
             </p>
-            <div class="flex flex-row flex-wrap">
-              <a target="_blank" href="https://lydia-app.com/pots?id=77282-mariage-edwige-henri" class="mt-3 lg:mt-0 mr-10">
-                <app-button (click)="onClickedLydia()">Lydia</app-button>
-              </a>
 
-              <app-modal-create-gift-giver
-                (close)="onCloseModal()"
-                [amount]="value"
-                [id]="gift.id"
-                class="mt-3 lg:mt-0"
-                [disabled]="!clickedLydia"
+            <!-- Choix du mode de paiement -->
+            <div class="flex flex-row gap-4 mt-4 w-full flex-wrap">
+              <div
+                class="font-montserrat text-sm cursor-pointer border rounded-lg p-4 flex-1 min-w-[150px] transition-all"
+                [ngClass]="paymentMethod === 'lydia' ? 'payment-card-selected' : 'border-gray-300 opacity-60'"
+                (click)="selectPaymentMethod('lydia')"
               >
-                Valider
-              </app-modal-create-gift-giver>
+                <p class="font-semibold mb-1">Lydia / Sumeria</p>
+                <p class="text-xs opacity-80">Via la cagnotte en ligne, avec 6% de frais</p>
+              </div>
+              <div
+                class="font-montserrat text-sm cursor-pointer border rounded-lg p-4 flex-1 min-w-[150px] transition-all"
+                [ngClass]="paymentMethod === 'virement' ? 'payment-card-selected' : 'border-gray-300 opacity-60'"
+                (click)="selectPaymentMethod('virement')"
+              >
+                <p class="font-semibold mb-1">Virement bancaire</p>
+                <p class="text-xs opacity-80">Sans frais, pour éviter les 6% de Lydia</p>
+              </div>
             </div>
+
+            @if (paymentMethod === 'lydia') {
+              <p class="font-montserrat text-xs mt-4 opacity-75 leading-relaxed">
+                Faites le paiement sur la cagnotte, puis revenez ici pour nous dire que c'est fait.
+              </p>
+              <a target="_blank" href="https://lydia-app.com/pots?id=77282-mariage-edwige-henri" class="mt-3 lg:mt-0">
+                <app-button (click)="onClickedLydia()">Ouvrir la cagnotte Lydia</app-button>
+              </a>
+            }
+
+            @if (paymentMethod === 'virement') {
+              <div class="font-montserrat mt-4 border border-gold rounded-lg p-4 w-full">
+                <p class="text-sm font-semibold mb-2 text-gold-dark">Paiement par virement</p>
+                <p class="text-xs opacity-75 mb-3 leading-relaxed">
+                  Si vous préférez, vous pouvez aussi faire un virement. Ça évite les 6% de commission de Lydia,
+                  donc votre participation nous arrive en entier.
+                </p>
+                <div class="flex flex-col gap-1 text-xs">
+                  <span class="opacity-60">IBAN</span>
+                  <span class="font-mono tracking-wider text-sm">FR00 0000 0000 0000 0000 0000 000</span>
+                </div>
+                <p class="text-xs opacity-60 mt-3">Quand le virement est fait, cliquez simplement sur Valider ci-dessous.</p>
+              </div>
+            }
+
+            <app-modal-create-gift-giver
+              (close)="onCloseModal()"
+              [amount]="value"
+              [id]="gift.id"
+              class="mt-3 lg:mt-0"
+              [disabled]="paymentMethod === null"
+            >
+              Valider
+            </app-modal-create-gift-giver>
           }
         </div>
       </div>

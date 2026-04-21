@@ -1,3 +1,9 @@
+.payment-card-selected {
+  background-image: linear-gradient(to right, #1a3c34 0%, #2d5a3f 50%, #1a3c34 100%);
+  border-color: #b8954f;
+  color: #dabb7f;
+}
+
 .stepper-input {
   display: flex;
   font-size: 1.2em;

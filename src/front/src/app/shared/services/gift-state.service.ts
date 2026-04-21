@@ -14,6 +14,7 @@ export class GiftStateService {
 
   readonly products: WritableSignal<ProductInterface[]> = signal<ProductInterface[]>([]);
   readonly isLoading: WritableSignal<boolean> = signal<boolean>(true);
+  readonly isCategoriesLoading: WritableSignal<boolean> = signal<boolean>(true);
   readonly gift: WritableSignal<ProductInterface | null> = signal<ProductInterface | null>(null);
   readonly categories: WritableSignal<GiftCategoryInterface[]> = signal<GiftCategoryInterface[]>([]);
 
@@ -46,11 +47,15 @@ export class GiftStateService {
   }
 
   loadCategories(): void {
+    this.isCategoriesLoading.set(true);
     this.http.get<GiftCategoryInterface[]>(`${this.baseUrl}/wedding-list/categories`).subscribe({
       next: (categories) => {
         this.categories.set(categories);
+        this.isCategoriesLoading.set(false);
       },
-      error: () => {}
+      error: () => {
+        this.isCategoriesLoading.set(false);
+      }
     });
   }
 

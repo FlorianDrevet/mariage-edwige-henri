@@ -34,9 +34,11 @@ public class BlobService(
         return blobClient.Uri.ToString();
     }
 
-    public Task<string> DeleteFileAsync(string fileName)
+    public async Task DeleteFileAsync(string fileName)
     {
-        throw new NotImplementedException();
+        var containerClient = _blobServiceClient.GetBlobContainerClient(blobStorageSettings.Value.ContainerName);
+        var blobClient = containerClient.GetBlobClient(fileName);
+        await blobClient.DeleteIfExistsAsync();
     }
 
     public async Task<List<string>> GetAllFilesPhotoBoothAsync()

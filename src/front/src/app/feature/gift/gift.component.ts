@@ -19,6 +19,7 @@ export class GiftComponent implements OnInit {
   value: number = 0;
   choosingAmount: boolean = true;
   clickedLydia: boolean = false;
+  paymentMethod: 'lydia' | 'virement' | null = null;
   icon = {cilGift, cilMoney};
   editGiftForm: FormGroup;
   editImage: File | undefined;
@@ -47,6 +48,11 @@ export class GiftComponent implements OnInit {
   ngOnInit(): void {
     this.loadProduct();
     this.giftState.loadCategories();
+  }
+
+  selectPaymentMethod(method: 'lydia' | 'virement') {
+    this.paymentMethod = method;
+    this.clickedLydia = false;
   }
 
   onClickedLydia() {
@@ -93,6 +99,8 @@ export class GiftComponent implements OnInit {
     }
     this.choosingAmount = true;
     this.value = 0;
+    this.paymentMethod = null;
+    this.clickedLydia = false;
   }
 
   onEditGiftClick() {
