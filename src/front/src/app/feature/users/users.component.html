@@ -1,66 +1,75 @@
 <div class="w-full flex flex-column items-center mt-10 mb-40">
-  <app-modal-add-user class="mb-10"></app-modal-add-user>
-  <div class="flex lg:flex-row flex-col mb-20">
+  <app-modal-add-user class="mb-10" (userAdded)="usersResource.reload()"></app-modal-add-user>
+
+  <div class="flex lg:flex-row flex-col mb-10">
     <h1 class="font-montserrat text-3xl text-center">Nombre de personnes ayant répondu "oui": </h1>
     <p class="font-montserrat text-3xl ml-5 text-center">{{ nbrOfYes() }} + 3</p>
   </div>
-  <table class="w-2/3 ml-auto mr-auto" id="users">
-    <thead>
-    <tr>
-      <th>Identifiant</th>
-      <th>Email</th>
-      <th>Actions</th>
-    </tr>
-    </thead>
-    <tbody>
-      @for (user of users(); track user) {
-        <tr>
-          <td class="flex flex-row justify-between">
-            {{ user.username }} <app-button (click)="onModalGuestClick(user.id)"
-            [cModalToggle]="verticallyCenteredModalGuests.id">+</app-button>
-          </td>
-          <td>{{ user.email }}</td>
-          <td>
+
+  <!-- ═══ Barre de recherche globale ═══ -->
+  <input
+    type="text"
+    class="search-input mb-8"
+    placeholder="Rechercher un identifiant ou un invité..."
+    [value]="search()"
+    (input)="search.set($any($event.target).value)">
+
+  <!-- ═══ Liste Identifiants + Invités ═══ -->
+  <div class="w-11/12 lg:w-2/3 flex flex-col gap-4">
+    @for (user of filteredUsers(); track user.id) {
+      <div class="user-block">
+        <!-- Header identifiant — une seule ligne -->
+        <div class="user-header">
+          <span class="font-gfsdidot text-lg lg:text-xl text-gold font-bold truncate">{{ user.username }}</span>
+          @if (user.email) {
+            <span class="font-montserrat text-xs text-gold-light truncate hidden lg:inline">{{ user.email }}</span>
+          }
+          <span class="font-montserrat text-xs text-gold-light shrink-0">
+            {{ user.guests.length }} invité{{ user.guests.length > 1 ? 's' : '' }}
+          </span>
+          <div class="flex gap-2 shrink-0 ml-auto">
+            <app-button (click)="onModalGuestClick(user.id)"
+              [cModalToggle]="verticallyCenteredModalGuests.id">+ Invité</app-button>
             <app-button (click)="onDeleteUserClick(user.id, user.username)"
-              [cModalToggle]="deleteUserModal.id">Supprimer</app-button>
-          </td>
-        </tr>
-      }
-    </tbody>
-  </table>
+              [cModalToggle]="deleteUserModal.id">Suppr.</app-button>
+          </div>
+        </div>
 
-  <table class="w-2/3 ml-auto mr-auto mt-20" id="emailTable">
-    <thead>
-    <tr>
-      <th>Identifiant</th>
-      <th>Prénom</th>
-      <th>Nom</th>
-      <th>A confirmé</th>
-      <th>Actions</th>
-    </tr>
-    </thead>
-    <tbody>
+        <!-- Invités — toujours visible -->
+        <div class="guests-panel">
+          @if (user.guests.length === 0) {
+            <p class="font-montserrat text-xs text-gold-light italic px-4 py-2">Aucun invité.</p>
+          }
+          @for (guest of user.guests; track guest.id) {
+            <div class="guest-row">
+              <div class="flex items-center flex-wrap gap-x-2 gap-y-1 flex-1">
+                <span class="font-montserrat text-sm text-gold">
+                  {{ guest.firstName }} {{ guest.lastName }}
+                </span>
+                <app-tag [confirmed]="guest.isComing"></app-tag>
+              </div>
+              <div class="flex gap-2 shrink-0">
+                <app-button (click)="onEditGuestClick(user.id, guest)"
+                  [cModalToggle]="editGuestModal.id">
+                  <span class="lg:hidden" title="Modifier">&#9998;</span>
+                  <span class="hidden lg:inline">Modifier</span>
+                </app-button>
+                <app-button (click)="onDeleteGuestClick(user.id, guest)"
+                  [cModalToggle]="deleteGuestModal.id">
+                  <span class="lg:hidden" title="Supprimer">&#128465;</span>
+                  <span class="hidden lg:inline">Suppr.</span>
+                </app-button>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    }
 
-      @for (user of users(); track user) {
-        @for (guest of user.guests; track guest) {
-          <tr>
-            <td>{{ user.username }}</td>
-            <td>{{ guest.firstName }}</td>
-            <td>{{ guest.lastName }}</td>
-            <td>
-              <app-tag [confirmed]="guest.isComing"></app-tag>
-            </td>
-            <td class="flex flex-row gap-2">
-              <app-button (click)="onEditGuestClick(user.id, guest)"
-                [cModalToggle]="editGuestModal.id">Modifier</app-button>
-              <app-button (click)="onDeleteGuestClick(user.id, guest)"
-                [cModalToggle]="deleteGuestModal.id">Supprimer</app-button>
-            </td>
-          </tr>
-        }
-      }
-    </tbody>
-  </table>
+    @if (filteredUsers().length === 0) {
+      <p class="font-montserrat text-sm text-gold-light italic text-center">Aucun résultat trouvé.</p>
+    }
+  </div>
 
 </div>
 

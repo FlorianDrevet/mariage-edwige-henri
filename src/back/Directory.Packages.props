@@ -42,5 +42,6 @@
     <PackageVersion Include="Swashbuckle.AspNetCore" Version="10.1.4" />
     <PackageVersion Include="System.IdentityModel.Tokens.Jwt" Version="8.16.0" />
     <PackageVersion Include="Aspire.Hosting.Azure.ContainerRegistry" Version="13.2.1" />
+    <PackageVersion Include="Aspire.Hosting.Azure.Storage" Version="13.2.1" />
   </ItemGroup>
 </Project>

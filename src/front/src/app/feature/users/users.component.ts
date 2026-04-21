@@ -25,6 +25,25 @@ export class UsersComponent {
 
   readonly users = computed(() => this.usersResource.value() ?? []);
 
+  // ── Search ─────────────────────────────────────────────────────────────
+  readonly search = signal('');
+
+  readonly filteredUsers = computed(() => {
+    const q = this.search().toLowerCase().trim();
+    if (!q) return this.users();
+    return this.users().filter(u =>
+      u.username.toLowerCase().includes(q) ||
+      (u.email ?? '').toLowerCase().includes(q) ||
+      u.guests.some(g =>
+        g.firstName.toLowerCase().includes(q) ||
+        g.lastName.toLowerCase().includes(q)
+      )
+    );
+  });
+
+  // ── Accordion ──────────────────────────────────────────────────────────
+  // Removed: always expanded
+
   readonly nbrOfYes = computed(() =>
     this.users().reduce(
       (acc, u) => acc + u.guests.filter(g => g.isComing).length,

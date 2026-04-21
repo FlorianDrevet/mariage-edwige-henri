@@ -1,7 +1,7 @@
 .radio-container {
   display: flex;
   align-items: center;
-  background: linear-gradient(to right, #dabb7f 0%, #b8954f 100%);
+  background: linear-gradient(to right, #1a3c34 0%, #2d5a3f 50%, #1a3c34 100%);
   border-radius: 30px;
   width: fit-content;
   font-family: LibreBaskerville, serif;
@@ -31,7 +31,7 @@
   background: linear-gradient(#520418, #520418) padding-box,
   transparent border-box;
   color: #dabb7f;
-  @apply pt-[15px] pb-[15px] pl-[30px] pr-[30px] lg:pt-[20px] lg:pb-[20px] lg:pl-[40px] lg:pr-[40px];
+  @apply pt-[8px] pb-[8px] pl-[20px] pr-[20px] lg:pt-[10px] lg:pb-[10px] lg:pl-[28px] lg:pr-[28px];
 }
 
 .custom-radio:nth-child(2) {

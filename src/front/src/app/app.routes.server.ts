@@ -49,6 +49,10 @@ export const serverRoutes: ServerRoute[] = [
     renderMode: RenderMode.Client,
   },
   {
+    path: 'hebergements',
+    renderMode: RenderMode.Client,
+  },
+  {
     path: 'photos',
     renderMode: RenderMode.Client,
   },

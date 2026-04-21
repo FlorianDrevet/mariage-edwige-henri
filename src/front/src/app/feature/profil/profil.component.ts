@@ -1,9 +1,11 @@
-import { ChangeDetectionStrategy, Component, computed, effect, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, signal } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { FormBuilder, Validators } from '@angular/forms';
 import { cilEnvelopeClosed } from '@coreui/icons';
 import { UsersApi } from '../../shared/apis/users.api';
 import { DiscordNotificationService } from '../../shared/services/discord-notification.service';
+import { AccommodationApi } from '../../shared/apis/accommodation.api';
+import { catchError, of } from 'rxjs';
 
 @Component({
   standalone: false,
@@ -15,6 +17,7 @@ import { DiscordNotificationService } from '../../shared/services/discord-notifi
 export class ProfilComponent {
   private readonly usersApi = inject(UsersApi);
   private readonly discord = inject(DiscordNotificationService);
+  private readonly accommodationApi = inject(AccommodationApi);
   private readonly fb = inject(FormBuilder);
 
   readonly icon = { cilEnvelopeClosed };
@@ -24,8 +27,22 @@ export class ProfilComponent {
     stream: () => this.usersApi.getUserProfils(),
   });
 
+  readonly accommodationResource = rxResource({
+    stream: () => this.accommodationApi.getMyAccommodation().pipe(
+      catchError(() => of(null))
+    ),
+  });
+
   readonly profil = computed(() => this.profilResource.value() ?? null);
   readonly isLoading = computed(() => this.profilResource.isLoading());
+  readonly myAccommodation = computed(() => this.accommodationResource.value() ?? null);
+
+  readonly accommodationValue = computed<boolean | null>(() => {
+    const status = this.myAccommodation()?.responseStatus;
+    if (status === 'Accepted') return true;
+    if (status === 'Refused') return false;
+    return null;
+  });
 
   readonly profilForm = this.fb.nonNullable.group({
     email: ['', Validators.required],
@@ -55,6 +72,23 @@ export class ProfilComponent {
     this.usersApi.changeEmail(newEmail).subscribe(updated => {
       this.profilResource.set(updated);
     });
+  }
+
+  onAccommodationRespond(response: string): void {
+    this.accommodationApi.respondToAccommodation(response).subscribe(updated => {
+      this.accommodationResource.set(updated);
+      const username = this.profil()?.username ?? 'Inconnu';
+      const label = response === 'Accepted' ? 'a accepté' : 'a refusé';
+      this.discord.sendNotification(`${username} ${label} l'hébergement "${updated.title}"`).subscribe();
+    });
+  }
+
+  getAccommodationStatusLabel(status: string): string {
+    switch (status) {
+      case 'Accepted': return 'Accepté';
+      case 'Refused': return 'Refusé';
+      default: return 'En attente de réponse';
+    }
   }
 }
 

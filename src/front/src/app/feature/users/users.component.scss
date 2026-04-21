@@ -1,29 +1,69 @@
-table {
-  border-collapse: collapse;
-}
-
- th,
- td {
+.search-input {
+  width: 90%;
+  max-width: 500px;
+  background-color: #520418;
   border: 1px solid #1a3c34;
-  padding: 8px;
-  text-align: left;
   color: #e8d4a8;
+  padding: 0.5rem 0.75rem;
+  font-family: Montserrat, sans-serif;
+  font-size: 0.875rem;
+  outline: none;
+  border-radius: 6px;
+
+  &:focus {
+    border-color: #dabb7f;
+  }
+
+  &::placeholder {
+    color: #b8954f;
+  }
 }
 
-th {
-  background-color: #1a3c34;
-  color: #dabb7f;
-  font-weight: bold;
+// ── User blocks ──────────────────────────────────────────────────────────
+
+.user-block {
+  background-color: #520418;
+  border: 1px solid #1a3c34;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
- tr:nth-child(even) {
-  background-color: rgba(26, 60, 52, 0.15);
+.user-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  padding: 0.75rem;
+  background: linear-gradient(to right, rgba(26, 60, 52, 0.25), transparent);
+  border-bottom: 2px solid #dabb7f;
+
+  @media (min-width: 1024px) {
+    padding: 0.75rem 1.25rem;
+    flex-wrap: nowrap;
+  }
 }
 
- tr:nth-child(odd) {
-  background-color: rgba(82, 4, 24, 0.5);
+.guests-panel {
+  padding: 0.25rem 0;
 }
 
-th, td {
-  font-family: LibreBaskerville, serif;
+.guest-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem 0.5rem 1.25rem;
+  transition: background-color 0.15s ease;
+
+  &:not(:last-child) {
+    border-bottom: 1px solid rgba(26, 60, 52, 0.3);
+  }
+
+  &:hover {
+    background-color: rgba(26, 60, 52, 0.15);
+  }
+
+  @media (min-width: 1024px) {
+    padding: 0.5rem 1.25rem 0.5rem 2rem;
+  }
 }

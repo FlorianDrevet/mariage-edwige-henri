@@ -1,42 +1,44 @@
 .tag {
   width: fit-content;
   margin: 5px;
-  padding: 5px 10px;
+  padding: 4px 10px;
   border-radius: 20px;
   justify-content: center;
-  font-family: LibreBaskerville, serif;
+  font-family: Montserrat, sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  align-items: center;
 }
 
 .round {
   border-radius: 50%;
-  height: 10px;
-  width: 10px;
+  height: 8px;
+  width: 8px;
   margin-right: 5px;
-  margin-top: auto;
-  margin-bottom: auto;
+  flex-shrink: 0;
 }
 
 .refused {
-  background-color: #f2d4d4;
-  color: #b95858;
+  background-color: rgba(185, 88, 88, 0.2);
+  color: #f2b4b4;
 }
 
 .refused .round {
-  background-color: #b95858;
+  background-color: #e87070;
 }
 
 .confirmed {
-  background-color: #d4f2dd;
-  color: #58b962;
+  background-color: rgba(45, 90, 63, 0.3);
+  color: #a8e8b8;
 }
 
 .confirmed .round {
-  background-color: #58b962;
+  background-color: #6dd680;
 }
 
 .waiting {
-  background-color: #f2ecd4;
-  color: #b9a958;
+  background-color: rgba(185, 169, 88, 0.2);
+  color: #e8dca8;
 }
 
 .waiting .round {

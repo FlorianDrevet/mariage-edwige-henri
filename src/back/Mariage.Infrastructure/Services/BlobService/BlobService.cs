@@ -1,4 +1,5 @@
 using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
 using Mariage.Application.Common.Interfaces.Services;
 using Microsoft.Extensions.Options;
 
@@ -17,6 +18,7 @@ public class BlobService(
     public async Task<string> UploadFileAsync(Stream fileStream, string fileName)
     {
         var containerClient = _blobServiceClient.GetBlobContainerClient(blobStorageSettings.Value.ContainerName);
+        await containerClient.CreateIfNotExistsAsync(PublicAccessType.Blob);
         var blobClient = containerClient.GetBlobClient(fileName);
         await blobClient.UploadAsync(fileStream, true);
         return blobClient.Uri.ToString();
@@ -26,6 +28,7 @@ public class BlobService(
     {
         var containerClient =
             _blobServiceClientPictures.GetBlobContainerClient(blobStorageSettings.Value.ContainerPicturesName);
+        await containerClient.CreateIfNotExistsAsync(PublicAccessType.Blob);
         var blobClient = containerClient.GetBlobClient(fileName);
         await blobClient.UploadAsync(fileStream, true);
         return blobClient.Uri.ToString();

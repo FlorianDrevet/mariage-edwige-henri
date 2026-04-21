@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, output } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { cilGroup, cilLockLocked } from '@coreui/icons';
@@ -17,6 +17,7 @@ export class ModalAddUserComponent {
   private readonly baseUrl = environment['API_URL'] as string;
 
   readonly icon = { cilGroup, cilLockLocked };
+  readonly userAdded = output<void>();
 
   readonly registerForm = this.fb.nonNullable.group({
     username: ['', Validators.required],
@@ -25,7 +26,9 @@ export class ModalAddUserComponent {
 
   onAddGuestClick(): void {
     const { username, password } = this.registerForm.getRawValue();
-    this.http.post(`${this.baseUrl}/auth/register`, { username, password }).subscribe();
+    this.http.post(`${this.baseUrl}/auth/register`, { username, password }).subscribe(() => {
+      this.userAdded.emit();
+    });
   }
 }
 

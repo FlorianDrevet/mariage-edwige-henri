@@ -23,6 +23,31 @@ namespace Mariage.Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("Mariage.Domain.AccommodationAggregate.Accommodation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("UrlImage")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("numeric");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Accommodations", (string)null);
+                });
+
             modelBuilder.Entity("Mariage.Domain.GiftAggregate.Gift", b =>
                 {
                     b.Property<Guid>("Id")
@@ -106,6 +131,37 @@ namespace Mariage.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users", (string)null);
+                });
+
+            modelBuilder.Entity("Mariage.Domain.AccommodationAggregate.Accommodation", b =>
+                {
+                    b.OwnsMany("Mariage.Domain.AccommodationAggregate.Entities.AccommodationAssignment", "Assignments", b1 =>
+                        {
+                            b1.Property<Guid>("Id")
+                                .HasColumnType("uuid")
+                                .HasColumnName("AccommodationAssignmentId");
+
+                            b1.Property<Guid>("AccommodationId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<string>("ResponseStatus")
+                                .IsRequired()
+                                .HasColumnType("text");
+
+                            b1.Property<Guid>("UserId")
+                                .HasColumnType("uuid");
+
+                            b1.HasKey("Id", "AccommodationId");
+
+                            b1.HasIndex("AccommodationId");
+
+                            b1.ToTable("AccommodationAssignments", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("AccommodationId");
+                        });
+
+                    b.Navigation("Assignments");
                 });
 
             modelBuilder.Entity("Mariage.Domain.GiftAggregate.Gift", b =>

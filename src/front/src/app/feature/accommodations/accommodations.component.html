@@ -1,0 +1,213 @@
+<div class="w-full flex flex-col items-center mt-10 mb-40">
+  <app-title-wedding>Gestion des hébergements</app-title-wedding>
+
+  <app-button
+    class="mb-10"
+    (click)="onCreateClick()"
+    [cModalToggle]="accommodationFormModal.id">
+    + Ajouter un hébergement
+  </app-button>
+
+  @if (accommodations().length === 0) {
+    <p class="font-montserrat text-sm text-gold-light">Aucun hébergement configuré.</p>
+  }
+
+  <div class="w-11/12 lg:w-3/5 flex flex-col gap-8">
+    @for (accommodation of accommodations(); track accommodation.id) {
+      <div class="accommodation-card">
+        <div class="flex flex-col lg:flex-row gap-6">
+          <img [src]="accommodation.urlImage"
+               [alt]="accommodation.title"
+               class="w-full lg:w-48 h-36 object-cover rounded-md">
+          <div class="flex-1">
+            <h3 class="font-gfsdidot text-2xl text-gold mb-2">{{ accommodation.title }}</h3>
+            <p class="font-montserrat text-sm text-gold-light leading-relaxed">{{ accommodation.description }}</p>
+            <p class="font-montserrat text-sm text-gold font-bold mt-2">{{ accommodation.price }} €/nuit</p>
+          </div>
+          <div class="flex flex-col gap-2 justify-start">
+            <app-button (click)="onEditClick(accommodation)"
+                        [cModalToggle]="accommodationFormModal.id">
+              Modifier
+            </app-button>
+            <app-button (click)="onAssignClick(accommodation.id)"
+                        [cModalToggle]="assignModal.id">
+              Assigner
+            </app-button>
+            <app-button (click)="onDeleteClick(accommodation)"
+                        [cModalToggle]="deleteModal.id">
+              Supprimer
+            </app-button>
+          </div>
+        </div>
+
+        @if (accommodation.assignments.length > 0) {
+          <div class="mt-4">
+            <h4 class="font-montserrat text-sm text-gold mb-2 font-bold">Utilisateurs assignés :</h4>
+            <div class="overflow-x-auto">
+            <table class="w-full">
+              <thead>
+                <tr>
+                  <th>Utilisateur</th>
+                  <th>Statut</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (assignment of accommodation.assignments; track assignment.userId) {
+                  <tr>
+                    <td>{{ assignment.username }}</td>
+                    <td>
+                      <span [class]="getStatusClass(assignment.responseStatus)">
+                        {{ getStatusLabel(assignment.responseStatus) }}
+                      </span>
+                    </td>
+                    <td>
+                      <app-button (click)="onUnassignClick(accommodation.id, assignment.userId, assignment.username)"
+                                  [cModalToggle]="unassignModal.id">
+                        Retirer
+                      </app-button>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+            </div>
+          </div>
+        } @else {
+          <p class="font-montserrat text-xs text-gold-light mt-4 italic">Aucun utilisateur assigné.</p>
+        }
+      </div>
+    }
+  </div>
+</div>
+
+<!-- Modal Créer / Modifier hébergement -->
+<c-modal #accommodationFormModal alignment="center" id="accommodationFormModal" size="lg">
+  <c-modal-header>
+    <h5 cModalTitle class="font-montserrat text-4xl">
+      {{ editingAccommodation() ? 'Modifier' : 'Créer' }} un hébergement
+    </h5>
+  </c-modal-header>
+  <c-modal-body>
+    <form [formGroup]="accommodationForm" class="flex flex-col gap-6">
+      <div>
+        <label class="font-montserrat text-sm text-gold mb-1 block">Titre</label>
+        <input type="text" formControlName="title"
+               class="form-input w-full"
+               placeholder="Titre de la chambre">
+      </div>
+      <div>
+        <label class="font-montserrat text-sm text-gold mb-1 block">Description</label>
+        <textarea formControlName="description"
+                  class="form-input w-full h-32"
+                  placeholder="Description de la chambre"></textarea>
+      </div>
+      <div>
+        <label class="font-montserrat text-sm text-gold mb-1 block">Prix (€)</label>
+        <input type="number" formControlName="price"
+               class="form-input w-full"
+               placeholder="0"
+               min="0"
+               step="0.01">
+      </div>
+      <div>
+        <label class="font-montserrat text-sm text-gold mb-1 block">
+          Image {{ editingAccommodation() ? '(optionnel)' : '' }}
+        </label>
+        <input type="file" accept="image/*" (change)="onFileSelected($event)"
+               class="font-montserrat text-sm text-gold-light">
+      </div>
+    </form>
+  </c-modal-body>
+  <c-modal-footer>
+    <app-button [cModalToggle]="accommodationFormModal.id">Annuler</app-button>
+    <app-button
+      (click)="onSaveClick()"
+      [cModalToggle]="accommodationFormModal.id">
+      {{ editingAccommodation() ? 'Enregistrer' : 'Créer' }}
+    </app-button>
+  </c-modal-footer>
+</c-modal>
+
+<!-- Modal Supprimer -->
+<c-modal #deleteModal alignment="center" id="deleteModal" size="sm">
+  <c-modal-header>
+    <h5 cModalTitle class="font-montserrat text-2xl">Confirmer la suppression</h5>
+  </c-modal-header>
+  <c-modal-body>
+    <p class="font-montserrat text-sm">
+      Êtes-vous sûr de vouloir supprimer l'hébergement <strong>{{ deleteAccommodationTitle() }}</strong> ?
+      Cette action est irréversible.
+    </p>
+  </c-modal-body>
+  <c-modal-footer>
+    <app-button [cModalToggle]="deleteModal.id">Annuler</app-button>
+    <app-button (click)="onConfirmDelete()" [cModalToggle]="deleteModal.id">
+      Supprimer
+    </app-button>
+  </c-modal-footer>
+</c-modal>
+
+<!-- Modal Assigner utilisateurs -->
+<c-modal #assignModal alignment="center" id="assignModal" size="lg">
+  <c-modal-header>
+    <h5 cModalTitle class="font-montserrat text-4xl">Assigner des utilisateurs</h5>
+  </c-modal-header>
+  <c-modal-body>
+    @if (availableUsers().length === 0) {
+      <p class="font-montserrat text-sm text-gold-light">
+        Tous les utilisateurs sont déjà assignés à un hébergement.
+      </p>
+    } @else {
+      <p class="font-montserrat text-sm text-gold-light mb-4">
+        Sélectionnez les utilisateurs à assigner :
+      </p>
+      <div class="mb-3">
+        <input
+          type="text"
+          class="form-input w-full"
+          placeholder="Rechercher un utilisateur..."
+          [value]="userSearchQuery()"
+          (input)="userSearchQuery.set($any($event.target).value)">
+      </div>
+      @if (filteredAvailableUsers().length === 0) {
+        <p class="font-montserrat text-sm text-gold-light italic">Aucun utilisateur trouvé.</p>
+      }
+      <div class="flex flex-col gap-2 max-h-72 overflow-y-auto">
+        @for (user of filteredAvailableUsers(); track user.id) {
+          <div class="user-selection-item" [class.selected]="isUserSelected(user.id)"
+               (click)="toggleUserSelection(user.id)">
+            <span class="font-montserrat text-sm">{{ user.username }}</span>
+            @if (isUserSelected(user.id)) {
+              <span class="font-montserrat text-xs text-secondary-light">✓</span>
+            }
+          </div>
+        }
+      </div>
+    }
+  </c-modal-body>
+  <c-modal-footer>
+    <app-button [cModalToggle]="assignModal.id">Annuler</app-button>
+    <app-button (click)="onConfirmAssign()" [cModalToggle]="assignModal.id">
+      Assigner
+    </app-button>
+  </c-modal-footer>
+</c-modal>
+
+<!-- Modal Retirer utilisateur -->
+<c-modal #unassignModal alignment="center" id="unassignModal" size="sm">
+  <c-modal-header>
+    <h5 cModalTitle class="font-montserrat text-2xl">Confirmer le retrait</h5>
+  </c-modal-header>
+  <c-modal-body>
+    <p class="font-montserrat text-sm">
+      Êtes-vous sûr de vouloir retirer <strong>{{ unassignUsername() }}</strong> de cet hébergement ?
+    </p>
+  </c-modal-body>
+  <c-modal-footer>
+    <app-button [cModalToggle]="unassignModal.id">Annuler</app-button>
+    <app-button (click)="onConfirmUnassign()" [cModalToggle]="unassignModal.id">
+      Retirer
+    </app-button>
+  </c-modal-footer>
+</c-modal>

@@ -39,6 +39,8 @@ import { TimelineMariageMobileComponent } from './feature/mariage/timeline-maria
 import { ExplanationModalComponent } from './feature/mariage/explanation-modal/explanation-modal.component';
 import {provideHttpClient, withFetch, withInterceptors} from "@angular/common/http";
 import {authInterceptor} from "./shared/interceptors/auth.interceptor";
+import {AccommodationsComponent} from "./feature/accommodations/accommodations.component";
+import {AccommodationsModule} from "./feature/accommodations/accommodations.module";
 
 @NgModule({
   declarations: [
@@ -56,7 +58,8 @@ import {authInterceptor} from "./shared/interceptors/auth.interceptor";
     PhotosMariageComponent,
     TimelineMariageComponent,
     TimelineMariageMobileComponent,
-    ExplanationModalComponent
+    ExplanationModalComponent,
+    AccommodationsComponent
   ],
   imports: [
     AcceuilModule,
@@ -79,6 +82,7 @@ import {authInterceptor} from "./shared/interceptors/auth.interceptor";
     UsersModule,
     WeddingListModule,
     GiftModule,
+    AccommodationsModule,
     ButtonCloseDirective,
     ButtonDirective,
   ],

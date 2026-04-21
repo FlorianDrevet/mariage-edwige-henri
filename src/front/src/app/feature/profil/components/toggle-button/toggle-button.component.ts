@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, output, signal } from '@angular/core';
 import { GuestModel } from '../../../../shared/models/guest.model';
 import { ProfilApi } from '../../../../shared/apis/profil.api';
 
@@ -12,11 +12,27 @@ import { ProfilApi } from '../../../../shared/apis/profil.api';
 export class ToggleButtonComponent {
   private readonly profilApi = inject(ProfilApi);
 
-  readonly guest = input.required<GuestModel>();
+  readonly guest = input<GuestModel | null>(null);
   readonly disabled = input<boolean>(false);
+  readonly value = input<boolean | null>(null);
+  readonly yesLabel = input<string>('Oui');
+  readonly noLabel = input<string>('Non');
+  readonly changed = output<boolean>();
 
-  /** Local signal mirrors the server state — initialised from the input on first read. */
-  readonly isComing = signal<boolean | null>(null);
+  /** Unique ID so multiple toggles on the same page don't share radio groups. */
+  readonly _id = Math.random().toString(36).substring(2, 9);
+
+  readonly checkedYes = computed(() => {
+    const g = this.guest();
+    if (g) return g.isComing;
+    return this.value() === true;
+  });
+
+  readonly checkedNo = computed(() => {
+    const g = this.guest();
+    if (g) return !g.isComing;
+    return this.value() === false;
+  });
 
   yesClicked(): void {
     this.update(true);
@@ -28,8 +44,11 @@ export class ToggleButtonComponent {
 
   private update(value: boolean): void {
     const guest = this.guest();
-    this.isComing.set(value);
-    guest.isComing = value;
-    this.profilApi.putGuestIsComing(guest.id, value).subscribe();
+    if (guest) {
+      guest.isComing = value;
+      this.profilApi.putGuestIsComing(guest.id, value).subscribe();
+    } else {
+      this.changed.emit(value);
+    }
   }
 }

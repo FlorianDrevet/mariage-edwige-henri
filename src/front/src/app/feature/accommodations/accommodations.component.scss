@@ -1,0 +1,111 @@
+.accommodation-card {
+  background-color: #520418;
+  border: 1px solid;
+  border-image: linear-gradient(to right, #dabb7f, #1a3c34, #dabb7f) 1;
+  padding: 1rem;
+  border-radius: 0;
+}
+
+@media (min-width: 1024px) {
+  .accommodation-card {
+    padding: 1.5rem;
+  }
+}
+
+table {
+  border-collapse: collapse;
+}
+
+th,
+td {
+  border: 1px solid #1a3c34;
+  padding: 4px 6px;
+  text-align: left;
+  color: #e8d4a8;
+  font-size: 0.75rem;
+}
+
+@media (min-width: 1024px) {
+  th, td {
+    padding: 8px;
+    font-size: 0.85rem;
+  }
+}
+
+th {
+  background-color: #1a3c34;
+  color: #dabb7f;
+  font-weight: bold;
+  font-family: Montserrat, sans-serif;
+  font-size: 0.85rem;
+}
+
+td {
+  font-family: Montserrat, sans-serif;
+  font-size: 0.85rem;
+}
+
+tr:nth-child(even) {
+  background-color: rgba(26, 60, 52, 0.15);
+}
+
+tr:nth-child(odd) {
+  background-color: rgba(82, 4, 24, 0.5);
+}
+
+.status-accepted {
+  color: #2d5a3f;
+  font-weight: bold;
+}
+
+.status-refused {
+  color: #e74c3c;
+  font-weight: bold;
+}
+
+.status-pending {
+  color: #dabb7f;
+  font-style: italic;
+}
+
+.form-input {
+  background-color: #520418;
+  border: 1px solid #1a3c34;
+  color: #e8d4a8;
+  padding: 0.5rem 0.75rem;
+  font-family: Montserrat, sans-serif;
+  font-size: 0.875rem;
+  outline: none;
+
+  &:focus {
+    border-color: #dabb7f;
+  }
+
+  &::placeholder {
+    color: #b8954f;
+  }
+}
+
+textarea.form-input {
+  resize: vertical;
+}
+
+.user-selection-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+  background-color: #520418;
+  border: 1px solid #1a3c34;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: rgba(26, 60, 52, 0.3);
+  }
+
+  &.selected {
+    background-color: rgba(26, 60, 52, 0.5);
+    border-color: #2d5a3f;
+  }
+}

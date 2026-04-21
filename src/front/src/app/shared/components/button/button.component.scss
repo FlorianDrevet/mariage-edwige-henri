@@ -1,6 +1,6 @@
 .btn-grad {
   background-image: linear-gradient(to right, #1a3c34 0%, #2d5a3f 50%, #1a3c34 100%);
-  padding: 10px 32px;
+  padding: 6px 10px;
   margin-bottom: 6px;
   margin-top: 6px;
   text-align: center;
@@ -10,10 +10,21 @@
   color: #dabb7f;
   box-shadow: 0 2px 12px rgba(0,0,0,0.2);
   border-radius: 8px;
-  width: 100%;
+  width: auto;
+  white-space: nowrap;
   font-weight: 500;
-  font-size: 0.8rem;
-  letter-spacing: 0.1em;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  line-height: 1.2;
+}
+
+@media (min-width: 1024px) {
+  .btn-grad {
+    padding: 10px 32px;
+    width: 100%;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+  }
 }
 
 .btn-grad:hover {

@@ -1,5 +1,5 @@
 @if (profil()) {
-  <div class="flex flex-col items-center relative mt-6">
+  <div class="flex flex-col items-center relative mt-6 mb-40">
     <app-title-wedding class="mt-6">Vos informations</app-title-wedding>
     <form [formGroup]="profilForm" class="relative w-4/5 lg:w-2/5 flex flex-column">
       <p class="mb-2 font-montserrat text-sm text-justify leading-relaxed">Entrez votre Email afin de recevoir les dernières
@@ -31,6 +31,31 @@
         </div>
       }
     </div>
+
+    @if (myAccommodation()) {
+      <app-title-wedding class="mt-14">Votre hébergement</app-title-wedding>
+      <div class="accommodation-section w-4/5 lg:w-2/5">
+        <img [src]="myAccommodation()!.urlImage"
+             [alt]="myAccommodation()!.title"
+             class="w-full h-48 object-cover rounded-md mb-4">
+        <h3 class="font-gfsdidot text-2xl text-gold mb-2">{{ myAccommodation()!.title }}</h3>
+        <p class="font-montserrat text-sm text-gold-light leading-relaxed mb-2">{{ myAccommodation()!.description }}</p>
+        <p class="font-montserrat text-sm text-gold font-bold mb-4">{{ myAccommodation()!.price }} €/nuit</p>
+
+        <div class="flex flex-col items-center gap-3">
+          <p class="font-montserrat text-sm text-gold italic">
+            Souhaitez-vous réserver cet hébergement ?
+          </p>
+          <app-toggle-button
+            [value]="accommodationValue()"
+            yesLabel="Je réserve"
+            noLabel="Non merci"
+            (changed)="onAccommodationRespond($event ? 'Accepted' : 'Refused')">
+          </app-toggle-button>
+        </div>
+      </div>
+    }
+
     <!--<p class="font-montserrat text-sm w-4/5 text-center mb-24 mt-14">Si une des réponses a changé, envoyer nous un mail à <a href="mailto:mariage.ehv@gmail.com">mariage.ehv&#64;gmail.com</a></p>-->
   </div>
 }

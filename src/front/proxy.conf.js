@@ -23,6 +23,7 @@ const apiRoutes = [
   '/pictures-photo-booth',
   '/pictures-photograph',
   '/user-infos',
+  '/accommodations',
   '/healthz',
 ];
 

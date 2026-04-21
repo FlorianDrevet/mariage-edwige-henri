@@ -12,10 +12,24 @@ var postgres = builder.AddPostgres("postgres")
 
 var postgresdb = postgres.AddDatabase("postgresdb");
 
+var storage = builder.AddAzureStorage("storage")
+    .RunAsEmulator(emulator => emulator
+        .WithDataVolume()
+        .WithLifetime(ContainerLifetime.Persistent));
+
+var blobs = storage.AddBlobs("blobs");
+
 var api = builder.AddProject<Projects.Mariage_Api>("api")
     .WithExternalHttpEndpoints()
     .WithReference(postgresdb)
-    .WaitFor(postgresdb);
+    .WaitFor(postgresdb)
+    .WithReference(blobs)
+    .WaitFor(blobs)
+    .WithEnvironment(ctx =>
+    {
+        ctx.EnvironmentVariables["BlobSettings__ConnectionString"] = blobs;
+        ctx.EnvironmentVariables["BlobSettings__ConnectionStringPictures"] = blobs;
+    });
 
 var frontend = builder.AddJavaScriptApp("frontend", "./../../front", "dev")
     .WithNpm()

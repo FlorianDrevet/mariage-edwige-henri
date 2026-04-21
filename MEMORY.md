@@ -66,6 +66,8 @@ docs/                                   — Learning wiki (pagination, lazy load
 | **Gift** | `GiftAggregate/Gift.cs` | Name, Price, Participation, UrlImage, Category (VO), GiftGivers (owned) |
 | └ GiftGiver | `GiftAggregate/Entities/GiftGiver.cs` | FirstName, LastName, Email?, Amount |
 | **Picture** | `PictureAggregate/Picture.cs` | UserId, UrlImage, CreatedAt |
+| **Accommodation** | `AccommodationAggregate/Accommodation.cs` | Title, Description, UrlImage, AccommodationAssignments (owned) |
+| └ AccommodationAssignment | `AccommodationAggregate/Entities/AccommodationAssignment.cs` | UserId, ResponseStatus (Pending/Accepted/Refused) |
 
 ### 3.2 Value Objects
 
@@ -77,6 +79,8 @@ docs/                                   — Learning wiki (pagination, lazy load
 | `GiftGiverId` | `GiftAggregate/ValueObjects/` | Guid wrapper |
 | `GiftCategory` | `GiftAggregate/ValueObjects/` | Enum VO (HomeAppliances, Decorations, TableArts, Digestives, Furniture, HouseholdLinens, Kitchenware, Santons, Honeymoon) |
 | `PictureId` | `PictureAggregate/ValueObject/` | Guid wrapper |
+| `AccommodationId` | `AccommodationAggregate/ValueObjects/` | Guid wrapper |
+| `AccommodationAssignmentId` | `AccommodationAggregate/ValueObjects/` | Guid wrapper |
 
 ### 3.3 Base Classes
 
@@ -92,6 +96,7 @@ docs/                                   — Learning wiki (pagination, lazy load
 | `Errors.User.cs` | `User.DuplicateEmail`, `User.NotFoundUserWithId` |
 | `Errors.Pictures.cs` | `Pictures.NotFoundPictureWithId` |
 | `Errors.Participation.cs` | `Participation.AmountExceedParticipationLeft` |
+| `Errors.Accommodation.cs` | `Accommodation.NotFound`, `Accommodation.UserAlreadyAssigned`, `Accommodation.AlreadyAssignedElsewhere`, `Accommodation.UserNotAssigned` |
 
 All in `Mariage.Domain/Common/Errors/` as `partial class Errors`.
 
@@ -136,10 +141,22 @@ All in `Mariage.Domain/Common/Errors/` as `partial class Errors`.
 | Query | `GetAllUsersInfosQuery` | `Application/UserInfos/Queries/AllUsers/` |
 | Query | `GetUserByIdQuery` | `Application/UserInfos/Queries/GetUserById/` |
 
-### 4.5 Behaviors
+### 4.5 Accommodations
+| Type | Class | Location |
+|------|-------|----------|
+| Command | `CreateAccommodationCommand` | `Application/Accommodations/Commands/CreateAccommodation/` |
+| Command | `UpdateAccommodationCommand` | `Application/Accommodations/Commands/UpdateAccommodation/` |
+| Command | `DeleteAccommodationCommand` | `Application/Accommodations/Commands/DeleteAccommodation/` |
+| Command | `AssignAccommodationCommand` | `Application/Accommodations/Commands/AssignAccommodation/` |
+| Command | `UnassignAccommodationCommand` | `Application/Accommodations/Commands/UnassignAccommodation/` |
+| Command | `RespondToAccommodationCommand` | `Application/Accommodations/Commands/RespondToAccommodation/` |
+| Query | `GetAccommodationsQuery` | `Application/Accommodations/Queries/GetAccommodations/` |
+| Query | `GetMyAccommodationQuery` | `Application/Accommodations/Queries/GetMyAccommodation/` |
+
+### 4.6 Behaviors
 - `ValidationBehavior<TRequest, TResponse>` — FluentValidation pipeline via `IPipelineBehavior`
 
-### 4.6 Key Interfaces
+### 4.7 Key Interfaces
 
 | Interface | Location |
 |-----------|----------|
@@ -148,6 +165,7 @@ All in `Mariage.Domain/Common/Errors/` as `partial class Errors`.
 | `IPictureRepository` | `Application/Common/Interfaces/Persistence/` |
 | `IJwtGenerator` | `Application/Common/Interfaces/Authentication/` |
 | `IHashPassword` | `Application/Common/Interfaces/Authentication/` |
+| `IAccommodationRepository` | `Application/Common/Interfaces/Persistence/` |
 | `IBlobService` | `Application/Common/Interfaces/Services/` |
 | `IDateTimeProvider` | `Application/Common/Interfaces/Services/` |
 | `IDiscordWebhook` | `Application/Common/Interfaces/Services/` |
@@ -176,6 +194,13 @@ All in `Mariage.Domain/Common/Errors/` as `partial class Errors`.
 - `AddGuestsRequest(UserId, Guests[])` → `UserInfosResponse`
 - `GuestResponse(Id, FirstName, LastName, IsComing)`
 
+### 5.5 Accommodations
+- `CreateAccommodationRequest(Title, Description, ImageFile)` → `AccommodationResponse(Id, Title, Description, UrlImage, Assignments[])`
+- `UpdateAccommodationRequest(Title, Description, ImageFile?)` → `AccommodationResponse`
+- `AssignAccommodationRequest(UserIds[])`, `RespondToAccommodationRequest(Response)`
+- `AccommodationAssignmentResponse(UserId, Username, ResponseStatus)`
+- `MyAccommodationResponse(Id, Title, Description, UrlImage, ResponseStatus)`
+
 ---
 
 ## 6. API Endpoints
@@ -203,6 +228,14 @@ All in `Mariage.Domain/Common/Errors/` as `partial class Errors`.
 | `/user-infos` | GET | GetAllUsersInfosQuery | Admin |
 | `/user-infos/profils` | GET | GetUserByIdQuery | Auth |
 | `/user-infos/guests` | POST | AddGuestsCommand | Admin |
+| `/accommodations` | GET | GetAccommodationsQuery | Admin |
+| `/accommodations` | POST | CreateAccommodationCommand | Admin |
+| `/accommodations/{id}` | PUT | UpdateAccommodationCommand | Admin |
+| `/accommodations/{id}` | DELETE | DeleteAccommodationCommand | Admin |
+| `/accommodations/{id}/assignments` | POST | AssignAccommodationCommand | Admin |
+| `/accommodations/{id}/assignments/{userId}` | DELETE | UnassignAccommodationCommand | Admin |
+| `/accommodations/my` | GET | GetMyAccommodationQuery | Auth |
+| `/accommodations/my/response` | PUT | RespondToAccommodationCommand | Auth |
 
 ### Routing conventions
 - Minimal API via static `Use{Feature}Controller()` extension methods on `IApplicationBuilder`
@@ -222,6 +255,7 @@ All in `Mariage.Domain/Common/Errors/` as `partial class Errors`.
   - `DbSet<Gift> Gifts`
   - `DbSet<User> Users`
   - `DbSet<Picture> Pictures`
+  - `DbSet<Accommodation> Accommodations`
 
 ### 7.3 Configurations (Fluent API)
 - `UserConfiguration.cs` — UserId conversion, PictureIds as comma-separated string, Guests owned collection
@@ -229,7 +263,7 @@ All in `Mariage.Domain/Common/Errors/` as `partial class Errors`.
 - `PictureConfiguration.cs` — PictureId/UserId conversions
 
 ### 7.4 Repositories
-- `UserRepository`, `GiftRepository`, `PictureRepository` in `Infrastructure/Persistence/Repositories/`
+- `UserRepository`, `GiftRepository`, `PictureRepository`, `AccommodationRepository` in `Infrastructure/Persistence/Repositories/`
 
 ### 7.5 External Services
 - `BlobService` — Azure Blob Storage (upload, delete, list photo booth/photograph)
@@ -316,6 +350,7 @@ src/app/
 | `/contact` | ContactComponent | Contact page |
 | `/photos` | PhotosMariageComponent | Photo gallery |
 | `/profil` | ProfilComponent | User profile |
+| `/hebergements` | AccommodationsComponent | Admin accommodation management |
 
 ### 9.4 API Services
 - `GiftApi` — Gift CRUD & participation
@@ -361,7 +396,7 @@ src/app/
 
 ### 9.8 Aspire Integration (dev)
 - `proxy.conf.js` reads `services__api__https__0` / `services__api__http__0` env vars injected by Aspire
-- Proxied routes: `/auth`, `/wedding-list`, `/pictures`, `/pictures-photo-booth`, `/pictures-photograph`, `/user-infos`, `/healthz`
+- Proxied routes: `/auth`, `/wedding-list`, `/pictures`, `/pictures-photo-booth`, `/pictures-photograph`, `/user-infos`, `/healthz`, `/accommodations`
 - Angular dev server runs on port 4200 (hardcoded in AppHost)
 - `moduleResolution: "bundler"` in tsconfig.json (required for subpath exports)
 
@@ -507,4 +542,5 @@ cd src/back && dotnet ef database update --project Mariage.Infrastructure --star
 | 2026-04-17 | **Angular Signals + SSR Transfer State** — `AuthService` migré BehaviorSubject→WritableSignal (`isAuthenticated`, `isAdmin`, `isModerator`), méthode `isAuthenticated()` renommée `refreshAuth()`. `GiftStateService` créé (HttpClient + signals, `loadProducts`, `loadProductById`, `refreshGiftById`). `SERVER_API_URL` InjectionToken fourni dans `AppServerModule` (service discovery Aspire). `WeddingListComponent` migré AfterViewInit→OnInit+GiftStateService. `GiftComponent` migré vers GiftStateService (GET) + GiftApi (mutations). `provideHttpClient(withFetch())` ajouté à AppModule. HttpClient TransferCache activé par défaut (Angular 19+). 5 templates migrés de `| async` vers appels signal `()`. |
 | 2026-04-20 | **Refactor profil/users → Angular 21 best practices** — Fix bug "page vide à la 1ère navigation" (cause : axios+Promise hors zone après hydration). Pattern cible : `HttpClient` + `Observable` + `rxResource({ stream })` + `inject()` + `signals` + `computed()` + `ChangeDetectionStrategy.OnPush`. Créé `auth.interceptor.ts` (functional `HttpInterceptorFn`, JWT Bearer, SSR-safe). `UsersApi` + `ProfilApi` réécrits HttpClient/Observable. `ProfilComponent` : `rxResource` + `computed` (profil, isLoading) + `effect` (sync FormGroup + Discord notif one-shot). `UsersComponent` : `rxResource` + tout l'état modal en signals (`selectedUserId`, `deleteUserName`…). `ToggleButtonComponent` : `input.required<>()` signal-based + `.subscribe()` ajouté (était manquant, requête ne partait pas). `ModalAddUserComponent` : AxiosService→HttpClient direct. AppModule : `withInterceptors([authInterceptor])` ajouté. AxiosService conservé pour code legacy non-refacto (login, gift.api, pictures.api, model-create-gift). |
 | 2026-04-20 | **Fix "Cannot GET /accueil" en production** — `AngularNodeAppEngine.handle()` retourne `null` pour les routes CSR ou quand SSRF bloque le hostname ; l'ancien code appelait `next()` sans middleware suivant → "Cannot GET". Fix : fallback `res.sendFile('index.html', { root: browserDistFolder })` dans le handler Express + `readFile(join(browserDistFolder, 'index.html'))` dans `createNodeRequestHandler` (raw Node `ServerResponse`, pas d'Express `sendFile`). Toutes les routes `RenderMode.Prerender` → `RenderMode.Server` (Prerender non supporté avec NgModules). Piège ACA : si on redéploie avec le même image tag et qu'un `az containerapp update` sans `--revision-suffix` retourne une révision existante dont le container a été créé AVANT le nouveau push → la vieille image tourne encore. Solution : forcer une nouvelle révision avec `--revision-suffix`. Build ACR `ddd`, révision `fix-cannotget` déployée. Toutes les routes testées 200 OK. |
+| 2026-04-20 | **Feature hébergements (Accommodation)** — Nouvel agrégat DDD `Accommodation` + `AccommodationAssignment` (owned). 6 commands + 2 queries CQRS (create, update, delete, assign, unassign, respond, getAll, getMy). 8 endpoints API REST (`/accommodations/*`). EF Core config + migration `AddAccommodation`. Frontend : page admin `/hebergements` (CRUD chambres + assign/unassign utilisateurs), section profil utilisateur (voir chambre assignée + accepter/refuser). AccommodationsModule + routing + navigation admin. |
 | 2026-04-20 | **Fix Angular SSR manifest + Aspire/Azure infrastructure** — (1) `angular.json` builder changé de `@angular-devkit/build-angular:application` vers `@angular/build:application` (nécessaire pour générer `angular-app-engine-manifest.mjs` et résoudre "Angular app engine manifest is not set"). (2) `server.ts` réécrit : lazy manifest init via IIFE Promise, `app.set('trust proxy', true)`, `allowedHosts` depuis `NG_ALLOWED_HOSTS` env var. (3) `@angular/build` installé avec `--legacy-peer-deps` ; `Dockerfile` mis à jour (`npm ci --legacy-peer-deps`) ; `package-lock.json` régénéré. (4) `Program.cs` : `UseSqlServer` → `UseNpgsql`. (5) `UserConfiguration.cs` : `ValueComparer<List<PictureId>>` ajouté (corrige NullReferenceException dans MigrationsModelDiffer). (6) Migration `InitialSqlServer` supprimée, `InitialCreate` recréée avec types PostgreSQL. (7) `AppHost.cs` + `package.json` : port frontend 4200→4010. (8) Azure ACA `aca-frontend-weh` : `NG_ALLOWED_HOSTS` env var configurée, image déployée (révision 0000012), serveur opérationnel sans erreur. |

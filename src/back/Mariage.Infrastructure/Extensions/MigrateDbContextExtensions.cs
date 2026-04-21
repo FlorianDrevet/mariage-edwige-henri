@@ -64,6 +64,7 @@ internal static class MigrateDbContextExtensions
 
         try
         {
+            await ReconcileExistingSchemaAsync(context);
             await context.Database.MigrateAsync();
             await seeder(context, services);
         }
@@ -71,6 +72,60 @@ internal static class MigrateDbContextExtensions
         {
 
             throw;
+        }
+    }
+
+    /// <summary>
+    /// Handles the case where the database schema already exists but the migration history is incomplete.
+    /// This occurs when the InitialCreate migration was recreated (e.g., SQL Server → PostgreSQL migration
+    /// reset) and the database already has tables from a previous InitialCreate run.
+    /// If "Gifts" table exists but InitialCreate is not recorded, we insert the record so MigrateAsync
+    /// only applies incremental migrations (e.g., AddAccommodation).
+    /// </summary>
+    private static async Task ReconcileExistingSchemaAsync(DbContext context)
+    {
+        var connection = context.Database.GetDbConnection();
+        var wasOpen = connection.State == System.Data.ConnectionState.Open;
+        if (!wasOpen) await connection.OpenAsync();
+
+        try
+        {
+            await using var cmd = connection.CreateCommand();
+
+            // Ensure the migration history table exists before querying it
+            cmd.CommandText = """
+                CREATE TABLE IF NOT EXISTS "__EFMigrationsHistory" (
+                    "MigrationId" character varying(150) NOT NULL,
+                    "ProductVersion" character varying(32) NOT NULL,
+                    CONSTRAINT "PK___EFMigrationsHistory" PRIMARY KEY ("MigrationId")
+                )
+                """;
+            await cmd.ExecuteNonQueryAsync();
+
+            // Check if the base schema is already applied (Gifts table exists)
+            cmd.CommandText = """
+                SELECT COUNT(1) FROM information_schema.tables
+                WHERE table_schema = 'public' AND table_name = 'Gifts'
+                """;
+            var giftsTableExists = (long)(await cmd.ExecuteScalarAsync())! > 0;
+
+            if (giftsTableExists)
+            {
+                // Base schema exists — ensure InitialCreate is recorded to avoid re-applying it
+                cmd.CommandText = """
+                    INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
+                    SELECT '20260420170922_InitialCreate', '10.0.5'
+                    WHERE NOT EXISTS (
+                        SELECT 1 FROM "__EFMigrationsHistory"
+                        WHERE "MigrationId" = '20260420170922_InitialCreate'
+                    )
+                    """;
+                await cmd.ExecuteNonQueryAsync();
+            }
+        }
+        finally
+        {
+            if (!wasOpen) await connection.CloseAsync();
         }
     }
 
