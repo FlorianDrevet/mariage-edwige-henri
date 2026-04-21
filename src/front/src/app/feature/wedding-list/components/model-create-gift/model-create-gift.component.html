@@ -91,7 +91,7 @@
           <button
             type="button"
             (click)="onAddCategory()"
-            class="px-3 py-2 rounded-lg bg-secondary hover:bg-secondary-light text-gold font-montserrat text-sm transition-colors cursor-pointer"
+            class="btn-grad px-3 py-2 font-montserrat"
           >+</button>
         </div>
         @if (giftState.categories().length > 0) {
@@ -119,7 +119,7 @@
       (click)="onCreateGiftClick()"
       [cModalToggle]="verticallyCenteredModal.id"
       [disabled]="createGiftForm.invalid"
-      class="px-5 py-2.5 rounded-lg bg-secondary hover:bg-secondary-light text-gold font-montserrat text-sm font-medium transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+      class="btn-grad px-5 font-montserrat"
     >Ajouter le cadeau</button>
   </c-modal-footer>
 </c-modal>

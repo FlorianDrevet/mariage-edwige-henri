@@ -1,2 +1,36 @@
 @use "vars";
 @use "typography";
+
+// Global gradient button — shared by button component and inline buttons
+.btn-grad {
+  background-image: linear-gradient(to right, vars.$color-secondary 0%, vars.$color-secondary-light 50%, vars.$color-secondary 100%);
+  padding: 6px 10px;
+  text-align: center;
+  text-transform: uppercase;
+  transition: all 0.4s ease;
+  background-size: 200% auto;
+  color: vars.$color-gold;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  white-space: nowrap;
+  font-weight: 500;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  line-height: 1.2;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    background-position: right center;
+    color: vars.$color-gold-light;
+    text-decoration: none;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    transform: translateY(-1px);
+  }
+
+  &:disabled {
+    background-image: linear-gradient(to right, #cccccc 0%, #999999 63%, #cccccc 100%);
+    cursor: not-allowed;
+    transform: none;
+  }
+}

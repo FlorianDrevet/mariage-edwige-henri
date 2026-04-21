@@ -1,4 +1,4 @@
-import {Component, HostListener, Inject, OnInit, PLATFORM_ID} from '@angular/core';
+import {ChangeDetectorRef, Component, HostListener, Inject, OnInit, PLATFORM_ID} from '@angular/core';
 import {isPlatformBrowser, DOCUMENT} from '@angular/common';
 import {PicturesApi} from "../../apis/pictures.api";
 import {PictureModel} from "../../models/picture.model";
@@ -23,6 +23,7 @@ export class PhotoListComponent implements OnInit{
 
   constructor(private pictureApi: PicturesApi,
               protected AuthService: AuthService,
+              private cdr: ChangeDetectorRef,
               @Inject(DOCUMENT) private document: Document,
               @Inject(PLATFORM_ID) private platformId: Object) {
     this.isBrowser = isPlatformBrowser(this.platformId);
@@ -44,8 +45,10 @@ export class PhotoListComponent implements OnInit{
         this.pageNumber = 1;
         this.hasNextPage = false;
         this.isLoading = false;
+        this.cdr.detectChanges();
         }).catch(() => {
           this.isLoading = false;
+          this.cdr.detectChanges();
         });
       return;
     }
@@ -55,8 +58,10 @@ export class PhotoListComponent implements OnInit{
           this.pageNumber = 1;
           this.hasNextPage = false;
           this.isLoading = false;
+          this.cdr.detectChanges();
         }).catch(() => {
           this.isLoading = false;
+          this.cdr.detectChanges();
         });
       return;
     }
@@ -76,8 +81,10 @@ export class PhotoListComponent implements OnInit{
         this.hasNextPage = response.hasNextPage;
         this.pageNumber++;
         this.isLoading = false;
+        this.cdr.detectChanges();
       }).catch(() => {
         this.isLoading = false;
+        this.cdr.detectChanges();
       });
   }
 
