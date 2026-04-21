@@ -37,10 +37,10 @@ export class GiftApi {
   }
 
   public createCategory(name: string): Promise<GiftCategoryInterface> {
-    return this.axiosService.request(MethodEnum.POST, '/wedding-list/categories', {name}, undefined, true);
+    return this.axiosService.request(MethodEnum.POST, '/wedding-list/categories', {name});
   }
 
   public deleteCategory(id: string): Promise<void> {
-    return this.axiosService.request(MethodEnum.DELETE, `/wedding-list/categories/${id}`, null, undefined, true);
+    return this.axiosService.request(MethodEnum.DELETE, `/wedding-list/categories/${id}`, null);
   }
 }

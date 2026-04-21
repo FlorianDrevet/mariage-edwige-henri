@@ -33,6 +33,28 @@
         }
       </select>
 
+      <div class="flex flex-row items-center gap-2 mt-4">
+        <input
+          type="text"
+          [(ngModel)]="newCategoryName"
+          [ngModelOptions]="{standalone: true}"
+          placeholder="Nouvelle catégorie"
+          class="px-3 py-2 rounded bg-primary-dark text-gold border border-gold-dark font-montserrat text-sm flex-1"
+          (keyup.enter)="onAddCategory()"
+        >
+        <app-button (click)="onAddCategory()">+</app-button>
+      </div>
+      @if (giftState.categories().length > 0) {
+        <div class="flex flex-row flex-wrap gap-2 mt-3">
+          @for (cat of giftState.categories(); track cat.id) {
+            <div class="flex items-center gap-1 px-3 py-1 rounded-full bg-primary-dark text-gold text-sm font-montserrat">
+              <span>{{ cat.name }}</span>
+              <button type="button" (click)="onDeleteCategory(cat.id)" class="ml-1 text-gold-light hover:text-gold cursor-pointer">&times;</button>
+            </div>
+          }
+        </div>
+      }
+
       <div class="h-10"></div>
 
       @if (image !== undefined) {

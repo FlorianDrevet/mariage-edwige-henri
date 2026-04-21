@@ -4,6 +4,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AxiosService} from "../../../../shared/services/axios.service";
 import {MethodEnum} from "../../../../shared/enums/method.enum";
 import {GiftStateService} from "../../../../shared/services/gift-state.service";
+import {GiftApi} from "../../../../shared/apis/gift.api";
 
 @Component({
   standalone: false,
@@ -17,9 +18,11 @@ export class ModelCreateGiftComponent {
   createGiftForm: FormGroup;
   image: File | undefined;
   file: any | undefined;
+  newCategoryName = '';
 
   constructor(private fb: FormBuilder,
               private axiosService: AxiosService,
+              private giftApi: GiftApi,
               protected giftState: GiftStateService) {
     this.createGiftForm = this.fb.group({
       name: ['', Validators.required],
@@ -66,5 +69,20 @@ export class ModelCreateGiftComponent {
       this.image = undefined
       this.createGiftForm.reset()
     })
+  }
+
+  onAddCategory(): void {
+    const name = this.newCategoryName.trim();
+    if (!name) return;
+    this.giftApi.createCategory(name).then(() => {
+      this.newCategoryName = '';
+      this.giftState.refreshCategories();
+    });
+  }
+
+  onDeleteCategory(id: string): void {
+    this.giftApi.deleteCategory(id).then(() => {
+      this.giftState.refreshCategories();
+    });
   }
 }
