@@ -86,7 +86,30 @@
                 </p>
                 <div class="flex flex-col gap-1 text-xs">
                   <span class="opacity-60">IBAN</span>
+                  <div class="flex items-center gap-2">
                     <span class="font-mono tracking-wider text-sm">FR76 2823 3000 0137 4424 8513 031</span>
+                    <button
+                      (click)="copyIban()"
+                      class="flex items-center gap-1 px-2 py-1 rounded border transition-all duration-200"
+                      [class]="ibanCopied
+                        ? 'border-green-500 text-green-400 bg-green-900/20'
+                        : 'border-gold/40 text-gold hover:border-gold hover:bg-gold/10'"
+                      title="Copier l'IBAN"
+                    >
+                      @if (!ibanCopied) {
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <rect x="9" y="9" width="13" height="13" rx="2"/>
+                          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                        </svg>
+                        <span class="text-xs">Copier</span>
+                      } @else {
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                        <span class="text-xs">Copié !</span>
+                      }
+                    </button>
+                  </div>
                 </div>
                 <p class="text-xs opacity-60 mt-3">Quand le virement est fait, cliquez simplement sur Valider ci-dessous.</p>
               </div>

@@ -20,6 +20,7 @@ export class GiftComponent implements OnInit {
   choosingAmount: boolean = true;
   clickedLydia: boolean = false;
   paymentMethod: 'lydia' | 'virement' | null = null;
+  ibanCopied = false;
   icon = {cilGift, cilMoney};
   editGiftForm: FormGroup;
   editImage: File | undefined;
@@ -53,6 +54,13 @@ export class GiftComponent implements OnInit {
   selectPaymentMethod(method: 'lydia' | 'virement') {
     this.paymentMethod = method;
     this.clickedLydia = false;
+  }
+
+  copyIban() {
+    navigator.clipboard.writeText('FR76 2823 3000 0137 4424 8513 031').then(() => {
+      this.ibanCopied = true;
+      setTimeout(() => this.ibanCopied = false, 2000);
+    });
   }
 
   onClickedLydia() {
