@@ -7,15 +7,15 @@
       <input type="file" #fileInput (change)="onFileSelected($event)" accept="image/*" style="display: none;">
         <ul class="flex flex-row justify-around space-x-8">
           <li>
-            <button class="font-montserrat text-sm d-flex flex-column align-middle items-center" [ngClass]="{'active-link': selectedFilter === 'photograph'}" (click)="onFilterChange(PictureFilterEnum.PHOTOGRAPH)">
-              <img ngSrc="assets/icons/photos-instantanees.png" height="28" width="28" alt="Icon Photograph"/>
-              <p class="mt-1 text-xs">Photographe</p>
-            </button>
-          </li>
-          <li>
             <button class="font-montserrat text-sm d-flex flex-column align-middle items-center" [ngClass]="{'active-link': selectedFilter === 'all'}" (click)="onFilterChange(PictureFilterEnum.ALL)">
               <img ngSrc="assets/icons/monde.png" height="28" width="28" alt="Icon Monde"/>
               <span class="text-xs">Prise par<br>tout le monde</span>
+            </button>
+          </li>
+          <li>
+            <button class="font-montserrat text-sm d-flex flex-column align-middle items-center" [ngClass]="{'active-link': selectedFilter === 'photograph'}" (click)="onFilterChange(PictureFilterEnum.PHOTOGRAPH)">
+              <img ngSrc="assets/icons/photos-instantanees.png" height="28" width="28" alt="Icon Photograph"/>
+              <p class="mt-1 text-xs">Photographe</p>
             </button>
           </li>
           <li>

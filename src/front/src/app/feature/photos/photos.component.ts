@@ -15,7 +15,7 @@ export class PhotosMariageComponent implements OnInit {
   constructor(protected AuthService: AuthService, protected picturesApi: PicturesApi) {
   }
 
-  selectedFilter: PictureFilterEnum = PictureFilterEnum.PHOTOGRAPH;
+  selectedFilter: PictureFilterEnum = PictureFilterEnum.ALL;
 
   @ViewChild(PhotoListComponent) photoListComponent!: PhotoListComponent;
 

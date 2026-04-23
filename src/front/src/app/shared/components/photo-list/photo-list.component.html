@@ -4,7 +4,11 @@
   } @else if (!isLoading && photos.length === 0) {
     <div class="empty-photos">
       <img src="assets/icons/appareil-photo.png" height="80" width="80" alt="Aucune photo" style="opacity: 0.4;">
-      <p class="font-montserrat text-sm mt-4 opacity-60">Aucune photo pour le moment.</p>
+      @if (selectedFilter === PictureFilterEnum.PHOTOGRAPH || selectedFilter === PictureFilterEnum.OWN) {
+        <p class="font-montserrat text-sm mt-4 opacity-60">Les photos seront ajoutées après le mariage, une fois que les mariés les auront toutes récupérées.</p>
+      } @else {
+        <p class="font-montserrat text-sm mt-4 opacity-60">Aucune photo pour le moment.</p>
+      }
     </div>
   }
   <div *ngFor="let photo of photos; trackBy: trackById" class="photo-item">

@@ -17,7 +17,8 @@ export class PhotoListComponent implements OnInit{
   isLoading = false;
   hasNextPage = true;
 
-  selectedFilter: PictureFilterEnum = PictureFilterEnum.PHOTOGRAPH;
+  selectedFilter: PictureFilterEnum = PictureFilterEnum.ALL;
+  protected readonly PictureFilterEnum = PictureFilterEnum;
 
   private isBrowser: boolean;
 
@@ -30,7 +31,7 @@ export class PhotoListComponent implements OnInit{
   }
 
   ngOnInit() {
-    this.loadPhotos(PictureFilterEnum.PHOTOGRAPH);
+    this.loadPhotos(PictureFilterEnum.ALL);
   }
 
   loadPhotos(filter: PictureFilterEnum) {
