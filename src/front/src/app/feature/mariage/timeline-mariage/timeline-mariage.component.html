@@ -1,36 +1,77 @@
 <div class="w-full flex-col flex items-center mt-16">
-  <div class="flex flex-row w-2/3">
-    <a
-      (click)="getClicked()"
-      [routerLink]="['ceremonie-religieuse']"  style="margin-left: calc(20% - 48px); margin-bottom: 12px">
-      <img ngSrc="assets/icons/eglise.png" height="96" width="96" alt="Icon église"/>
-    </a>
-    <a
-      (click)="getClicked()"
-      [routerLink]="['photos']" style="margin-left: calc(40% - 96px)">
-      <img ngSrc="assets/icons/appareil-photo-reflex-numerique.png" height="96" width="96" alt="Icon appareil photo"/>
-    </a>
+  <div class="flex w-2/3 justify-between">
+    <div class="flex w-24 justify-center">
+      <a
+        (click)="getClicked()"
+        [routerLink]="['ceremonie-religieuse']"
+        class="mb-3">
+        <img ngSrc="assets/icons/eglise.png" height="96" width="96" alt="Icon église"/>
+      </a>
+    </div>
+    <div class="w-24"></div>
+    <div class="flex w-24 justify-center">
+      <a
+        (click)="getClicked()"
+        [routerLink]="['vin-honneur']"
+        class="mb-3">
+        <img ngSrc="assets/icons/champagne.png" height="96" width="96" alt="Icon champagne"/>
+      </a>
+    </div>
+    <div class="w-24"></div>
+    <div class="flex w-24 justify-center">
+      <a
+        (click)="getClicked()"
+        [routerLink]="['hebergement']"
+        class="mb-3">
+        <img ngSrc="assets/icons/lit-double.png" height="96" width="96" alt="Icon hébergement"/>
+      </a>
+    </div>
   </div>
-  <div class="w-2/3 flex flex-row">
-    <div class="vertical-line-top" style="margin-left: 20%"></div>
-    <div class="vertical-line-top" style="margin-left: 40%"></div>
+  <div class="flex w-2/3 justify-between">
+    <div class="flex w-24 justify-center">
+      <div class="vertical-line-top"></div>
+    </div>
+    <div class="w-24"></div>
+    <div class="flex w-24 justify-center">
+      <div class="vertical-line-top"></div>
+    </div>
+    <div class="w-24"></div>
+    <div class="flex w-24 justify-center">
+      <div class="vertical-line-top"></div>
+    </div>
   </div>
   <div class="main-line w-2/3"></div>
-  <div class="w-2/3 flex flex-row">
-    <div class="vertical-line-bot" style="margin-left: 40%"></div>
-    <div class="vertical-line-bot" style="margin-left: 40%"></div>
+  <div class="flex w-2/3 justify-between">
+    <div class="w-24"></div>
+    <div class="flex w-24 justify-center">
+      <div class="vertical-line-bot"></div>
+    </div>
+    <div class="w-24"></div>
+    <div class="flex w-24 justify-center">
+      <div class="vertical-line-bot"></div>
+    </div>
+    <div class="w-24"></div>
   </div>
-  <div class="flex flex-row w-2/3">
-    <a
-      (click)="getClicked()"
-      [routerLink]="['vin-honneur']" style="margin-left: calc(40% - 48px); margin-top: 12px">
-      <img ngSrc="assets/icons/champagne.png" height="96" width="96" alt="Icon champagne"/>
-    </a>
-    <a
-      (click)="getClicked()"
-      [routerLink]="['reception']" style="margin-left: calc(40% - 96px)">
-      <img ngSrc="assets/icons/repas.png" height="96" width="96" alt="Icon repas"/>
-    </a>
+  <div class="flex w-2/3 justify-between">
+    <div class="w-24"></div>
+    <div class="flex w-24 justify-center">
+      <a
+        (click)="getClicked()"
+        [routerLink]="['photos']"
+        class="mt-3">
+        <img ngSrc="assets/icons/appareil-photo-reflex-numerique.png" height="96" width="96" alt="Icon appareil photo"/>
+      </a>
+    </div>
+    <div class="w-24"></div>
+    <div class="flex w-24 justify-center">
+      <a
+        (click)="getClicked()"
+        [routerLink]="['reception']"
+        class="mt-3">
+        <img ngSrc="assets/icons/repas.png" height="96" width="96" alt="Icon repas"/>
+      </a>
+    </div>
+    <div class="w-24"></div>
   </div>
 </div>
 

@@ -29,6 +29,7 @@ import { MariageComponent } from './feature/mariage/mariage.component';
 import { CeremonieComponent } from './feature/mariage/timeline/ceremonie/ceremonie.component';
 import { VinHonneurComponent } from './feature/mariage/timeline/vin-honneur/vin-honneur.component';
 import { ReceptionComponent } from './feature/mariage/timeline/reception/reception.component';
+import { HebergementComponent } from './feature/mariage/timeline/hebergement/hebergement.component';
 import { NeedToBeConnectedComponent } from './shared/components/need-to-be-connected/need-to-be-connected.component';
 import { PhotosComponent } from './feature/mariage/timeline/photos/photos.component';
 import { MariesComponent } from './feature/maries/maries.component';
@@ -51,6 +52,7 @@ import {AccommodationsModule} from "./feature/accommodations/accommodations.modu
     CeremonieComponent,
     VinHonneurComponent,
     ReceptionComponent,
+    HebergementComponent,
     NeedToBeConnectedComponent,
     PhotosComponent,
     MariesComponent,

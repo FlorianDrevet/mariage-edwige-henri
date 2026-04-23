@@ -11,6 +11,7 @@ import {MariageComponent} from "./feature/mariage/mariage.component";
 import {CeremonieComponent} from "./feature/mariage/timeline/ceremonie/ceremonie.component";
 import {VinHonneurComponent} from "./feature/mariage/timeline/vin-honneur/vin-honneur.component";
 import {ReceptionComponent} from "./feature/mariage/timeline/reception/reception.component";
+import {HebergementComponent} from "./feature/mariage/timeline/hebergement/hebergement.component";
 import {PhotosComponent} from "./feature/mariage/timeline/photos/photos.component";
 import {MariesComponent} from "./feature/maries/maries.component";
 import {ContactComponent} from "./feature/contact/contact.component";
@@ -65,6 +66,11 @@ const routes: Routes = [
       {
         path: "reception",
         component: ReceptionComponent,
+        pathMatch: 'full'
+      },
+      {
+        path: "hebergement",
+        component: HebergementComponent,
         pathMatch: 'full'
       },
       {

@@ -1,9 +1,7 @@
-<div class="w-full flex flex-row items-center mt-12">
-  <div class="w-full flex-row flex h-[45vh]">
-
-    <div class="flex flex-col w-fit ml-auto">
-      <div style="height: calc(20% - 32px)"></div>
-      <div class="flex flex-row items-center w-fit">
+<div class="w-full flex flex-row justify-center items-center mt-12">
+  <div class="flex w-full max-w-[28rem] justify-center">
+    <div class="flex h-[34rem] flex-col justify-between">
+      <div class="flex h-16 flex-row items-center w-fit ml-auto">
         <a
           (click)="getClicked()"
           [routerLink]="['ceremonie-religieuse']" class="mr-3">
@@ -11,31 +9,40 @@
         </a>
         <div class="horizontal-line-left"></div>
       </div>
-      <div style="height: calc(40% - 64px)"></div>
-      <div class="flex flex-row items-center w-fit">
+      <div class="h-16"></div>
+      <div class="flex h-16 flex-row items-center w-fit ml-auto">
         <a
           (click)="getClicked()"
-          [routerLink]="['photos']" class="mr-3">
-          <img ngSrc="assets/icons/appareil-photo-reflex-numerique.png" height="64" width="64" alt="Icon appareil photo"/>
+          [routerLink]="['vin-honneur']" class="mr-3">
+          <img ngSrc="assets/icons/champagne.png" height="64" width="64" alt="Icon champagne"/>
+        </a>
+        <div class="horizontal-line-left"></div>
+      </div>
+      <div class="h-16"></div>
+      <div class="flex h-16 flex-row items-center w-fit ml-auto">
+        <a
+          (click)="getClicked()"
+          [routerLink]="['hebergement']" class="mr-3">
+          <img ngSrc="assets/icons/lit-double.png" height="64" width="64" alt="Icon hébergement"/>
         </a>
         <div class="horizontal-line-left"></div>
       </div>
     </div>
 
-    <div class="main-line"></div>
+    <div class="main-line h-[34rem]"></div>
 
-    <div class="flex flex-col w-fit mr-auto h-full">
-      <div style="height: calc(40% - 32px)"></div>
-      <div class="flex flex-row items-center w-fit">
+    <div class="flex h-[34rem] flex-col justify-between">
+      <div class="h-16"></div>
+      <div class="flex h-16 flex-row items-center w-fit mr-auto">
         <div class="horizontal-line-right"></div>
         <a
           (click)="getClicked()"
-          [routerLink]="['vin-honneur']" class="ml-3">
-          <img ngSrc="assets/icons/champagne.png" height="64" width="64" alt="Icon champagne"/>
+          [routerLink]="['photos']" class="ml-3">
+          <img ngSrc="assets/icons/appareil-photo-reflex-numerique.png" height="64" width="64" alt="Icon appareil photo"/>
         </a>
       </div>
-      <div style="height: calc(40% - 64px)"></div>
-      <div class="flex flex-row items-center w-fit">
+      <div class="h-16"></div>
+      <div class="flex h-16 flex-row items-center w-fit mr-auto">
         <div class="horizontal-line-right"></div>
         <a
           (click)="getClicked()"
@@ -43,7 +50,7 @@
           <img ngSrc="assets/icons/repas.png" height="64" width="64" alt="Icon repas"/>
         </a>
       </div>
+      <div class="h-16"></div>
     </div>
   </div>
-
 </div>
