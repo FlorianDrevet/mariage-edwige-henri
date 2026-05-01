@@ -37,6 +37,8 @@ public class GiftRepository(MariageDbContext mariageDbContext): IGiftRepository
 
     public void UpdateGift(Gift gift)
     {
+        // The gift entity must already be tracked by the context (loaded within the same request scope).
+        // EF Core change tracking detects the modified properties and persists only the changed fields.
         mariageDbContext.SaveChanges();
     }
 

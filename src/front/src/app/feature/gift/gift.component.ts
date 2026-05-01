@@ -25,6 +25,7 @@ export class GiftComponent implements OnInit {
   editGiftForm: FormGroup;
   editImagePreview: string | null = null;
   editFile: File | null = null;
+  private isEditImageBlob = false;
 
   private currentId: string | null = null;
 
@@ -118,7 +119,9 @@ export class GiftComponent implements OnInit {
         price: this.gift.price,
         category: this.gift.category,
       });
+      this.revokeEditBlob();
       this.editImagePreview = this.gift.urlImage;
+      this.isEditImageBlob = false;
       this.editFile = null;
     }
   }
@@ -144,11 +147,17 @@ export class GiftComponent implements OnInit {
   }
 
   private loadEditFile(file: File) {
+    this.revokeEditBlob();
     this.editFile = file;
-    if (this.editImagePreview && this.editImagePreview !== this.gift?.urlImage) {
-      URL.revokeObjectURL(this.editImagePreview);
-    }
     this.editImagePreview = URL.createObjectURL(file);
+    this.isEditImageBlob = true;
+  }
+
+  private revokeEditBlob() {
+    if (this.isEditImageBlob && this.editImagePreview) {
+      URL.revokeObjectURL(this.editImagePreview);
+      this.isEditImageBlob = false;
+    }
   }
 
   onUpdateGiftClick() {
