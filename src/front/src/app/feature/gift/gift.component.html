@@ -139,56 +139,96 @@
 <!-- Modal Modifier Cadeau -->
 <c-modal #editGiftModal alignment="center" id="editGiftModal" size="lg">
   <c-modal-header>
-    <h5 cModalTitle class="font-montserrat text-4xl">Modifier le cadeau</h5>
+    <h5 cModalTitle class="font-montserrat text-2xl text-gold">Modifier le cadeau</h5>
   </c-modal-header>
   <c-modal-body>
-    <form [formGroup]="editGiftForm">
-      <div class="h-10"></div>
+    <form [formGroup]="editGiftForm" class="flex flex-col gap-6">
 
-      <app-input
-        [form]="editGiftForm"
-        [icon]="icon.cilGift"
-        [required]="true"
-        class="mt-10"
-        controlName="name"
-        placeholder="Nom"
-      ></app-input>
-
-      <div class="h-10"></div>
-
-      <app-input
-        [form]="editGiftForm"
-        [icon]="icon.cilMoney"
-        [required]="true"
-        class="mt-24"
-        controlName="price"
-        placeholder="Prix"
-      ></app-input>
-
-      <select aria-label="Category" cSelect formControlName="category" class="mt-24" [required]="true">
-        @for (cat of giftState.categories(); track cat.id) {
-          <option [value]="cat.name">{{ cat.name }}</option>
+      <!-- Image upload zone -->
+      <div
+        class="relative group cursor-pointer rounded-xl border-2 border-dashed border-gold-dark/40 hover:border-gold transition-all duration-300 overflow-hidden h-48"
+        [class.border-solid]="editImagePreview"
+        [class.border-gold]="editImagePreview"
+        (click)="editFileInput.click()"
+        (dragover)="onEditDragOver($event)"
+        (drop)="onEditDrop($event)"
+      >
+        @if (editImagePreview) {
+          <div class="relative h-full bg-primary-dark">
+            <img [src]="editImagePreview" alt="Aperçu" class="w-full h-full object-contain">
+            <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+              <span class="text-gold font-montserrat text-sm">Cliquer pour changer</span>
+            </div>
+          </div>
+        } @else {
+          <div class="flex flex-col items-center justify-center h-full px-4 text-center">
+            <svg class="w-10 h-10 text-gold-dark mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+            <p class="text-gold-dark font-montserrat text-sm">Glisser une image ou <span class="text-gold underline">parcourir</span></p>
+            <p class="text-gold-dark/50 font-montserrat text-xs mt-1">PNG, JPG, WebP</p>
+          </div>
         }
-      </select>
+        <input #editFileInput (change)="onEditFileSelected()" hidden accept="image/*" type="file">
+      </div>
 
-      <div class="h-10"></div>
-
-      @if (editImage !== undefined) {
-        <div class="preview-img-container">
-          <img [src]="editImage" alt="Image du produit">
+      <!-- Name & Price row -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="flex flex-col gap-1.5">
+          <label class="text-gold-dark font-montserrat text-xs uppercase tracking-wider">Nom du cadeau</label>
+          <app-input
+            [form]="editGiftForm"
+            [icon]="icon.cilGift"
+            [required]="true"
+            controlName="name"
+            placeholder="Ex: Service à vaisselle"
+          ></app-input>
         </div>
-      }
-      <app-button (click)="editFileInput.click()">Changer l'image</app-button>
-      <input #editFileInput (change)="onEditFileSelected()" hidden id="editFile" type="file">
+        <div class="flex flex-col gap-1.5">
+          <label class="text-gold-dark font-montserrat text-xs uppercase tracking-wider">Prix (€)</label>
+          <app-input
+            [form]="editGiftForm"
+            [icon]="icon.cilMoney"
+            [required]="true"
+            controlName="price"
+            placeholder="Ex: 150"
+          ></app-input>
+        </div>
+      </div>
+
+      <!-- Category select -->
+      <div class="flex flex-col gap-1.5">
+        <label class="text-gold-dark font-montserrat text-xs uppercase tracking-wider">Catégorie</label>
+        <select
+          aria-label="Category"
+          cSelect
+          formControlName="category"
+          [required]="true"
+          class="bg-primary-dark text-gold border border-gold-dark/40 rounded-lg px-3 py-2.5 font-montserrat text-sm focus:border-gold focus:outline-none transition-colors"
+        >
+          <option value="" disabled hidden>Choisir une catégorie</option>
+          @for (cat of giftState.categories(); track cat.id) {
+            <option [value]="cat.name">{{ cat.name }}</option>
+          }
+        </select>
+      </div>
+
     </form>
   </c-modal-body>
-  <c-modal-footer>
-    <app-button [cModalToggle]="editGiftModal.id">Annuler</app-button>
-    <app-button
+  <c-modal-footer class="flex justify-end gap-3">
+    <button
+      type="button"
+      [cModalToggle]="editGiftModal.id"
+      class="px-5 py-2.5 rounded-lg border border-gold-dark/40 text-gold-dark font-montserrat text-sm hover:border-gold hover:text-gold transition-colors cursor-pointer bg-transparent"
+    >Annuler</button>
+    <button
+      type="button"
       (click)="onUpdateGiftClick()"
       [cModalToggle]="editGiftModal.id"
-    >Enregistrer
-    </app-button>
+      [disabled]="editGiftForm.invalid"
+      class="btn-grad px-5 font-montserrat"
+    >Enregistrer les modifications</button>
   </c-modal-footer>
 </c-modal>
 

@@ -3,6 +3,7 @@ using Mariage.Application.Common.Interfaces.Persistence;
 using Mariage.Domain.GiftAggregate;
 using Mariage.Domain.GiftAggregate.Entities;
 using Mariage.Domain.GiftAggregate.ValueObjects;
+using Microsoft.EntityFrameworkCore;
 
 namespace Mariage.Infrastructure.Persistence.Repositories;
 
@@ -16,12 +17,14 @@ public class GiftRepository(MariageDbContext mariageDbContext): IGiftRepository
 
     public ErrorOr<List<Gift>> GetGifts()
     {
-        return mariageDbContext.Gifts.ToList();
+        return mariageDbContext.Gifts.Include(g => g.GiftGivers).ToList();
     }
 
     public Gift? GetGiftById(GiftId requestGiftId)
     {
-        return mariageDbContext.Gifts.FirstOrDefault(g => g.Id == requestGiftId);
+        return mariageDbContext.Gifts
+            .Include(g => g.GiftGivers)
+            .FirstOrDefault(g => g.Id == requestGiftId);
     }
 
     public Gift AddGiftGiver(GiftId giftId, GiftGiver giftGiver)
@@ -34,7 +37,6 @@ public class GiftRepository(MariageDbContext mariageDbContext): IGiftRepository
 
     public void UpdateGift(Gift gift)
     {
-        mariageDbContext.Update(gift);
         mariageDbContext.SaveChanges();
     }
 
