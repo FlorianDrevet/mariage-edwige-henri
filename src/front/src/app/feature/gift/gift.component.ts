@@ -23,8 +23,9 @@ export class GiftComponent implements OnInit {
   ibanCopied = false;
   icon = {cilGift, cilMoney};
   editGiftForm: FormGroup;
-  editImage: File | undefined;
-  editFile: any | undefined;
+  editImagePreview: string | null = null;
+  editFile: File | null = null;
+  private isEditImageBlob = false;
 
   private currentId: string | null = null;
 
@@ -118,21 +119,44 @@ export class GiftComponent implements OnInit {
         price: this.gift.price,
         category: this.gift.category,
       });
-      this.editImage = undefined;
-      this.editFile = undefined;
+      this.revokeEditBlob();
+      this.editImagePreview = this.gift.urlImage;
+      this.isEditImageBlob = false;
+      this.editFile = null;
     }
   }
 
   onEditFileSelected() {
     const inputNode = this.editFileInput?.nativeElement;
-    if (!inputNode) return;
-    this.editFile = inputNode.files?.[0];
-    if (typeof (FileReader) !== 'undefined' && this.editFile) {
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.editImage = e.target!.result;
-      };
-      reader.readAsDataURL(this.editFile);
+    if (!inputNode?.files?.[0]) return;
+    this.loadEditFile(inputNode.files[0]);
+  }
+
+  onEditDragOver(event: DragEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+
+  onEditDrop(event: DragEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+    const droppedFile = event.dataTransfer?.files?.[0];
+    if (droppedFile && droppedFile.type.startsWith('image/')) {
+      this.loadEditFile(droppedFile);
+    }
+  }
+
+  private loadEditFile(file: File) {
+    this.revokeEditBlob();
+    this.editFile = file;
+    this.editImagePreview = URL.createObjectURL(file);
+    this.isEditImageBlob = true;
+  }
+
+  private revokeEditBlob() {
+    if (this.isEditImageBlob && this.editImagePreview) {
+      URL.revokeObjectURL(this.editImagePreview);
+      this.isEditImageBlob = false;
     }
   }
 
