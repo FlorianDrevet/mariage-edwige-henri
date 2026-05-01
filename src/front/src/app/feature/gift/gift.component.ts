@@ -183,8 +183,9 @@ export class GiftComponent implements OnInit {
       if (this.currentId) {
         this.giftState.refreshGiftById(this.currentId);
       }
-    }).catch(() => {
+    }).catch((error) => {
       this.isUpdating = false;
+      console.error('Failed to update gift:', error);
       this.updateError = 'Une erreur est survenue lors de la modification. Veuillez réessayer.';
     });
   }
