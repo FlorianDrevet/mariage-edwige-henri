@@ -18,7 +18,7 @@
               }
             }
             <div class="flex flex-row gap-3 mt-4">
-              <app-button (click)="onEditGiftClick()" [cModalToggle]="editGiftModal.id">Modifier</app-button>
+              <app-button (click)="onEditGiftClick()">Modifier</app-button>
               <app-button [cModalToggle]="deleteGiftModal.id">Supprimer</app-button>
             </div>
           </div>
@@ -137,7 +137,8 @@
 }
 
 <!-- Modal Modifier Cadeau -->
-<c-modal #editGiftModal alignment="center" id="editGiftModal" size="lg">
+<c-modal #editGiftModal alignment="center" id="editGiftModal" size="lg"
+         [visible]="editModalVisible" (visibleChange)="editModalVisible = $event">
   <c-modal-header>
     <h5 cModalTitle class="font-montserrat text-2xl text-gold">Modifier le cadeau</h5>
   </c-modal-header>
@@ -216,19 +217,29 @@
 
     </form>
   </c-modal-body>
-  <c-modal-footer class="flex justify-end gap-3">
-    <button
-      type="button"
-      [cModalToggle]="editGiftModal.id"
-      class="px-5 py-2.5 rounded-lg border border-gold-dark/40 text-gold-dark font-montserrat text-sm hover:border-gold hover:text-gold transition-colors cursor-pointer bg-transparent"
-    >Annuler</button>
-    <button
-      type="button"
-      (click)="onUpdateGiftClick()"
-      [cModalToggle]="editGiftModal.id"
-      [disabled]="editGiftForm.invalid"
-      class="btn-grad px-5 font-montserrat"
-    >Enregistrer les modifications</button>
+  <c-modal-footer class="flex flex-col gap-3">
+    @if (updateError) {
+      <p class="text-red-400 font-montserrat text-sm w-full text-center">{{ updateError }}</p>
+    }
+    <div class="flex justify-end gap-3 w-full">
+      <button
+        type="button"
+        (click)="editModalVisible = false"
+        [disabled]="isUpdating"
+        class="px-5 py-2.5 rounded-lg border border-gold-dark/40 text-gold-dark font-montserrat text-sm hover:border-gold hover:text-gold transition-colors cursor-pointer bg-transparent disabled:opacity-50 disabled:cursor-not-allowed"
+      >Annuler</button>
+      <button
+        type="button"
+        (click)="onUpdateGiftClick()"
+        [disabled]="editGiftForm.invalid || isUpdating"
+        class="btn-grad px-5 font-montserrat flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        @if (isUpdating) {
+          <span class="inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+        }
+        Enregistrer les modifications
+      </button>
+    </div>
   </c-modal-footer>
 </c-modal>
 

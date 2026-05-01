@@ -25,6 +25,9 @@ export class GiftComponent implements OnInit {
   editGiftForm: FormGroup;
   editImagePreview: string | null = null;
   editFile: File | null = null;
+  editModalVisible = false;
+  isUpdating = false;
+  updateError: string | null = null;
   private isEditImageBlob = false;
 
   private currentId: string | null = null;
@@ -123,6 +126,8 @@ export class GiftComponent implements OnInit {
       this.editImagePreview = this.gift.urlImage;
       this.isEditImageBlob = false;
       this.editFile = null;
+      this.updateError = null;
+      this.editModalVisible = true;
     }
   }
 
@@ -170,10 +175,17 @@ export class GiftComponent implements OnInit {
     if (this.editFile) {
       formData.append("ImageFile", this.editFile);
     }
+    this.isUpdating = true;
+    this.updateError = null;
     this.giftApi.updateGift(this.gift.id, formData).then(_ => {
+      this.isUpdating = false;
+      this.editModalVisible = false;
       if (this.currentId) {
         this.giftState.refreshGiftById(this.currentId);
       }
+    }).catch(() => {
+      this.isUpdating = false;
+      this.updateError = 'Une erreur est survenue lors de la modification. Veuillez réessayer.';
     });
   }
 
