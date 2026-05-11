@@ -1,18 +1,63 @@
-<div class="flex flex-col w-full items-center mt-10 mb-24">
-  <app-title-wedding>Staff officiel</app-title-wedding>
+<section class="staff-page">
+  <div class="staff-page__inner">
+    <app-title-wedding>Staff officiel</app-title-wedding>
 
-  <div class="flex flex-col items-center w-4/5 lg:w-2/5 mt-6">
-    <img src="assets/pictures/fiancaille.png" alt="Les fiançailles" class="w-full max-w-md rounded-lg shadow-lg" />
-    <p class="text-base text-center mt-4 lg:mt-6 font-montserrat opacity-90">
-      Les fiançailles ont eu lieu le 25 mai 2025.
-    </p>
-  </div>
+    <section class="hero-card mt-8">
+      <div class="hero-card__frame">
+        <div class="hero-card__mat">
+          <img
+            src="assets/pictures/fiancaille.png"
+            alt="Les fiançailles"
+            class="hero-card__image"
+          />
+        </div>
+      </div>
 
-  <app-title-wedding class="mt-14">Nos témoins</app-title-wedding>
-  <div class="flex flex-col items-center w-4/5 lg:w-2/5 mt-6">
-    <p class="text-base text-center font-montserrat opacity-90">
-      La présentation de nos témoins est en cours de réflexion... À venir !
-    </p>
+      <div class="hero-card__content">
+        <p class="hero-card__eyebrow font-montserrat text-xs font-semibold uppercase tracking-[0.24em] text-gold-light">Notre équipe de confiance</p>
+        <h1 class="hero-card__title mt-0 font-gfsdidot text-4xl leading-[1.04] text-[#fff4da] md:text-5xl xl:text-[3.45rem]">Les visages qui vont faire tourner le jour J</h1>
+        <p class="hero-card__intro mt-6 max-w-[34rem] font-montserrat text-base leading-[1.85] text-[rgba(255,248,239,0.9)]">
+          {{ introduction }}
+        </p>
+      </div>
+    </section>
+
+    <section class="staff-grid mt-14">
+      @for (group of witnessGroups; track group.title) {
+        <article class="staff-panel" [class.staff-panel--groom]="group.key === 'groom'">
+          <header class="staff-panel__header relative pb-4">
+            <p class="staff-panel__kicker font-montserrat text-[0.74rem] font-bold uppercase tracking-[0.22em]">Équipe officielle</p>
+            <h2 class="staff-panel__title mt-2 font-gfsdidot text-[1.7rem] leading-tight md:text-[2.2rem]">{{ group.title }}</h2>
+          </header>
+
+          <div class="staff-panel__list mt-6 grid gap-4">
+            @for (witness of group.members; track witness.name) {
+              <article class="witness-card">
+                <div class="portrait-frame mx-auto w-full max-w-56 md:mx-0 md:max-w-none">
+                  <div class="portrait-frame__mat">
+                    <img
+                      [src]="witness.image"
+                      [alt]="witness.name"
+                      class="portrait-frame__image"
+                    />
+                  </div>
+                </div>
+
+                <div class="witness-card__content flex flex-col gap-3">
+                  <div class="witness-card__header flex flex-col gap-1.5">
+                    <h3 class="witness-card__name font-gfsdidot text-[1.75rem] leading-none">{{ witness.name }}</h3>
+                    <p class="witness-card__role font-montserrat text-[0.95rem] font-semibold leading-6">{{ witness.role }}</p>
+                  </div>
+
+                  <p class="witness-card__description font-montserrat text-[0.96rem] leading-7">{{ witness.description }}</p>
+                  <p class="witness-card__mission border-t border-[rgba(218,187,127,0.34)] pt-3 font-montserrat text-[0.96rem] font-semibold leading-7">{{ witness.mission }}</p>
+                </div>
+              </article>
+            }
+          </div>
+        </article>
+      }
+    </section>
   </div>
-</div>
+</section>
 

@@ -1,18 +1,18 @@
-<div class="group relative gradient-box p-6">
+<div class="group relative gradient-box flex h-full flex-col p-6">
   <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md lg:aspect-none lg:h-64">
     <img src="{{product.urlImage}}" alt="Front of men&#039;s Basic Tee in black." class="h-full w-full object-cover object-center lg:h-full lg:w-full">
   </div>
-  <div class="mt-3 flex flex-col">
-    <div class="flex justify-between">
-      <div>
-        <h3 class="text-sm text-gold font-montserrat">
+  <div class="mt-3 flex flex-1 flex-col">
+    <div class="product-card__summary">
+      <div class="product-card__title-wrapper">
+        <h3 class="product-card__title text-sm text-gold font-montserrat">
           <a [routerLink]="['/liste-de-mariage/cadeau', product.id]">
             <span aria-hidden="true" class="absolute inset-0"></span>
             {{product.name}}
           </a>
         </h3>
       </div>
-      <p class="text-xs font-medium text-gold-light">{{product.participation}} / {{product.price | price}}</p>
+      <p class="product-card__price text-xs font-medium text-gold-light">{{product.participation}} / {{product.price | price}}</p>
     </div>
     <c-progress class="mb-2 mt-2">
       <c-progress-bar color="warning" [value]="product.participation/product.price * 100">
