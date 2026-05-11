@@ -2,61 +2,176 @@
   <div class="staff-page__inner">
     <app-title-wedding>Staff officiel</app-title-wedding>
 
-    <section class="hero-card mt-8">
-      <div class="hero-card__frame">
-        <div class="hero-card__mat">
-          <img
-            src="assets/pictures/fiancaille.png"
-            alt="Les fiançailles"
-            class="hero-card__image"
-          />
+    <section
+      class="hero-stage mt-8 relative grid items-center gap-7 overflow-hidden rounded-[2.4rem] p-6 md:grid-cols-[minmax(18rem,26rem)_minmax(0,1fr)] md:p-8 xl:p-10"
+      style="border: 1px solid rgba(218,187,127,.36); box-shadow: 0 24px 48px rgba(35,12,19,0.16); background: radial-gradient(circle at top left, rgba(218,187,127,0.2), transparent 32%), radial-gradient(circle at bottom right, rgba(37,76,64,0.18), transparent 28%), linear-gradient(140deg, #6f0523, #54061d 55%, #1b3d35);"
+    >
+      <img
+        src="assets/layout/angle-haut-gauche.png"
+        alt=""
+        aria-hidden="true"
+        class="pointer-events-none absolute left-[-0.75rem] top-[-0.75rem]"
+        style="width: min(34vw, 10rem); opacity: .85;"
+      />
+      <img
+        src="assets/layout/angle-bas-droit.png"
+        alt=""
+        aria-hidden="true"
+        class="pointer-events-none absolute bottom-[-0.2rem] right-[-0.2rem]"
+        style="width: min(32vw, 9.5rem); opacity: .85;"
+      />
+
+      <div class="relative z-10">
+        <div
+          class="mx-auto max-w-[28rem] rounded-[1.75rem] p-[0.9rem]"
+          style="background: linear-gradient(145deg, #f8e9bf, #cb9440 23%, #fff4d8 52%, #a76c24 77%, #f5dfaa); box-shadow: 0 16px 26px rgba(20,16,10,0.18);"
+        >
+          <div
+            class="rounded-[1.2rem] p-[0.7rem]"
+            style="background: linear-gradient(135deg, rgba(255,252,245,0.98), rgba(245,236,214,0.96)); box-shadow: inset 0 0 0 1px rgba(111,5,35,0.08);"
+          >
+            <img
+              src="assets/pictures/fiancaille.png"
+              alt="Les fiançailles"
+              class="block aspect-[4/5] w-full rounded-[0.95rem] object-cover shadow-[0_16px_24px_rgba(28,14,15,0.2)]"
+            />
+          </div>
+
+          <div
+            class="absolute bottom-[0.55rem] left-[0.35rem] right-[0.35rem] grid gap-[0.15rem] rounded-2xl border border-[rgba(168,119,40,0.34)] bg-[linear-gradient(180deg,rgba(255,250,241,0.98),rgba(238,217,171,0.96))] px-4 py-3 shadow-[0_12px_22px_rgba(24,13,12,0.18)] md:bottom-[1.1rem] md:left-auto md:right-[0.1rem] md:rounded-[1rem_0_1rem_1rem]"
+          >
+            <span class="font-montserrat text-[0.62rem] font-bold uppercase tracking-[0.24em] text-[rgba(111,5,35,0.82)]">Collection du jour J</span>
+            <strong class="font-gfsdidot text-[1.32rem] leading-none text-[#1b3d35]">Le premier rang</strong>
+          </div>
         </div>
       </div>
 
-      <div class="hero-card__content">
-        <p class="hero-card__eyebrow font-montserrat text-xs font-semibold uppercase tracking-[0.24em] text-gold-light">Notre équipe de confiance</p>
-        <h1 class="hero-card__title mt-0 font-gfsdidot text-4xl leading-[1.04] text-[#fff4da] md:text-5xl xl:text-[3.45rem]">Les visages qui vont faire tourner le jour J</h1>
-        <p class="hero-card__intro mt-6 max-w-[34rem] font-montserrat text-base leading-[1.85] text-[rgba(255,248,239,0.9)]">
-          {{ introduction }}
-        </p>
+      <div class="relative z-10 grid gap-5 text-[#fff8ef] xl:grid-cols-[minmax(0,1fr)_minmax(16rem,19rem)] xl:items-center">
+        <div>
+          <p class="font-montserrat text-xs font-semibold uppercase tracking-[0.24em] text-[#f1d28d]">Notre équipe de confiance</p>
+          <h1 class="mt-0 max-w-[12ch] font-gfsdidot text-4xl leading-[1.04] text-[#fff4da] md:text-5xl xl:text-[3.45rem]">Les visages qui vont faire tourner le jour J</h1>
+
+          <div class="mt-6 grid grid-cols-[2px_minmax(0,1fr)] gap-4">
+            <span class="w-[2px] rounded-full bg-[linear-gradient(180deg,rgba(241,210,141,0.95),rgba(241,210,141,0.08))]" aria-hidden="true"></span>
+            <p class="m-0 max-w-[34rem] font-montserrat text-base leading-[1.85] text-[rgba(255,248,239,0.9)]">
+              {{ introduction }}
+            </p>
+          </div>
+        </div>
+
+        <aside class="grid gap-3 rounded-[1.6rem] border border-[rgba(232,198,128,0.24)] bg-[rgba(255,250,241,0.1)] px-[1.35rem] py-5">
+          <img
+            src="assets/layout/middle_gold_flower.webp"
+            alt=""
+            aria-hidden="true"
+            class="w-full max-w-[7.5rem] opacity-90"
+          />
+
+          <p class="font-montserrat text-[0.68rem] font-semibold uppercase tracking-[0.3em] text-[rgba(241,210,141,0.84)]">Cartouche</p>
+          <p class="m-0 font-gfsdidot text-[clamp(1.95rem,2.9vw,2.6rem)] leading-[1.05] text-[#fff1cd]">« Une équipe de choc »</p>
+          <p class="m-0 font-montserrat text-sm leading-7 text-[rgba(255,244,222,0.82)]">
+            soigneusement sélectionnée pour nous accompagner, nous épauler et tenir la cadence jusqu'au jour J.
+          </p>
+
+          <div class="grid gap-3 md:grid-cols-2 xl:grid-cols-1">
+            <div class="grid gap-[0.15rem] rounded-2xl border border-[rgba(241,210,141,0.14)] bg-[rgba(255,255,255,0.06)] px-4 py-3">
+              <span class="font-gfsdidot text-[2rem] leading-none text-[#f5d48e]">{{ witnessGroups[0].members.length + witnessGroups[1].members.length }}</span>
+              <span class="font-montserrat text-[0.72rem] font-bold uppercase tracking-[0.14em] text-[rgba(255,244,222,0.75)]">visages au premier rang</span>
+            </div>
+
+            <div class="grid gap-[0.15rem] rounded-2xl border border-[rgba(241,210,141,0.14)] bg-[rgba(255,255,255,0.06)] px-4 py-3">
+              <span class="font-gfsdidot text-[2rem] leading-none text-[#f5d48e]">{{ witnessGroups.length }}</span>
+              <span class="font-montserrat text-[0.72rem] font-bold uppercase tracking-[0.14em] text-[rgba(255,244,222,0.75)]">panneaux, deux tempéraments</span>
+            </div>
+          </div>
+        </aside>
       </div>
     </section>
 
     <section class="staff-grid mt-14">
       @for (group of witnessGroups; track group.title) {
-        <article class="staff-panel" [class.staff-panel--groom]="group.key === 'groom'">
-          <header class="staff-panel__header relative pb-4">
-            <p class="staff-panel__kicker font-montserrat text-[0.74rem] font-bold uppercase tracking-[0.22em]" style="color: var(--accent)">Équipe officielle</p>
-            <h2 class="staff-panel__title mt-2 font-gfsdidot text-[1.7rem] leading-tight md:text-[2.2rem]" style="color: var(--accent)">{{ group.title }}</h2>
+        <article
+          class="staff-panel relative overflow-hidden rounded-[2.25rem] p-6 xl:p-8"
+          [class.staff-panel--groom]="group.key === 'groom'"
+          [style.--accent]="group.key === 'groom' ? '#1a3c34' : '#6f0523'"
+          [style.--accent-soft]="group.key === 'groom' ? '#2d5a3f' : '#8a0a2e'"
+          [style.--copy]="group.key === 'groom' ? 'rgba(17,45,39,0.88)' : 'rgba(45,25,31,0.88)'"
+          [style.background]="group.key === 'groom' ? 'linear-gradient(180deg,rgba(251,249,242,.98),rgba(244,247,240,.96))' : 'linear-gradient(180deg,rgba(255,249,240,.98),rgba(253,246,234,.96))'"
+          style="border: 1px solid rgba(218,187,127,.36); box-shadow: 0 24px 48px rgba(35,12,19,0.16);"
+        >
+          <header class="relative z-10 grid gap-4">
+            <div class="inline-flex w-max max-w-full items-center justify-center rounded-full border border-[rgba(218,187,127,0.28)] bg-[rgba(255,250,242,0.92)] px-3 py-[0.35rem] shadow-[0_10px_18px_rgba(26,17,11,0.08)]">
+              <span class="font-montserrat text-[0.68rem] font-bold uppercase tracking-[0.2em]" style="color: var(--accent)">Équipe officielle</span>
+            </div>
+
+            <div>
+              <p class="font-montserrat text-[0.74rem] font-bold uppercase tracking-[0.22em]" style="color: var(--accent-soft)">Garde rapprochée</p>
+              <h2 class="mt-2 font-gfsdidot text-[1.7rem] leading-tight md:text-[2.2rem]" style="color: var(--accent)">{{ group.title }}</h2>
+            </div>
+
+            <div class="flex items-center gap-3" aria-hidden="true">
+              <span class="h-px flex-1 bg-[linear-gradient(90deg,rgba(218,187,127,0.75),rgba(218,187,127,0.12))]"></span>
+              <img src="assets/layout/middle_gold_flower.webp" alt="" class="w-full max-w-[7.5rem] opacity-90" />
+            </div>
           </header>
 
-          <div class="staff-panel__list mt-6 grid gap-4">
-            @for (witness of group.members; track witness.name) {
-              <article class="witness-card">
-                <div class="portrait-frame mx-auto w-full max-w-56 md:mx-0 md:max-w-none">
-                  <div class="portrait-frame__mat">
+          <div class="relative z-10 mt-8 grid gap-5">
+            @for (witness of group.members; track witness.name; let witnessIndex = $index) {
+              <article class="witness-card grid gap-[1.1rem] rounded-[1.8rem] border border-[rgba(218,187,127,0.26)] bg-[rgba(255,255,255,0.82)] p-5 shadow-[0_16px_28px_rgba(36,18,22,0.08)] md:grid-cols-[12rem_minmax(0,1fr)] md:items-center" [class.witness-card--shifted]="witnessIndex % 2 === (group.key === 'groom' ? 0 : 1)">
+                <div class="inline-flex w-max items-center justify-center rounded-full border border-[rgba(218,187,127,0.28)] bg-[rgba(255,250,242,0.92)] px-3 py-[0.35rem] font-montserrat text-[0.66rem] font-bold uppercase tracking-[0.18em] shadow-[0_10px_18px_rgba(26,17,11,0.08)]" style="color: var(--accent)">Portrait officiel</div>
+
+                <div class="relative mx-auto w-full max-w-56 rounded-[1.75rem] p-[0.9rem] shadow-[0_16px_26px_rgba(20,16,10,0.18)] md:mx-0 md:max-w-none" style="background: linear-gradient(145deg, #f8e9bf, #cb9440 23%, #fff4d8 52%, #a76c24 77%, #f5dfaa);">
+                  <div class="rounded-[1.2rem] p-[0.7rem]" style="background: linear-gradient(135deg, rgba(255,252,245,0.98), rgba(245,236,214,0.96)); box-shadow: inset 0 0 0 1px rgba(111,5,35,0.08);">
                     <img
                       [src]="witness.image"
                       [alt]="witness.name"
-                      class="portrait-frame__image"
+                      class="block aspect-[5/6] w-full rounded-[0.95rem] object-cover shadow-[0_16px_24px_rgba(28,14,15,0.2)]"
                     />
                   </div>
+
+                  <span class="absolute left-1/2 bottom-[-0.55rem] inline-flex -translate-x-1/2 items-center justify-center whitespace-nowrap rounded-full border border-[rgba(218,187,127,0.28)] bg-[rgba(255,250,242,0.92)] px-3 py-[0.35rem] font-montserrat text-[0.66rem] font-bold uppercase tracking-[0.18em] shadow-[0_10px_18px_rgba(26,17,11,0.08)]" style="color: var(--accent)">Jour J</span>
                 </div>
 
-                <div class="witness-card__content flex flex-col gap-3">
-                  <div class="witness-card__header flex flex-col gap-1.5">
-                    <h3 class="witness-card__name font-gfsdidot text-[1.75rem] leading-none" style="color: var(--accent)">{{ witness.name }}</h3>
-                    <p class="witness-card__role font-montserrat text-[0.95rem] font-semibold leading-6" style="color: var(--accent-soft)">{{ witness.role }}</p>
+                <div class="flex flex-col gap-3">
+                  <div class="flex flex-col gap-1.5">
+                    <h3 class="font-gfsdidot text-[1.75rem] leading-none" style="color: var(--accent)">{{ witness.name }}</h3>
+                    <p class="font-montserrat text-[0.95rem] font-semibold leading-6" style="color: var(--accent-soft)">{{ witness.role }}</p>
                   </div>
 
-                  <p class="witness-card__description font-montserrat text-[0.96rem] leading-7" style="color: var(--copy)">{{ witness.description }}</p>
-                  <p class="witness-card__mission border-t border-[rgba(218,187,127,0.34)] pt-3 font-montserrat text-[0.96rem] font-semibold leading-7" style="color: var(--copy)">{{ witness.mission }}</p>
+                  <p class="m-0 font-montserrat text-[0.96rem] leading-7" style="color: var(--copy)">{{ witness.description }}</p>
+                  <p class="m-0 rounded-2xl border border-[rgba(218,187,127,0.22)] bg-[rgba(255,249,238,0.88)] px-4 py-3 font-montserrat text-[0.96rem] font-semibold leading-7" style="color: var(--copy)">{{ witness.mission }}</p>
                 </div>
               </article>
             }
           </div>
         </article>
       }
+    </section>
+
+    <section
+      class="ceremony-note mt-16 relative overflow-hidden rounded-[2.2rem] px-5 py-10 md:px-12 md:py-12"
+      style="border: 1px solid rgba(218,187,127,.36); box-shadow: 0 24px 48px rgba(35,12,19,0.16); background: radial-gradient(circle at top center, rgba(218,187,127,0.12), transparent 35%), linear-gradient(145deg, rgba(111,5,35,0.96), rgba(42,63,54,0.94));"
+    >
+      <img
+        src="assets/layout/gold_flowers_straight.webp"
+        alt=""
+        aria-hidden="true"
+        class="pointer-events-none absolute left-6 top-4 w-full max-w-[14rem] opacity-85"
+      />
+
+      <div class="relative z-10 grid justify-items-center gap-4 text-center">
+        <p class="font-montserrat text-xs font-semibold uppercase tracking-[0.28em] text-[#f1d28d]">Épilogue</p>
+        <p class="m-0 max-w-[46rem] font-gfsdidot text-[clamp(1.95rem,3.7vw,2.95rem)] leading-[1.18] text-[#fff1cf]">
+          « Autant dire que nous sommes très bien entourés... et que cette équipe est prête à tout pour faire de cette journée un moment inoubliable ! »
+        </p>
+      </div>
+
+      <img
+        src="assets/layout/gold_flowers_straight.webp"
+        alt=""
+        aria-hidden="true"
+        class="pointer-events-none absolute bottom-4 right-6 w-full max-w-[14rem] rotate-180 opacity-85"
+      />
     </section>
   </div>
 </section>
