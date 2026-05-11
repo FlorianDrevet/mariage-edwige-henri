@@ -1,3 +1,4 @@
+using System.Globalization;
 using MapsterMapper;
 using Mariage.Api.Errors;
 using Mariage.Application.Common.Interfaces.Services;
@@ -115,9 +116,15 @@ public static class WeddingListController
                         IMediator mediator,
                         IMapper mapper,
                         IBlobService blobService,
-                        [FromForm] UpdateGiftRequest request,
+                        HttpRequest httpRequest,
                         Guid giftId) =>
                     {
+                        var form = await httpRequest.ReadFormAsync();
+                        if (!TryCreateUpdateGiftRequest(form, out var request, out var validationErrors))
+                        {
+                            return Results.ValidationProblem(validationErrors);
+                        }
+
                         string? imageUrl = null;
                         if (request.ImageFile is { Length: > 0 })
                         {
@@ -216,5 +223,67 @@ public static class WeddingListController
                 .WithName("DeleteGiftCategory")
                 .WithOpenApi();
         });
+    }
+
+    private static bool TryCreateUpdateGiftRequest(
+        IFormCollection form,
+        out UpdateGiftRequest request,
+        out Dictionary<string, string[]> validationErrors)
+    {
+        validationErrors = new Dictionary<string, string[]>();
+
+        var name = GetFormValue(form, "name");
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            validationErrors[nameof(UpdateGiftRequest.Name)] = ["Le nom du cadeau est obligatoire."];
+        }
+
+        var category = GetFormValue(form, "category");
+        if (string.IsNullOrWhiteSpace(category))
+        {
+            validationErrors[nameof(UpdateGiftRequest.Category)] = ["La catégorie du cadeau est obligatoire."];
+        }
+
+        var rawPrice = GetFormValue(form, "price");
+        if (!TryParsePrice(rawPrice, out var price))
+        {
+            validationErrors[nameof(UpdateGiftRequest.Price)] =
+                ["Le prix du cadeau doit être un nombre valide avec au maximum deux décimales."];
+        }
+
+        if (validationErrors.Count > 0)
+        {
+            request = null!;
+            return false;
+        }
+
+        var imageFile = form.Files.GetFile("ImageFile") ?? form.Files.GetFile("imageFile");
+        request = new UpdateGiftRequest(name!, price, imageFile, category!);
+        return true;
+    }
+
+    private static string? GetFormValue(IFormCollection form, string key)
+    {
+        var value = form[key].ToString();
+        if (!string.IsNullOrWhiteSpace(value))
+        {
+            return value;
+        }
+
+        var pascalCaseKey = char.ToUpperInvariant(key[0]) + key[1..];
+        var pascalValue = form[pascalCaseKey].ToString();
+        return string.IsNullOrWhiteSpace(pascalValue) ? null : pascalValue;
+    }
+
+    private static bool TryParsePrice(string? rawPrice, out float price)
+    {
+        price = default;
+        if (string.IsNullOrWhiteSpace(rawPrice))
+        {
+            return false;
+        }
+
+        var normalizedPrice = rawPrice.Trim().Replace(',', '.');
+        return float.TryParse(normalizedPrice, NumberStyles.Float, CultureInfo.InvariantCulture, out price);
     }
 }

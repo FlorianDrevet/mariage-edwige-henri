@@ -1,16 +1,21 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
 import {AxiosService} from "../services/axios.service";
 import {MethodEnum} from "../enums/method.enum";
 import {ProductInterface} from "../interfaces/product.interface";
 import {GiftGiverInterface} from "../interfaces/giftGiver.interface";
 import {GiftCategoryInterface} from "../enums/category.enum";
+import {environment} from "../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class GiftApi {
+  private readonly http = inject(HttpClient);
+  private readonly baseUrl = environment['API_URL'];
 
-  constructor(private axiosService: AxiosService) { }
+  constructor(private readonly axiosService: AxiosService) { }
 
   public getProducts(): Promise<ProductInterface[]> {
     return this.axiosService.request(MethodEnum.GET, '/wedding-list', null);
@@ -24,8 +29,8 @@ export class GiftApi {
     return this.axiosService.request(MethodEnum.POST, `/wedding-list/${id}/participation`, giftGiver);
   }
 
-  public updateGift(id: string, formData: FormData): Promise<ProductInterface> {
-    return this.axiosService.request(MethodEnum.PUT, `/wedding-list/${id}`, formData, {}, true);
+  public updateGift(id: string, formData: FormData): Observable<ProductInterface> {
+    return this.http.put<ProductInterface>(`${this.baseUrl}/wedding-list/${id}`, formData);
   }
 
   public deleteGift(id: string): Promise<void> {
