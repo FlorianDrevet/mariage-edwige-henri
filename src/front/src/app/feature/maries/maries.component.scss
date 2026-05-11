@@ -31,18 +31,32 @@
 
 .hero-card__frame,
 .portrait-frame {
-  padding: 0.85rem;
   border-radius: 1.5rem;
   background: linear-gradient(145deg, #f4e6c3, #cfa357 58%, #f7eed8);
   box-shadow: 0 14px 24px rgba(20, 16, 10, 0.18);
 }
 
+.hero-card__frame {
+  padding: 0.85rem;
+}
+
+.portrait-frame {
+  padding: 0.55rem;
+}
+
 .hero-card__mat,
 .portrait-frame__mat {
-  padding: 0.65rem;
   border-radius: 1.2rem;
   background: linear-gradient(135deg, rgba(255, 252, 245, 0.98), rgba(245, 236, 214, 0.96));
   box-shadow: inset 0 0 0 1px rgba(111, 5, 35, 0.08);
+}
+
+.hero-card__mat {
+  padding: 0.65rem;
+}
+
+.portrait-frame__mat {
+  padding: 0.4rem;
 }
 
 .hero-card__image,
@@ -56,11 +70,6 @@
 
 .hero-card__image {
   aspect-ratio: 4 / 5;
-}
-
-.staff-grid {
-  display: grid;
-  gap: 1.75rem;
 }
 
 .staff-panel {
@@ -86,8 +95,12 @@
 }
 
 .witness-card {
+  --accent: #6f0523;
+  --accent-soft: #8a0a2e;
+  --copy: rgba(45, 25, 31, 0.88);
   display: grid;
   gap: 1.1rem;
+  height: 100%;
   padding: 1rem;
   border-radius: 1.6rem;
   background: rgba(255, 255, 255, 0.7);
@@ -95,9 +108,10 @@
   box-shadow: 0 14px 30px rgba(36, 18, 22, 0.07);
 }
 
-.portrait-frame {
-  width: min(100%, 14rem);
-  margin: 0 auto;
+.witness-card--groom {
+  --accent: #1a3c34;
+  --accent-soft: #2d5a3f;
+  --copy: rgba(17, 45, 39, 0.88);
 }
 
 .portrait-frame__image {
@@ -111,15 +125,5 @@
 
   .hero-card {
     grid-template-columns: minmax(18rem, 27rem) minmax(0, 1fr);
-  }
-
-  .staff-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    align-items: start;
-  }
-
-  .witness-card {
-    grid-template-columns: 11.5rem minmax(0, 1fr);
-    align-items: center;
   }
 }
