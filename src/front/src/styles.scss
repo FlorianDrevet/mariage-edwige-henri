@@ -7,14 +7,17 @@
   html {
     overflow-x: hidden !important;
     min-height: 100% !important;
-    height: 100% !important;
+    height: auto !important;
     font-size: 16px;
   }
   body {
     overflow-x: hidden !important;
+    min-height: 100% !important;
     min-height: 100vh !important;
+    min-height: 100svh !important;
     min-height: 100dvh !important;
     height: auto !important;
+    -webkit-overflow-scrolling: touch;
     @apply m-0 p-0;
     color: #dabb7f;
     position: relative;

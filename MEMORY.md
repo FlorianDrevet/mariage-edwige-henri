@@ -351,11 +351,13 @@ src/app/
 | `/mariage/reception` | ReceptionComponent | Reception |
 | `/mariage/hebergement` | HebergementComponent | Accommodation info |
 | `/mariage/photos` | PhotosComponent | Photo info |
-| `/maries` | MariesComponent | About the couple |
+| `/staff-officiel` | MariesComponent | Official staff / witnesses page |
 | `/contact` | ContactComponent | Contact page |
 | `/photos` | PhotosMariageComponent | Photo gallery |
 | `/profil` | ProfilComponent | User profile |
 | `/hebergements` | AccommodationsComponent | Admin accommodation management |
+
+- `MariesComponent` is a data-driven static page: introduction + engagement image (`assets/pictures/fiancaille.png`) + two witness groups sourced from local readonly arrays and witness portraits in `assets/pictures/témoins/`.
 
 ### 9.4 API Services
 - `GiftApi` — Gift CRUD & participation
@@ -524,6 +526,7 @@ cd src/back && dotnet ef database update --project Mariage.Infrastructure --star
 - [2026-04-20] **Migration SQL Server incompatible avec Npgsql** — Le snapshot d'une migration créée avec SQL Server (`nvarchar(max)`, etc.) cause un crash lors de l'application avec Npgsql. Fix : supprimer toutes les migrations et recréer `InitialCreate` avec Npgsql activé.
 - [2026-03-26] **No test projects** in the solution
 - [2026-03-26] **`/healthz` POST** endpoint exists to wake up Render.com free plan instances
+- [2026-05-11] **Mobile scroll trap on long pages** — Forcer `html` à `height: 100%` dans `src/front/src/styles.scss` peut bloquer le retour de scroll après le bas de page sur certains téléphones/tablettes. Garder `html` en `height: auto`, laisser `body` porter la `min-height` (`100vh`/`100svh`/`100dvh`) et éviter de rigidifier le root scroller mobile.
 - [2026-05-11] **Axios + FormData** — Ne jamais forcer `Content-Type: multipart/form-data` sur les requêtes navigateur. Le navigateur doit générer lui-même la boundary ; sinon le binding `[FromForm]` ASP.NET peut recevoir des mises à jour cadeaux incomplètes ou incorrectes.
 - [2026-05-11] **Cartes liste de mariage** — `ProductComponent` doit étirer sa carte sur toute la hauteur de la cellule (`:host` + carte en `height: 100%`) et réserver 2 lignes au titre (`-webkit-line-clamp: 2`) ; sinon les noms de cadeaux trop longs désalignent le prix et donnent des cadres de hauteurs visuellement incohérentes.
 - [2026-04-29] **Infra Flow Sculptor draft is too generic by default for this repo** — `draft_project_from_prompt` inferred `WebApp` and `SqlServer` for the current Aspire/PostgreSQL architecture and defaulted to `Development` in `westeurope` until explicit overrides were applied. Project creation only auto-created `KeyVault` and `ContainerRegistry`; `StorageAccount`, `SqlServer`, `ContainerApp`, and `WebApp` remained unresolved, and `generate_project_bicep` failed afterward. Prefer explicit environment overrides (`Production`, `francecentral`) and expect manual completion in the platform.
@@ -559,3 +562,5 @@ cd src/back && dotnet ef database update --project Mariage.Infrastructure --star
 | 2026-04-23 | **Timeline mariage : étape hébergement dédiée** — L'information d'hébergement n'est plus affichée sous la réception. Une étape finale `/mariage/hebergement` a été ajoutée dans la frise desktop et mobile avec l'icône existante `assets/icons/lit-double.png`, et la frise desktop conserve l'alternance haut/bas des étapes. |
 | 2026-05-11 | **Fix update cadeau admin** — Correction du transport multipart côté frontend legacy: `AxiosService` ne force plus `Content-Type` pour `FormData`, et l’update admin cadeau a été migrée vers `HttpClient` (comme les hébergements) pour éviter les blocages UI liés à Axios et mieux remonter les erreurs HTTP. Côté API, `PUT /wedding-list/{giftId}` lit maintenant le formulaire explicitement, accepte les prix avec virgule ou point, et renvoie un `ValidationProblem` détaillé au lieu d’un `400` opaque. La modal cadeau garde l’état d’erreur, affiche les détails backend disponibles, valide le prix côté front, et ne se ferme qu’après succès. |
 | 2026-05-11 | **Liste cadeau : alignement des cartes** — `ProductComponent` étire désormais chaque carte sur toute la hauteur de la cellule de grille, fixe la zone titre sur 2 lignes max et empêche le bloc prix de se compresser, ce qui garde les cadres et l’alignement titre/prix cohérents même avec des noms de cadeaux longs. |
+| 2026-05-11 | **Fix scroll mobile/tablette bloqué en bas de page** — Le scroll root frontend n’impose plus `html { height: 100% }`. `src/front/src/styles.scss` laisse `html` en `height: auto` et renforce `body` avec `min-height: 100%/100vh/100svh/100dvh` + `-webkit-overflow-scrolling: touch`, ce qui supprime le “mur invisible” observé sur certains appareils en bas de page. |
+| 2026-05-11 | **Refonte onglet staff officiel** — `MariesComponent` affiche maintenant une page staff complète et responsive pour `/staff-officiel`, avec hero d’introduction, deux panneaux distincts (témoins de la mariée / du marié), contenu piloté par tableaux readonly et cadres photo dorés pour les portraits issus de `assets/pictures/témoins/`. |

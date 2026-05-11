@@ -26,8 +26,8 @@
       @for (group of witnessGroups; track group.title) {
         <article class="staff-panel" [class.staff-panel--groom]="group.key === 'groom'">
           <header class="staff-panel__header relative pb-4">
-            <p class="staff-panel__kicker font-montserrat text-[0.74rem] font-bold uppercase tracking-[0.22em]">Équipe officielle</p>
-            <h2 class="staff-panel__title mt-2 font-gfsdidot text-[1.7rem] leading-tight md:text-[2.2rem]">{{ group.title }}</h2>
+            <p class="staff-panel__kicker font-montserrat text-[0.74rem] font-bold uppercase tracking-[0.22em]" style="color: var(--accent)">Équipe officielle</p>
+            <h2 class="staff-panel__title mt-2 font-gfsdidot text-[1.7rem] leading-tight md:text-[2.2rem]" style="color: var(--accent)">{{ group.title }}</h2>
           </header>
 
           <div class="staff-panel__list mt-6 grid gap-4">
@@ -45,12 +45,12 @@
 
                 <div class="witness-card__content flex flex-col gap-3">
                   <div class="witness-card__header flex flex-col gap-1.5">
-                    <h3 class="witness-card__name font-gfsdidot text-[1.75rem] leading-none">{{ witness.name }}</h3>
-                    <p class="witness-card__role font-montserrat text-[0.95rem] font-semibold leading-6">{{ witness.role }}</p>
+                    <h3 class="witness-card__name font-gfsdidot text-[1.75rem] leading-none" style="color: var(--accent)">{{ witness.name }}</h3>
+                    <p class="witness-card__role font-montserrat text-[0.95rem] font-semibold leading-6" style="color: var(--accent-soft)">{{ witness.role }}</p>
                   </div>
 
-                  <p class="witness-card__description font-montserrat text-[0.96rem] leading-7">{{ witness.description }}</p>
-                  <p class="witness-card__mission border-t border-[rgba(218,187,127,0.34)] pt-3 font-montserrat text-[0.96rem] font-semibold leading-7">{{ witness.mission }}</p>
+                  <p class="witness-card__description font-montserrat text-[0.96rem] leading-7" style="color: var(--copy)">{{ witness.description }}</p>
+                  <p class="witness-card__mission border-t border-[rgba(218,187,127,0.34)] pt-3 font-montserrat text-[0.96rem] font-semibold leading-7" style="color: var(--copy)">{{ witness.mission }}</p>
                 </div>
               </article>
             }
