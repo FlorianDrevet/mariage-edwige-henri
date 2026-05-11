@@ -75,7 +75,7 @@ export class ModelCreateGiftComponent {
       MethodEnum.POST,
       "/wedding-list",
       formData,
-      {"Content-Type": "multipart/form-data"},
+      {},
       true
     ).then(_ => {
       this.resetForm();

@@ -38,7 +38,7 @@ export class AxiosService {
     });
   }
 
-  public request(method: MethodEnum, url: string, data: any, headers: object = {}, isFormFile: boolean = false): Promise<any> {
+  public request(method: MethodEnum, url: string, data: any, headers: Record<string, string> = {}, isFormFile: boolean = false): Promise<any> {
     if (!this.isBrowser) {
       return new Promise(() => {});
     }
@@ -47,12 +47,11 @@ export class AxiosService {
       headers = {...headers, "Authorization": "Bearer " + this.authService.getAuthToken()};
     }
 
-    if (isFormFile) {
-      axios.defaults.headers.post["Content-Type"] = "multipart/form-data";
-      headers = {...headers, "Content-Type": "multipart/form-data"};
-    }
-    else {
-      axios.defaults.headers.post["Content-Type"] = "application/json";
+    if (isFormFile || data instanceof FormData) {
+      // Let the browser generate the multipart boundary for FormData requests.
+      const {['Content-Type']: _, ['content-type']: __, ...remainingHeaders} = headers;
+      headers = remainingHeaders;
+    } else {
       headers = {...headers, "Content-Type": "application/json"};
     }
 

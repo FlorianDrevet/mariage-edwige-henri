@@ -25,7 +25,7 @@ export class GiftApi {
   }
 
   public updateGift(id: string, formData: FormData): Promise<ProductInterface> {
-    return this.axiosService.request(MethodEnum.PUT, `/wedding-list/${id}`, formData, {"Content-Type": "multipart/form-data"}, true);
+    return this.axiosService.request(MethodEnum.PUT, `/wedding-list/${id}`, formData, {}, true);
   }
 
   public deleteGift(id: string): Promise<void> {
