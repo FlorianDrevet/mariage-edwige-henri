@@ -358,7 +358,6 @@ src/app/
 | `/hebergements` | AccommodationsComponent | Admin accommodation management |
 
 - `MariesComponent` is a data-driven static page: introduction + engagement image (`assets/pictures/fiancaille.png`) + two witness groups sourced from local readonly arrays and witness portraits in `assets/pictures/témoins/`.
-- `MariesComponent` also uses decorative assets from `assets/layout/` (`angle-haut-gauche.png`, `angle-bas-droit.png`, `middle_gold_flower.webp`, `gold_flowers_straight.webp`) to give `/staff-officiel` a more editorial, premium composition without touching global styles.
 
 ### 9.4 API Services
 - `GiftApi` — Gift CRUD & participation
@@ -565,4 +564,3 @@ cd src/back && dotnet ef database update --project Mariage.Infrastructure --star
 | 2026-05-11 | **Liste cadeau : alignement des cartes** — `ProductComponent` étire désormais chaque carte sur toute la hauteur de la cellule de grille, fixe la zone titre sur 2 lignes max et empêche le bloc prix de se compresser, ce qui garde les cadres et l’alignement titre/prix cohérents même avec des noms de cadeaux longs. |
 | 2026-05-11 | **Fix scroll mobile/tablette bloqué en bas de page** — Le scroll root frontend n’impose plus `html { height: 100% }`. `src/front/src/styles.scss` laisse `html` en `height: auto` et renforce `body` avec `min-height: 100%/100vh/100svh/100dvh` + `-webkit-overflow-scrolling: touch`, ce qui supprime le “mur invisible” observé sur certains appareils en bas de page. |
 | 2026-05-11 | **Refonte onglet staff officiel** — `MariesComponent` affiche maintenant une page staff complète et responsive pour `/staff-officiel`, avec hero d’introduction, deux panneaux distincts (témoins de la mariée / du marié), contenu piloté par tableaux readonly et cadres photo dorés pour les portraits issus de `assets/pictures/témoins/`. |
-| 2026-05-11 | **Staff officiel : seconde passe design premium** — La page `/staff-officiel` adopte une composition plus éditoriale avec ornements `assets/layout/*`, cartouche latéral, axe visuel central entre les deux panneaux, légère asymétrie de colonnes, cadres photo renforcés et note de clôture cérémonielle reprenant la phrase finale du visuel Canva. |
