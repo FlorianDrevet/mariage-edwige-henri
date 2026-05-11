@@ -76,6 +76,9 @@
   --accent: #6f0523;
   --accent-soft: #8a0a2e;
   --copy: rgba(45, 25, 31, 0.88);
+  display: grid;
+  gap: 1.5rem;
+  height: 100%;
   padding: 1.5rem;
   border-radius: 2rem;
   background: linear-gradient(180deg, rgba(255, 249, 240, 0.98), rgba(253, 246, 234, 0.96));

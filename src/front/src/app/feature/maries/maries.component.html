@@ -22,50 +22,22 @@
       </div>
     </section>
 
-    <section class="staff-grid mt-14 grid gap-7">
-      <div class="staff-grid__headers grid gap-7 md:grid-cols-2">
-        @for (group of witnessGroups; track group.title) {
-          <article class="staff-panel" [class.staff-panel--groom]="group.key === 'groom'">
-            <header class="staff-panel__header relative pb-4">
-              <p class="staff-panel__kicker font-montserrat text-[0.74rem] font-bold uppercase tracking-[0.22em]" style="color: var(--accent)">Équipe officielle</p>
-              <h2 class="staff-panel__title mt-2 font-gfsdidot text-[1.7rem] leading-tight md:text-[2.2rem]" style="color: var(--accent)">{{ group.title }}</h2>
-            </header>
-          </article>
-        }
-      </div>
+    <section class="staff-grid mt-14 md:grid md:grid-cols-2 md:items-stretch md:gap-7">
+      @for (group of witnessGroups; track group.title) {
+        <article class="staff-panel md:grid-rows-[auto_minmax(0,1fr)]" [class.staff-panel--groom]="group.key === 'groom'">
+          <header class="staff-panel__header relative pb-4">
+            <p class="staff-panel__kicker font-montserrat text-[0.74rem] font-bold uppercase tracking-[0.22em]" style="color: var(--accent)">Équipe officielle</p>
+            <h2 class="staff-panel__title mt-2 font-gfsdidot text-[1.7rem] leading-tight md:text-[2.2rem]" style="color: var(--accent)">{{ group.title }}</h2>
+          </header>
 
-      <div class="staff-grid__rows grid gap-7">
-        @for (brideWitness of witnessGroups[0].members; track brideWitness.name; let index = $index) {
-          <div class="staff-row grid gap-5 md:grid-cols-2">
-            <article class="witness-card md:grid-cols-[11.5rem_minmax(0,1fr)] md:items-center">
-              <div class="portrait-frame mx-auto w-full max-w-56 md:mx-0 md:max-w-none">
-                <div class="portrait-frame__mat">
-                  <img
-                    [src]="brideWitness.image"
-                    [alt]="brideWitness.name"
-                    class="portrait-frame__image"
-                  />
-                </div>
-              </div>
-
-              <div class="witness-card__content flex flex-col gap-3">
-                <div class="witness-card__header flex flex-col gap-1.5">
-                  <h3 class="witness-card__name font-gfsdidot text-[1.75rem] leading-none" style="color: var(--accent)">{{ brideWitness.name }}</h3>
-                  <p class="witness-card__role font-montserrat text-[0.95rem] font-semibold leading-6" style="color: var(--accent-soft)">{{ brideWitness.role }}</p>
-                </div>
-
-                <p class="witness-card__description font-montserrat text-[0.96rem] leading-7" style="color: var(--copy)">{{ brideWitness.description }}</p>
-                <p class="witness-card__mission border-t border-[rgba(218,187,127,0.34)] pt-3 font-montserrat text-[0.96rem] font-semibold leading-7" style="color: var(--copy)">{{ brideWitness.mission }}</p>
-              </div>
-            </article>
-
-            @if (witnessGroups[1].members[index]; as groomWitness) {
-              <article class="witness-card witness-card--groom md:grid-cols-[11.5rem_minmax(0,1fr)] md:items-center">
+          <div class="staff-panel__list mt-6 grid gap-4 md:min-h-0 md:auto-rows-fr">
+            @for (witness of group.members; track witness.name) {
+              <article class="witness-card md:grid-cols-[11.5rem_minmax(0,1fr)] md:items-center" [class.witness-card--groom]="group.key === 'groom'">
                 <div class="portrait-frame mx-auto w-full max-w-56 md:mx-0 md:max-w-none">
                   <div class="portrait-frame__mat">
                     <img
-                      [src]="groomWitness.image"
-                      [alt]="groomWitness.name"
+                      [src]="witness.image"
+                      [alt]="witness.name"
                       class="portrait-frame__image"
                     />
                   </div>
@@ -73,18 +45,18 @@
 
                 <div class="witness-card__content flex flex-col gap-3">
                   <div class="witness-card__header flex flex-col gap-1.5">
-                    <h3 class="witness-card__name font-gfsdidot text-[1.75rem] leading-none" style="color: var(--accent)">{{ groomWitness.name }}</h3>
-                    <p class="witness-card__role font-montserrat text-[0.95rem] font-semibold leading-6" style="color: var(--accent-soft)">{{ groomWitness.role }}</p>
+                    <h3 class="witness-card__name font-gfsdidot text-[1.75rem] leading-none" style="color: var(--accent)">{{ witness.name }}</h3>
+                    <p class="witness-card__role font-montserrat text-[0.95rem] font-semibold leading-6" style="color: var(--accent-soft)">{{ witness.role }}</p>
                   </div>
 
-                  <p class="witness-card__description font-montserrat text-[0.96rem] leading-7" style="color: var(--copy)">{{ groomWitness.description }}</p>
-                  <p class="witness-card__mission border-t border-[rgba(218,187,127,0.34)] pt-3 font-montserrat text-[0.96rem] font-semibold leading-7" style="color: var(--copy)">{{ groomWitness.mission }}</p>
+                  <p class="witness-card__description font-montserrat text-[0.96rem] leading-7" style="color: var(--copy)">{{ witness.description }}</p>
+                  <p class="witness-card__mission border-t border-[rgba(218,187,127,0.34)] pt-3 font-montserrat text-[0.96rem] font-semibold leading-7" style="color: var(--copy)">{{ witness.mission }}</p>
                 </div>
               </article>
             }
           </div>
+        </article>
         }
-      </div>
     </section>
   </div>
 </section>

@@ -358,7 +358,7 @@ src/app/
 | `/hebergements` | AccommodationsComponent | Admin accommodation management |
 
 - `MariesComponent` is a data-driven static page: introduction + engagement image (`assets/pictures/fiancaille.png`) + two witness groups sourced from local readonly arrays and witness portraits in `assets/pictures/témoins/`.
-- On desktop, `MariesComponent` renders witness cards by indexed bride/groom pairs so each row shares the same height across both columns; portrait gold frames are intentionally thinner than the hero frame.
+- On desktop, `MariesComponent` keeps one background panel per witness group and stretches both panels to the same height; each panel list uses equal-height rows so the left/right witness cards stay visually aligned, and portrait gold frames are intentionally thinner than the hero frame.
 
 ### 9.4 API Services
 - `GiftApi` — Gift CRUD & participation
@@ -565,4 +565,4 @@ cd src/back && dotnet ef database update --project Mariage.Infrastructure --star
 | 2026-05-11 | **Liste cadeau : alignement des cartes** — `ProductComponent` étire désormais chaque carte sur toute la hauteur de la cellule de grille, fixe la zone titre sur 2 lignes max et empêche le bloc prix de se compresser, ce qui garde les cadres et l’alignement titre/prix cohérents même avec des noms de cadeaux longs. |
 | 2026-05-11 | **Fix scroll mobile/tablette bloqué en bas de page** — Le scroll root frontend n’impose plus `html { height: 100% }`. `src/front/src/styles.scss` laisse `html` en `height: auto` et renforce `body` avec `min-height: 100%/100vh/100svh/100dvh` + `-webkit-overflow-scrolling: touch`, ce qui supprime le “mur invisible” observé sur certains appareils en bas de page. |
 | 2026-05-11 | **Refonte onglet staff officiel** — `MariesComponent` affiche maintenant une page staff complète et responsive pour `/staff-officiel`, avec hero d’introduction, deux panneaux distincts (témoins de la mariée / du marié), contenu piloté par tableaux readonly et cadres photo dorés pour les portraits issus de `assets/pictures/témoins/`. |
-| 2026-05-11 | **Staff officiel : alignement des témoins** — La grille des témoins de `MariesComponent` regroupe désormais chaque paire mariée/marié sur une même rangée desktop pour garantir des cartes de même hauteur à gauche et à droite, et les cadres dorés des portraits ont été affinés. |
+| 2026-05-11 | **Staff officiel : alignement des témoins** — `MariesComponent` conserve un panneau de fond par groupe de témoins, étire les deux colonnes à la même hauteur en desktop et répartit les cartes sur des rangées internes de même hauteur pour garder un alignement visuel gauche/droite, avec des cadres dorés de portrait affinés. |
