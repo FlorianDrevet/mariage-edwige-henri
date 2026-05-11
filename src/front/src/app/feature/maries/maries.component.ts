@@ -36,7 +36,7 @@ export class MariesComponent {
           image: 'assets/pictures/témoins/astrid.png'
         },
         {
-          name: 'Mathieu',
+          name: 'Matthieu',
           role: 'Responsable de la protection fraternelle',
           description: 'Frère de la mariée, présent depuis toujours (ou presque) pour veiller, discrètement... ou pas.',
           mission: 'Mission : assurer que tout roule... et intervenir si besoin.',
