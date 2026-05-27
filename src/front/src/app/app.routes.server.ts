@@ -20,11 +20,11 @@ export const serverRoutes: ServerRoute[] = [
   },
   {
     path: 'mariage/reception',
-    renderMode: RenderMode.Server,
+    renderMode: RenderMode.Client,
   },
   {
     path: 'mariage/hebergement',
-    renderMode: RenderMode.Server,
+    renderMode: RenderMode.Client,
   },
   {
     path: 'mariage/photos',

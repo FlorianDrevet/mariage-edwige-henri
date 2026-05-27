@@ -5,6 +5,7 @@ import {JwtHelperService} from "@auth0/angular-jwt";
 import {environment} from "../../../environments/environment";
 import {AuthService} from "./auth.service";
 import {MethodEnum} from "../enums/method.enum";
+import {Router} from "@angular/router";
 
 @Injectable({
   providedIn: 'root'
@@ -13,10 +14,13 @@ export class AxiosService {
 
   private isBrowser: boolean;
   private tickScheduled = false;
+  private isRefreshing = false;
+  private refreshPromise: Promise<any> | null = null;
 
   constructor(private jwtHelper: JwtHelperService,
               private authService: AuthService,
               private appRef: ApplicationRef,
+              private router: Router,
               @Inject(PLATFORM_ID) private platformId: Object) {
     this.isBrowser = isPlatformBrowser(this.platformId);
     if (this.isBrowser) {
@@ -38,21 +42,58 @@ export class AxiosService {
     });
   }
 
+  private async attemptRefresh(): Promise<boolean> {
+    if (this.isRefreshing && this.refreshPromise) {
+      return this.refreshPromise;
+    }
+
+    const token = this.authService.getAuthToken();
+    const refreshToken = this.authService.getRefreshToken();
+
+    if (!token || !refreshToken) {
+      return false;
+    }
+
+    this.isRefreshing = true;
+    this.refreshPromise = axios.post('/auth/refresh', { token, refreshToken })
+      .then(response => {
+        this.authService.setTokens(response.data.token, response.data.refreshToken);
+        this.isRefreshing = false;
+        this.refreshPromise = null;
+        return true;
+      })
+      .catch(() => {
+        this.isRefreshing = false;
+        this.refreshPromise = null;
+        this.authService.logout();
+        this.router.navigate(['/login']);
+        return false;
+      });
+
+    return this.refreshPromise;
+  }
+
   public request(method: MethodEnum, url: string, data: any, headers: Record<string, string> = {}, isFormFile: boolean = false): Promise<any> {
     if (!this.isBrowser) {
       return new Promise(() => {});
     }
 
-    if (this.authService.getAuthToken() !== null && !this.jwtHelper.isTokenExpired(this.authService.getAuthToken())) {
-      headers = {...headers, "Authorization": "Bearer " + this.authService.getAuthToken()};
+    return this.executeRequest(method, url, data, headers, isFormFile, true);
+  }
+
+  private executeRequest(method: MethodEnum, url: string, data: any, headers: Record<string, string>, isFormFile: boolean, allowRetry: boolean): Promise<any> {
+    let requestHeaders = {...headers};
+
+    const token = this.authService.getAuthToken();
+    if (token) {
+      requestHeaders = {...requestHeaders, "Authorization": "Bearer " + token};
     }
 
     if (isFormFile || data instanceof FormData) {
-      // Let the browser generate the multipart boundary for FormData requests.
-      const {['Content-Type']: _, ['content-type']: __, ...remainingHeaders} = headers;
-      headers = remainingHeaders;
+      const {['Content-Type']: _, ['content-type']: __, ...remainingHeaders} = requestHeaders;
+      requestHeaders = remainingHeaders;
     } else {
-      headers = {...headers, "Content-Type": "application/json"};
+      requestHeaders = {...requestHeaders, "Content-Type": "application/json"};
     }
 
     return new Promise<any>((resolve, reject) => {
@@ -60,7 +101,7 @@ export class AxiosService {
         method,
         url,
         data,
-        headers: headers,
+        headers: requestHeaders,
         params: method === MethodEnum.GET ? data : {}
       }).then(
         response => {
@@ -68,8 +109,20 @@ export class AxiosService {
           this.scheduleTick();
         },
         error => {
-          reject(error);
-          this.scheduleTick();
+          if (error.response?.status === 401 && allowRetry) {
+            this.attemptRefresh().then(success => {
+              if (success) {
+                this.executeRequest(method, url, data, headers, isFormFile, false)
+                  .then(resolve, reject);
+              } else {
+                reject(error);
+                this.scheduleTick();
+              }
+            });
+          } else {
+            reject(error);
+            this.scheduleTick();
+          }
         }
       );
     });

@@ -72,7 +72,7 @@ export class LoginComponent implements AfterViewInit{
       )
         .then(
           (response) => {
-            this.authService.setAuthToken(response.token)
+            this.authService.setTokens(response.token, response.refreshToken);
             this.router.navigate(['/accueil']);
           }
         )

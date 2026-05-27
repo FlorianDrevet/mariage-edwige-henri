@@ -1,5 +1,6 @@
 using MapsterMapper;
 using Mariage.Api.Errors;
+using Mariage.Application.Authentication.Commands.RefreshToken;
 using Mariage.Application.Authentication.Commands.Register;
 using Mariage.Application.Authentication.Queries.Login;
 using Mariage.Contracts.Authentication;
@@ -48,6 +49,24 @@ public static class AuthenticationController
                     })
                 .WithName("Login")
                 .RequireRateLimiting("Login")
+                .WithOpenApi();
+
+            endpoints.MapPost("/auth/refresh",
+                    async (RefreshTokenRequest request, IMediator mediator, IMapper mapper) =>
+                    {
+                        var command = new RefreshTokenCommand(request.Token, request.RefreshToken);
+                        var result = await mediator.Send(command);
+
+                        return result.Match(
+                            authResult =>
+                            {
+                                var response = mapper.Map<AuthenticationResponse>(authResult);
+                                return Results.Ok(response);
+                            },
+                            error => error.Result()
+                        );
+                    })
+                .WithName("RefreshToken")
                 .WithOpenApi();
         });
     }

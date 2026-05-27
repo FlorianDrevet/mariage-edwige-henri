@@ -25,7 +25,11 @@ public class LoginQueryHandler(IJwtGenerator jwtGenerator, IUserRepository userR
         }
         
         var token = jwtGenerator.GenerateToken(user);
+        var refreshToken = jwtGenerator.GenerateRefreshToken();
         
-        return new AuthenticationResult(user, token);
+        user.SetRefreshToken(refreshToken, DateTime.UtcNow.AddDays(30));
+        userRepository.UpdateUser(user);
+        
+        return new AuthenticationResult(user, token, refreshToken);
     }
 }

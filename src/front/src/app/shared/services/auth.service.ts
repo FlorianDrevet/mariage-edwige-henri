@@ -28,8 +28,6 @@ export class AuthService {
 
   /**
    * Lit le cookie JWT, met à jour les signaux et retourne l'état d'authentification.
-   * Appelé automatiquement dans le constructeur et peut être invoqué manuellement
-   * (ex. après un changement de token).
    */
   public refreshAuth(): boolean {
     const token = this.getAuthToken();
@@ -53,6 +51,12 @@ export class AuthService {
     return null;
   }
 
+  public getRefreshToken(): string | null {
+    if (this.cookieService.check("refresh_token"))
+      return this.cookieService.get("refresh_token");
+    return null;
+  }
+
   public setAuthToken(token: string): void {
     const decodedTokenDate = this.jwtHelper.getTokenExpirationDate(token);
     if (decodedTokenDate === null) {
@@ -63,8 +67,21 @@ export class AuthService {
     this.isAdmin.set(this.jwtHelper.decodeToken(token).role === Role.ADMIN);
   }
 
+  public setRefreshToken(refreshToken: string): void {
+    // Refresh token cookie lasts 30 days
+    const expiry = new Date();
+    expiry.setDate(expiry.getDate() + 30);
+    this.cookieService.set("refresh_token", refreshToken, expiry, "/");
+  }
+
+  public setTokens(token: string, refreshToken: string): void {
+    this.setAuthToken(token);
+    this.setRefreshToken(refreshToken);
+  }
+
   public logout() {
     this.cookieService.delete("auth_token", "/");
+    this.cookieService.delete("refresh_token", "/");
     this.isAuthenticated.set(false);
     this.isAdmin.set(false);
   }

@@ -18,6 +18,8 @@ public sealed class User : AggregateRoot<UserId>
     public string Role { get; set; } = null!;
     
     public List<PictureId> PictureIds { get; private set; } = new();
+    public string? RefreshToken { get; private set; }
+    public DateTime? RefreshTokenExpiryTime { get; private set; }
     
     public IReadOnlyList<Guest> Guests => _guests.AsReadOnly();
 
@@ -86,5 +88,17 @@ public sealed class User : AggregateRoot<UserId>
     public bool RemovePictureFromFavorite(PictureId pictureId)
     {
         return PictureIds.Remove(pictureId);
+    }
+
+    public void SetRefreshToken(string refreshToken, DateTime expiryTime)
+    {
+        RefreshToken = refreshToken;
+        RefreshTokenExpiryTime = expiryTime;
+    }
+
+    public void RevokeRefreshToken()
+    {
+        RefreshToken = null;
+        RefreshTokenExpiryTime = null;
     }
 }

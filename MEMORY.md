@@ -289,10 +289,11 @@ All in `Mariage.Domain/Common/Errors/` as `partial class Errors`.
 - **Provider**: Custom JWT Bearer (not ASP.NET Identity)
 - **JWT generation**: `IJwtGenerator` / `JwtGenerator` in Infrastructure
 - **Password hashing**: `IHashPassword` / `HashPassword` in Infrastructure
-- **JWT settings**: `JwtSettings` (Issuer, Audience, Secret) from `appsettings.json`
+- **JWT settings**: `JwtSettings` (Issuer, Audience, Secret, ExpiryMinutes=15, RefreshTokenExpiryDays=30) from `appsettings.json`
+- **Refresh token**: Stored on `User` entity (RefreshToken + RefreshTokenExpiryTime). Endpoint `POST /auth/refresh` (anonymous) accepts expired access token + refresh token, returns new pair. Frontend catches 401 → refresh → retry or redirect `/login`.
 - **Policies**: `IsAdmin` (requires `Admin` role)
 - **Rate limiting**: `/auth/login` → Fixed window (3 req / 10 sec)
-- **Frontend**: Token stored in cookie (`auth_token`), decoded with `@auth0/angular-jwt`
+- **Frontend**: Access token stored in cookie (`auth_token`), refresh token in cookie (`refresh_token`), decoded with `@auth0/angular-jwt`
 - **Claims**: `ClaimTypes.NameIdentifier` = UserId, `role` = User/Admin/Moderator
 
 ---
@@ -309,8 +310,8 @@ All in `Mariage.Domain/Common/Errors/` as `partial class Errors`.
 - **Hydration**: `provideClientHydration(withIncrementalHydration())` in `AppModule` — enables incremental hydration + event replay + **HTTP Transfer Cache** (activé par défaut en Angular 19+, désactiver avec `withNoHttpTransferCache()` si besoin)
 - **Server engine**: `AngularNodeAppEngine` in `server.ts` (modern pattern, replaces `CommonEngine`)
 - **Server routing**: `app.routes.server.ts` with `provideServerRendering(withRoutes(serverRoutes))` in `AppServerModule`
-  - **Prerender (SSG)**: `/accueil`, `/mariage/*`, `/staff-officiel`, `/contact` (static content)
-  - **CSR**: `/login`, `/profils`, `/utilisateurs`, `/photos` (auth-dependent pages)
+  - **Static SSR pages**: `/accueil`, `/mariage`, `/mariage/ceremonie-religieuse`, `/mariage/vin-honneur`, `/mariage/photos`, `/staff-officiel`, `/contact`
+  - **CSR**: `/login`, `/profils`, `/utilisateurs`, `/photos`, `/hebergements`, `/mariage/reception`, `/mariage/hebergement` (auth-dependent pages)
   - **SSR**: `/liste-de-mariage`, `/liste-de-mariage/cadeau/:id` (dynamic data)
   - Catch-all `**` → SSR
 - **Incremental hydration**: `@defer (on viewport; hydrate on viewport)` used in `wedding-list.component.html` for below-fold category sections
@@ -348,8 +349,8 @@ src/app/
 | `/mariage` | MariageComponent | Wedding event info |
 | `/mariage/ceremonie-religieuse` | CeremonieComponent | Religious ceremony |
 | `/mariage/vin-honneur` | VinHonneurComponent | Cocktail hour |
-| `/mariage/reception` | ReceptionComponent | Reception |
-| `/mariage/hebergement` | HebergementComponent | Accommodation info |
+| `/mariage/reception` | ReceptionComponent | Reception (auth required) |
+| `/mariage/hebergement` | HebergementComponent | Accommodation info (auth required) |
 | `/mariage/photos` | PhotosComponent | Photo info |
 | `/staff-officiel` | MariesComponent | Official staff / witnesses page |
 | `/contact` | ContactComponent | Contact page |
@@ -357,6 +358,8 @@ src/app/
 | `/profil` | ProfilComponent | User profile |
 | `/hebergements` | AccommodationsComponent | Admin accommodation management |
 
+- `CeremonieComponent` remains a static card layout for `/mariage/ceremonie-religieuse`: church location, schedule/consent information, dress-code reminder, and musician/singer call-to-action, all sourced from local template copy and assets in `src/front/src/assets/icons/`.
+- `ReceptionComponent` and `HebergementComponent` are protected wedding timeline routes: `canActivate: [AuthGuardService]` in `app-routing.module.ts` and `RenderMode.Client` in `app.routes.server.ts`, so dinner and accommodation details only render for authenticated users after client routing.
 - `MariesComponent` is a data-driven static page: introduction + engagement image (`assets/pictures/fiancaille.png`) + two witness groups sourced from local readonly arrays and witness portraits in `assets/pictures/témoins/`.
 - On desktop, `MariesComponent` keeps one background panel per witness group and stretches both panels to the same height; each panel list uses equal-height rows so the left/right witness cards stay visually aligned, and portrait gold frames are intentionally thinner than the hero frame.
 
@@ -566,3 +569,6 @@ cd src/back && dotnet ef database update --project Mariage.Infrastructure --star
 | 2026-05-11 | **Fix scroll mobile/tablette bloqué en bas de page** — Le scroll root frontend n’impose plus `html { height: 100% }`. `src/front/src/styles.scss` laisse `html` en `height: auto` et renforce `body` avec `min-height: 100%/100vh/100svh/100dvh` + `-webkit-overflow-scrolling: touch`, ce qui supprime le “mur invisible” observé sur certains appareils en bas de page. |
 | 2026-05-11 | **Refonte onglet staff officiel** — `MariesComponent` affiche maintenant une page staff complète et responsive pour `/staff-officiel`, avec hero d’introduction, deux panneaux distincts (témoins de la mariée / du marié), contenu piloté par tableaux readonly et cadres photo dorés pour les portraits issus de `assets/pictures/témoins/`. |
 | 2026-05-11 | **Staff officiel : alignement des témoins** — `MariesComponent` conserve un panneau de fond par groupe de témoins, étire les deux colonnes à la même hauteur en desktop et répartit les cartes sur des rangées internes de même hauteur pour garder un alignement visuel gauche/droite, avec des cadres dorés de portrait affinés. |
+| 2026-05-27 | **Cérémonie religieuse : consentement + appel aux musiciens** — `CeremonieComponent` affiche désormais le père Rémi-Gabriel PERCHOT pour le consentement des époux et ajoute un quatrième bloc d’information avec une icône musicale invitant musiciens et chanteurs à contacter les mariés pour animer la cérémonie. |
+| 2026-05-27 | **Timeline mariage : cocktail nettoyé + dîner/hébergement protégés** — Le texte entre parenthèses a été retiré des pages cocktail et dîner. Les routes `/mariage/reception` et `/mariage/hebergement` utilisent maintenant `AuthGuardService` et `RenderMode.Client`, et la page hébergement affiche le tarif familial de 35 à 70€ par personne avec draps et serviettes compris. |
+| 2026-05-27 | **Refresh token (full-stack)** — JWT access token réduit à 15 min, refresh token 30 jours. Backend : `User` entity (RefreshToken + RefreshTokenExpiryTime), `IJwtGenerator.GenerateRefreshToken()` + `GetPrincipalFromExpiredToken()`, `RefreshTokenCommand` + handler, endpoint `POST /auth/refresh` (anonyme), Login/Register handlers émettent le refresh token, `AuthenticationResult`/`AuthenticationResponse` étendus, migration `AddRefreshToken`. Frontend : `AuthService.getRefreshToken()`/`setRefreshToken()`/`setTokens()`, `auth.interceptor.ts` catch 401 → appel `/auth/refresh` → retry ou redirect `/login`, `AxiosService` idem avec `attemptRefresh()` + retry, `LoginComponent` stocke les deux tokens. |

@@ -66,11 +66,13 @@ const routes: Routes = [
       {
         path: "reception",
         component: ReceptionComponent,
+        canActivate: [AuthGuardService],
         pathMatch: 'full'
       },
       {
         path: "hebergement",
         component: HebergementComponent,
+        canActivate: [AuthGuardService],
         pathMatch: 'full'
       },
       {

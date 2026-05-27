@@ -22,9 +22,13 @@ public class RegisterCommandHandler(
         
         var hashedPassword = hashPassword.GetHashedPassword(command.Password);
         var user = User.Create(command.Username, hashedPassword.Item2, hashedPassword.Item1);
+        
+        var refreshToken = jwtGenerator.GenerateRefreshToken();
+        user.SetRefreshToken(refreshToken, DateTime.UtcNow.AddDays(30));
+        
         userRepository.AddUser(user);
         
         var token = jwtGenerator.GenerateToken(user);
-        return new AuthenticationResult(user, token);
+        return new AuthenticationResult(user, token, refreshToken);
     }
 }
