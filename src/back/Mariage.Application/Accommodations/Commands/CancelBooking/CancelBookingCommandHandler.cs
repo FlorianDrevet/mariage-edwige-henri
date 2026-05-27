@@ -4,21 +4,24 @@ using Mariage.Domain.AccommodationAggregate;
 using Mariage.Domain.Common.Errors;
 using MediatR;
 
-namespace Mariage.Application.Accommodations.Commands.UnassignAccommodation;
+namespace Mariage.Application.Accommodations.Commands.CancelBooking;
 
-public class UnassignAccommodationCommandHandler(
+public class CancelBookingCommandHandler(
     IAccommodationRepository accommodationRepository
-) : IRequestHandler<UnassignAccommodationCommand, ErrorOr<Accommodation>>
+) : IRequestHandler<CancelBookingCommand, ErrorOr<Accommodation>>
 {
     public async Task<ErrorOr<Accommodation>> Handle(
-        UnassignAccommodationCommand request,
+        CancelBookingCommand request,
         CancellationToken cancellationToken)
     {
         var accommodation = await accommodationRepository.GetByIdAsync(request.AccommodationId);
         if (accommodation is null)
             return Errors.Accommodation.NotFound();
 
-        accommodation.UnassignUser(request.UserId);
+        var result = accommodation.CancelBooking(request.BookingId);
+        if (result.IsError)
+            return result.Errors;
+
         await accommodationRepository.UpdateAsync(accommodation);
         return accommodation;
     }

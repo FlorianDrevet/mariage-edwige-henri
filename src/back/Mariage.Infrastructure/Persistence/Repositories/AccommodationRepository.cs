@@ -19,10 +19,11 @@ public class AccommodationRepository(MariageDbContext mariageDbContext) : IAccom
         return await mariageDbContext.Accommodations.ToListAsync();
     }
 
-    public async Task<Accommodation?> GetByUserIdAsync(UserId userId)
+    public async Task<List<Accommodation>> GetByUserBookingsAsync(UserId userId)
     {
         return await mariageDbContext.Accommodations
-            .FirstOrDefaultAsync(a => a.Assignments.Any(assign => assign.UserId == userId));
+            .Where(a => a.Bookings.Any(b => b.UserId == userId))
+            .ToListAsync();
     }
 
     public async Task AddAsync(Accommodation accommodation)

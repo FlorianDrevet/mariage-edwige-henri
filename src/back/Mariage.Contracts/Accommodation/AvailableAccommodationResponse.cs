@@ -1,11 +1,11 @@
-using Microsoft.AspNetCore.Http;
-
 namespace Mariage.Contracts.Accommodation;
 
-public record CreateAccommodationRequest(
+public record AvailableAccommodationResponse(
+    Guid Id,
     string Title,
     string Description,
+    string UrlImage,
     decimal PricePerPersonPerNight,
     int NumberOfNights,
     int Capacity,
-    IFormFile ImageFile);
+    int RemainingCapacity);

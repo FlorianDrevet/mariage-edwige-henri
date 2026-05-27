@@ -12,31 +12,33 @@ public class AccommodationConfiguration : IEntityTypeConfiguration<Accommodation
     public void Configure(EntityTypeBuilder<Accommodation> builder)
     {
         ConfigureAccommodationsTable(builder);
-        ConfigureAssignments(builder);
+        ConfigureBookings(builder);
     }
 
-    private void ConfigureAssignments(EntityTypeBuilder<Accommodation> builder)
+    private void ConfigureBookings(EntityTypeBuilder<Accommodation> builder)
     {
-        builder.OwnsMany(a => a.Assignments, ab =>
+        builder.OwnsMany(a => a.Bookings, bb =>
         {
-            ab.ToTable("AccommodationAssignments");
-            ab.WithOwner().HasForeignKey("AccommodationId");
-            ab.HasKey("Id", "AccommodationId");
-            ab.Property(assignment => assignment.Id)
-                .HasColumnName("AccommodationAssignmentId")
+            bb.ToTable("AccommodationBookings");
+            bb.WithOwner().HasForeignKey("AccommodationId");
+            bb.HasKey("Id", "AccommodationId");
+            bb.Property(booking => booking.Id)
+                .HasColumnName("AccommodationBookingId")
                 .ValueGeneratedNever()
                 .HasConversion(
                     id => id.Value,
-                    value => AccommodationAssignmentId.Create(value));
-            ab.Property(assignment => assignment.UserId)
+                    value => AccommodationBookingId.Create(value));
+            bb.Property(booking => booking.UserId)
                 .HasConversion(
                     id => id.Value,
                     value => UserId.Create(value));
-            ab.Property(assignment => assignment.ResponseStatus)
+            bb.Property(booking => booking.BookingStatus)
                 .HasConversion<string>();
+            bb.Property(booking => booking.TotalAmount)
+                .HasPrecision(18, 2);
         });
 
-        builder.Metadata.FindNavigation(nameof(Accommodation.Assignments))!
+        builder.Metadata.FindNavigation(nameof(Accommodation.Bookings))!
             .SetPropertyAccessMode(PropertyAccessMode.Field);
     }
 
@@ -49,7 +51,7 @@ public class AccommodationConfiguration : IEntityTypeConfiguration<Accommodation
             .HasConversion(
                 id => id.Value,
                 value => AccommodationId.Create(value));
-        builder.Property(a => a.Price)
+        builder.Property(a => a.PricePerPersonPerNight)
             .HasPrecision(18, 2);
     }
 }

@@ -13,7 +13,13 @@ public class CreateAccommodationCommandHandler(
         CreateAccommodationCommand request,
         CancellationToken cancellationToken)
     {
-        var accommodation = Accommodation.Create(request.Title, request.Description, request.UrlImage, request.Price);
+        var accommodation = Accommodation.Create(
+            request.Title,
+            request.Description,
+            request.UrlImage,
+            request.PricePerPersonPerNight,
+            request.NumberOfNights,
+            request.Capacity);
         await accommodationRepository.AddAsync(accommodation);
         return accommodation;
     }

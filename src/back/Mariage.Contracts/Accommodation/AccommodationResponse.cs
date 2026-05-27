@@ -5,5 +5,8 @@ public record AccommodationResponse(
     string Title,
     string Description,
     string UrlImage,
-    decimal Price,
-    List<AccommodationAssignmentResponse> Assignments);
+    decimal PricePerPersonPerNight,
+    int NumberOfNights,
+    int Capacity,
+    int RemainingCapacity,
+    List<BookingResponse> Bookings);

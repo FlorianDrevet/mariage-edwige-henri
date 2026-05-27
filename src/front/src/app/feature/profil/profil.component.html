@@ -32,27 +32,30 @@
       }
     </div>
 
-    @if (myAccommodation()) {
-      <app-title-wedding class="mt-14">Votre hébergement</app-title-wedding>
-      <div class="accommodation-section w-4/5 lg:w-2/5">
-        <img [src]="myAccommodation()!.urlImage"
-             [alt]="myAccommodation()!.title"
-             class="w-full h-48 object-cover rounded-md mb-4">
-        <h3 class="font-gfsdidot text-2xl text-gold mb-2">{{ myAccommodation()!.title }}</h3>
-        <p class="font-montserrat text-sm text-gold-light leading-relaxed mb-2">{{ myAccommodation()!.description }}</p>
-        <p class="font-montserrat text-sm text-gold font-bold mb-4">{{ myAccommodation()!.price }} €/nuit</p>
-
-        <div class="flex flex-col items-center gap-3">
-          <p class="font-montserrat text-sm text-gold italic">
-            Souhaitez-vous réserver cet hébergement ?
-          </p>
-          <app-toggle-button
-            [value]="accommodationValue()"
-            yesLabel="Je réserve"
-            noLabel="Non merci"
-            (changed)="onAccommodationRespond($event ? 'Accepted' : 'Refused')">
-          </app-toggle-button>
-        </div>
+    @if (myBookings().length > 0) {
+      <app-title-wedding class="mt-14">Vos réservations</app-title-wedding>
+      <div class="w-4/5 lg:w-2/5 flex flex-col gap-4">
+        @for (booking of myBookings(); track booking.id) {
+          <div class="p-4 rounded-lg border border-gold/20">
+            <div class="flex justify-between items-start">
+              <div>
+                <h4 class="font-gfsdidot text-lg text-gold">{{ booking.accommodationTitle }}</h4>
+                <p class="font-montserrat text-xs text-gold-light">
+                  {{ booking.numberOfPersons }} pers. — {{ booking.totalAmount }} €
+                </p>
+                <p class="font-montserrat text-xs mt-1"
+                   [class]="booking.status === 'Confirmed' ? 'text-green-500' : 'text-yellow-500'">
+                  {{ getBookingStatusLabel(booking.status) }}
+                </p>
+              </div>
+              @if (booking.status === 'Pending') {
+                <button class="text-xs text-red-400 underline font-montserrat" (click)="onCancelBooking(booking)">
+                  Annuler
+                </button>
+              }
+            </div>
+          </div>
+        }
       </div>
     }
 

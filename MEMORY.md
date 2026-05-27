@@ -67,8 +67,8 @@ docs/                                   — Learning wiki (pagination, lazy load
 | **GiftCategory** | `GiftAggregate/GiftCategory.cs` | Name (unique) — dynamic categories managed via admin UI |
 | └ GiftGiver | `GiftAggregate/Entities/GiftGiver.cs` | FirstName, LastName, Email?, Amount |
 | **Picture** | `PictureAggregate/Picture.cs` | UserId, UrlImage, CreatedAt |
-| **Accommodation** | `AccommodationAggregate/Accommodation.cs` | Title, Description, UrlImage, AccommodationAssignments (owned) |
-| └ AccommodationAssignment | `AccommodationAggregate/Entities/AccommodationAssignment.cs` | UserId, ResponseStatus (Pending/Accepted/Refused) |
+| **Accommodation** | `AccommodationAggregate/Accommodation.cs` | Title, Description, UrlImage, PricePerPersonPerNight, NumberOfNights, Capacity, RemainingCapacity (computed), Bookings (owned) |
+| └ AccommodationBooking | `AccommodationAggregate/Entities/AccommodationBooking.cs` | UserId, NumberOfPersons, TotalAmount, BookingStatus (Pending/Confirmed/Cancelled), BookerFirstName, BookerLastName, BookerEmail, CreatedAt |
 
 ### 3.2 Value Objects
 
@@ -81,7 +81,7 @@ docs/                                   — Learning wiki (pagination, lazy load
 | `GiftCategoryId` | `GiftAggregate/ValueObjects/` | Guid wrapper |
 | `PictureId` | `PictureAggregate/ValueObject/` | Guid wrapper |
 | `AccommodationId` | `AccommodationAggregate/ValueObjects/` | Guid wrapper |
-| `AccommodationAssignmentId` | `AccommodationAggregate/ValueObjects/` | Guid wrapper |
+| `AccommodationBookingId` | `AccommodationAggregate/ValueObjects/` | Guid wrapper |
 
 ### 3.3 Base Classes
 
@@ -572,3 +572,4 @@ cd src/back && dotnet ef database update --project Mariage.Infrastructure --star
 | 2026-05-27 | **Cérémonie religieuse : consentement + appel aux musiciens** — `CeremonieComponent` affiche désormais le père Rémi-Gabriel PERCHOT pour le consentement des époux et ajoute un quatrième bloc d’information avec une icône musicale invitant musiciens et chanteurs à contacter les mariés pour animer la cérémonie. |
 | 2026-05-27 | **Timeline mariage : cocktail nettoyé + dîner/hébergement protégés** — Le texte entre parenthèses a été retiré des pages cocktail et dîner. Les routes `/mariage/reception` et `/mariage/hebergement` utilisent maintenant `AuthGuardService` et `RenderMode.Client`, et la page hébergement affiche le tarif familial de 35 à 70€ par personne avec draps et serviettes compris. |
 | 2026-05-27 | **Refresh token (full-stack)** — JWT access token réduit à 15 min, refresh token 30 jours. Backend : `User` entity (RefreshToken + RefreshTokenExpiryTime), `IJwtGenerator.GenerateRefreshToken()` + `GetPrincipalFromExpiredToken()`, `RefreshTokenCommand` + handler, endpoint `POST /auth/refresh` (anonyme), Login/Register handlers émettent le refresh token, `AuthenticationResult`/`AuthenticationResponse` étendus, migration `AddRefreshToken`. Frontend : `AuthService.getRefreshToken()`/`setRefreshToken()`/`setTokens()`, `auth.interceptor.ts` catch 401 → appel `/auth/refresh` → retry ou redirect `/login`, `AxiosService` idem avec `attemptRefresh()` + retry, `LoginComponent` stocke les deux tokens. |
+| 2026-05-27 | **Refonte hébergements : self-service booking + paiement RIB** — Remplacement du modèle "admin assigne des utilisateurs" par un modèle "invité réserve lui-même". Domain : `AccommodationAssignment` supprimé, remplacé par `AccommodationBooking` (owned entity) avec `NumberOfPersons`, `TotalAmount` (calculé), `BookingStatus` (Pending/Confirmed/Cancelled), `BookerFirstName/LastName/Email`. Aggregate `Accommodation` étendu : `PricePerPersonPerNight`, `NumberOfNights`, `Capacity`, `RemainingCapacity` (computed). Méthodes : `Book()`, `ConfirmBooking()`, `CancelBooking()`. Application : 3 nouvelles commands (BookAccommodation, ConfirmBooking, CancelBooking) + 2 queries (GetAvailableAccommodations, GetMyBookings). API : 9 endpoints REST. Migration `RedesignAccommodationBooking`. Frontend : page guest `/mariage/hebergement` avec stepper (liste dispo → formulaire personnes → RIB → confirmation), page profil affiche les réservations, page admin simplifiée (plus d'assignation, vue bookings). Pattern de paiement : RIB (IBAN FR76 2823 3000 0137 4424 8513 031, BIC REVOFRP2, Henri Vidal & Edwige Veniat), l'invité déclare "j'ai viré" → booking auto-confirmé. |

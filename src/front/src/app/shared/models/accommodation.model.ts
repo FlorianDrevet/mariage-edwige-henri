@@ -3,21 +3,45 @@ export interface AccommodationModel {
   title: string;
   description: string;
   urlImage: string;
-  price: number;
-  assignments: AccommodationAssignmentModel[];
+  pricePerPersonPerNight: number;
+  numberOfNights: number;
+  capacity: number;
+  remainingCapacity: number;
+  bookings: BookingModel[];
 }
 
-export interface AccommodationAssignmentModel {
-  userId: string;
-  username: string;
-  responseStatus: string;
+export interface BookingModel {
+  id: string;
+  accommodationId: string;
+  accommodationTitle: string;
+  accommodationImage: string;
+  numberOfPersons: number;
+  totalAmount: number;
+  status: string;
+  bookerFirstName: string;
+  bookerLastName: string;
+  bookerEmail: string;
+  createdAt: string;
 }
 
-export interface MyAccommodationModel {
+export interface AvailableAccommodationModel {
   id: string;
   title: string;
   description: string;
   urlImage: string;
-  price: number;
-  responseStatus: string;
+  pricePerPersonPerNight: number;
+  numberOfNights: number;
+  capacity: number;
+  remainingCapacity: number;
+}
+
+export interface MyBookingsModel {
+  bookings: BookingModel[];
+}
+
+export interface BookAccommodationRequest {
+  numberOfPersons: number;
+  firstName: string;
+  lastName: string;
+  email?: string;
 }

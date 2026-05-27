@@ -1,3 +1,4 @@
+using ErrorOr;
 using Mariage.Domain.AccommodationAggregate.Entities;
 using Mariage.Domain.AccommodationAggregate.Enums;
 using Mariage.Domain.AccommodationAggregate.ValueObjects;
@@ -8,60 +9,118 @@ namespace Mariage.Domain.AccommodationAggregate;
 
 public sealed class Accommodation : AggregateRoot<AccommodationId>
 {
-    private readonly List<AccommodationAssignment> _assignments = new();
+    private readonly List<AccommodationBooking> _bookings = new();
 
     public string Title { get; private set; } = null!;
     public string Description { get; private set; } = null!;
     public string UrlImage { get; private set; } = null!;
-    public decimal Price { get; private set; }
+    public decimal PricePerPersonPerNight { get; private set; }
+    public int NumberOfNights { get; private set; }
+    public int Capacity { get; private set; }
 
-    public IReadOnlyList<AccommodationAssignment> Assignments => _assignments.AsReadOnly();
+    public IReadOnlyList<AccommodationBooking> Bookings => _bookings.AsReadOnly();
+
+    public int RemainingCapacity =>
+        Capacity - _bookings
+            .Where(b => b.BookingStatus != AccommodationBookingStatus.Cancelled)
+            .Sum(b => b.NumberOfPersons);
 
     private Accommodation(
         AccommodationId id,
         string title,
         string description,
         string urlImage,
-        decimal price) : base(id)
+        decimal pricePerPersonPerNight,
+        int numberOfNights,
+        int capacity) : base(id)
     {
         Title = title;
         Description = description;
         UrlImage = urlImage;
-        Price = price;
+        PricePerPersonPerNight = pricePerPersonPerNight;
+        NumberOfNights = numberOfNights;
+        Capacity = capacity;
     }
 
-    public static Accommodation Create(string title, string description, string urlImage, decimal price)
+    public static Accommodation Create(
+        string title,
+        string description,
+        string urlImage,
+        decimal pricePerPersonPerNight,
+        int numberOfNights,
+        int capacity)
     {
-        return new Accommodation(AccommodationId.CreateUnique(), title, description, urlImage, price);
+        return new Accommodation(
+            AccommodationId.CreateUnique(),
+            title,
+            description,
+            urlImage,
+            pricePerPersonPerNight,
+            numberOfNights,
+            capacity);
     }
 
-    public void Update(string title, string description, string urlImage, decimal price)
+    public void Update(
+        string title,
+        string description,
+        string urlImage,
+        decimal pricePerPersonPerNight,
+        int numberOfNights,
+        int capacity)
     {
         Title = title;
         Description = description;
         UrlImage = urlImage;
-        Price = price;
+        PricePerPersonPerNight = pricePerPersonPerNight;
+        NumberOfNights = numberOfNights;
+        Capacity = capacity;
     }
 
-    public void AssignUser(UserId userId)
+    public ErrorOr<AccommodationBooking> Book(
+        UserId userId,
+        int numberOfPersons,
+        string bookerFirstName,
+        string bookerLastName,
+        string? bookerEmail)
     {
-        if (_assignments.Any(a => a.UserId == userId))
-            return;
+        if (numberOfPersons > RemainingCapacity)
+            return Domain.Common.Errors.Errors.Accommodation.CapacityExceeded();
 
-        _assignments.Add(AccommodationAssignment.Create(userId));
+        var totalAmount = PricePerPersonPerNight * numberOfPersons * NumberOfNights;
+
+        var booking = AccommodationBooking.Create(
+            userId,
+            numberOfPersons,
+            totalAmount,
+            bookerFirstName,
+            bookerLastName,
+            bookerEmail);
+
+        _bookings.Add(booking);
+        return booking;
     }
 
-    public void UnassignUser(UserId userId)
+    public ErrorOr<AccommodationBooking> ConfirmBooking(AccommodationBookingId bookingId)
     {
-        var assignment = _assignments.FirstOrDefault(a => a.UserId == userId);
-        if (assignment is not null)
-            _assignments.Remove(assignment);
+        var booking = _bookings.FirstOrDefault(b => b.Id == bookingId);
+        if (booking is null)
+            return Domain.Common.Errors.Errors.Accommodation.BookingNotFound();
+
+        if (booking.BookingStatus == AccommodationBookingStatus.Confirmed)
+            return Domain.Common.Errors.Errors.Accommodation.BookingAlreadyConfirmed();
+
+        booking.Confirm();
+        return booking;
     }
 
-    public void SetUserResponse(UserId userId, AccommodationResponseStatus status)
+    public ErrorOr<AccommodationBooking> CancelBooking(AccommodationBookingId bookingId)
     {
-        var assignment = _assignments.FirstOrDefault(a => a.UserId == userId);
-        assignment?.Respond(status);
+        var booking = _bookings.FirstOrDefault(b => b.Id == bookingId);
+        if (booking is null)
+            return Domain.Common.Errors.Errors.Accommodation.BookingNotFound();
+
+        booking.Cancel();
+        return booking;
     }
 
     public Accommodation() { }

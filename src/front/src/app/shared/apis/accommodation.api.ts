@@ -2,12 +2,20 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { AccommodationModel, MyAccommodationModel } from '../models/accommodation.model';
+import {
+  AccommodationModel,
+  AvailableAccommodationModel,
+  BookAccommodationRequest,
+  BookingModel,
+  MyBookingsModel
+} from '../models/accommodation.model';
 
 @Injectable({ providedIn: 'root' })
 export class AccommodationApi {
   private readonly http = inject(HttpClient);
   private readonly baseUrl = environment['API_URL'] as string;
+
+  // === Admin ===
 
   getAccommodations(): Observable<AccommodationModel[]> {
     return this.http.get<AccommodationModel[]>(`${this.baseUrl}/accommodations`);
@@ -25,27 +33,33 @@ export class AccommodationApi {
     return this.http.delete<void>(`${this.baseUrl}/accommodations/${id}`);
   }
 
-  assignUsers(accommodationId: string, userIds: string[]): Observable<AccommodationModel> {
+  // === Guest ===
+
+  getAvailableAccommodations(): Observable<AvailableAccommodationModel[]> {
+    return this.http.get<AvailableAccommodationModel[]>(`${this.baseUrl}/accommodations/available`);
+  }
+
+  bookAccommodation(accommodationId: string, request: BookAccommodationRequest): Observable<AccommodationModel> {
     return this.http.post<AccommodationModel>(
-      `${this.baseUrl}/accommodations/${accommodationId}/assignments`,
-      { userIds }
+      `${this.baseUrl}/accommodations/${accommodationId}/bookings`,
+      request
     );
   }
 
-  unassignUser(accommodationId: string, userId: string): Observable<AccommodationModel> {
-    return this.http.delete<AccommodationModel>(
-      `${this.baseUrl}/accommodations/${accommodationId}/assignments/${userId}`
+  confirmBooking(accommodationId: string, bookingId: string): Observable<AccommodationModel> {
+    return this.http.put<AccommodationModel>(
+      `${this.baseUrl}/accommodations/${accommodationId}/bookings/${bookingId}/confirm`,
+      {}
     );
   }
 
-  getMyAccommodation(): Observable<MyAccommodationModel> {
-    return this.http.get<MyAccommodationModel>(`${this.baseUrl}/accommodations/my`);
+  cancelBooking(accommodationId: string, bookingId: string): Observable<void> {
+    return this.http.delete<void>(
+      `${this.baseUrl}/accommodations/${accommodationId}/bookings/${bookingId}`
+    );
   }
 
-  respondToAccommodation(response: string): Observable<MyAccommodationModel> {
-    return this.http.put<MyAccommodationModel>(
-      `${this.baseUrl}/accommodations/my/response`,
-      { response }
-    );
+  getMyBookings(): Observable<MyBookingsModel> {
+    return this.http.get<MyBookingsModel>(`${this.baseUrl}/accommodations/my-bookings`);
   }
 }

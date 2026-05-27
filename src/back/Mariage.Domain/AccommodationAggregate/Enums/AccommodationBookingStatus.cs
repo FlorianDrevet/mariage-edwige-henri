@@ -1,8 +1,8 @@
 namespace Mariage.Domain.AccommodationAggregate.Enums;
 
-public enum AccommodationResponseStatus
+public enum AccommodationBookingStatus
 {
     Pending,
-    Accepted,
-    Refused
+    Confirmed,
+    Cancelled
 }

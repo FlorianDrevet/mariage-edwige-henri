@@ -8,7 +8,7 @@ public interface IAccommodationRepository
 {
     Task<Accommodation?> GetByIdAsync(AccommodationId id);
     Task<List<Accommodation>> GetAllAsync();
-    Task<Accommodation?> GetByUserIdAsync(UserId userId);
+    Task<List<Accommodation>> GetByUserBookingsAsync(UserId userId);
     Task AddAsync(Accommodation accommodation);
     Task UpdateAsync(Accommodation accommodation);
     Task DeleteAsync(Accommodation accommodation);

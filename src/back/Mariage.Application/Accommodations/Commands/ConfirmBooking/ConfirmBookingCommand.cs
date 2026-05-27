@@ -4,9 +4,10 @@ using Mariage.Domain.AccommodationAggregate.ValueObjects;
 using Mariage.Domain.UserAggregate.ValueObjects;
 using MediatR;
 
-namespace Mariage.Application.Accommodations.Commands.AssignAccommodation;
+namespace Mariage.Application.Accommodations.Commands.ConfirmBooking;
 
-public record AssignAccommodationCommand(
+public record ConfirmBookingCommand(
     AccommodationId AccommodationId,
-    List<UserId> UserIds
+    AccommodationBookingId BookingId,
+    UserId UserId
 ) : IRequest<ErrorOr<Accommodation>>;

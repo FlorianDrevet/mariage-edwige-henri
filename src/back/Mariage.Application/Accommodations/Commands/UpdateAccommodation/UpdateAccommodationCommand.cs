@@ -10,5 +10,7 @@ public record UpdateAccommodationCommand(
     string Title,
     string Description,
     string UrlImage,
-    decimal Price
+    decimal PricePerPersonPerNight,
+    int NumberOfNights,
+    int Capacity
 ) : IRequest<ErrorOr<Accommodation>>;

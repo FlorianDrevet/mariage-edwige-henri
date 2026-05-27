@@ -10,16 +10,20 @@ public static partial class Errors
             code: "Accommodation.NotFound",
             description: "The accommodation was not found.");
 
-        public static Error UserAlreadyAssigned() => Error.Conflict(
-            code: "Accommodation.UserAlreadyAssigned",
-            description: "This user is already assigned to this accommodation.");
+        public static Error CapacityExceeded() => Error.Conflict(
+            code: "Accommodation.CapacityExceeded",
+            description: "The requested number of persons exceeds the remaining capacity.");
 
-        public static Error AlreadyAssignedElsewhere() => Error.Conflict(
-            code: "Accommodation.AlreadyAssignedElsewhere",
-            description: "This user is already assigned to another accommodation.");
+        public static Error BookingNotFound() => Error.NotFound(
+            code: "Accommodation.BookingNotFound",
+            description: "The booking was not found.");
 
-        public static Error UserNotAssigned() => Error.NotFound(
-            code: "Accommodation.UserNotAssigned",
-            description: "This user is not assigned to any accommodation.");
+        public static Error BookingAlreadyConfirmed() => Error.Conflict(
+            code: "Accommodation.BookingAlreadyConfirmed",
+            description: "This booking is already confirmed.");
+
+        public static Error UserAlreadyBooked() => Error.Conflict(
+            code: "Accommodation.UserAlreadyBooked",
+            description: "This user already has a booking for this accommodation.");
     }
 }

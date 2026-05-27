@@ -6,6 +6,7 @@ import { UsersApi } from '../../shared/apis/users.api';
 import { DiscordNotificationService } from '../../shared/services/discord-notification.service';
 import { AccommodationApi } from '../../shared/apis/accommodation.api';
 import { catchError, of } from 'rxjs';
+import { BookingModel } from '../../shared/models/accommodation.model';
 
 @Component({
   standalone: false,
@@ -27,22 +28,15 @@ export class ProfilComponent {
     stream: () => this.usersApi.getUserProfils(),
   });
 
-  readonly accommodationResource = rxResource({
-    stream: () => this.accommodationApi.getMyAccommodation().pipe(
-      catchError(() => of(null))
+  readonly bookingsResource = rxResource({
+    stream: () => this.accommodationApi.getMyBookings().pipe(
+      catchError(() => of({ bookings: [] }))
     ),
   });
 
   readonly profil = computed(() => this.profilResource.value() ?? null);
   readonly isLoading = computed(() => this.profilResource.isLoading());
-  readonly myAccommodation = computed(() => this.accommodationResource.value() ?? null);
-
-  readonly accommodationValue = computed<boolean | null>(() => {
-    const status = this.myAccommodation()?.responseStatus;
-    if (status === 'Accepted') return true;
-    if (status === 'Refused') return false;
-    return null;
-  });
+  readonly myBookings = computed(() => this.bookingsResource.value()?.bookings ?? []);
 
   readonly profilForm = this.fb.nonNullable.group({
     email: ['', Validators.required],
@@ -74,20 +68,16 @@ export class ProfilComponent {
     });
   }
 
-  onAccommodationRespond(response: string): void {
-    this.accommodationApi.respondToAccommodation(response).subscribe(updated => {
-      this.accommodationResource.set(updated);
-      const username = this.profil()?.username ?? 'Inconnu';
-      const label = response === 'Accepted' ? 'a accepté' : 'a refusé';
-      this.discord.sendNotification(`${username} ${label} l'hébergement "${updated.title}"`).subscribe();
-    });
+  onCancelBooking(booking: BookingModel): void {
+    this.accommodationApi.cancelBooking(booking.accommodationId, booking.id)
+      .subscribe(() => this.bookingsResource.reload());
   }
 
-  getAccommodationStatusLabel(status: string): string {
+  getBookingStatusLabel(status: string): string {
     switch (status) {
-      case 'Accepted': return 'Accepté';
-      case 'Refused': return 'Refusé';
-      default: return 'En attente de réponse';
+      case 'Confirmed': return 'Confirmé';
+      case 'Cancelled': return 'Annulé';
+      default: return 'En attente de paiement';
     }
   }
 }

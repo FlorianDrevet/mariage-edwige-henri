@@ -5,5 +5,7 @@ namespace Mariage.Contracts.Accommodation;
 public record UpdateAccommodationRequest(
     string Title,
     string Description,
-    decimal Price,
+    decimal PricePerPersonPerNight,
+    int NumberOfNights,
+    int Capacity,
     IFormFile? ImageFile);
