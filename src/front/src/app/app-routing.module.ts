@@ -17,8 +17,6 @@ import {MariesComponent} from "./feature/maries/maries.component";
 import {ContactComponent} from "./feature/contact/contact.component";
 import {PhotosMariageComponent} from "./feature/photos/photos.component";
 
-import {AccommodationsComponent} from "./feature/accommodations/accommodations.component";
-
 const routes: Routes = [
   {
     path: 'accueil',
@@ -38,11 +36,6 @@ const routes: Routes = [
   {
     path: 'utilisateurs',
     component: UsersComponent
-  },
-  {
-    path: 'hebergements',
-    component: AccommodationsComponent,
-    canActivate: [AuthGuardService]
   },
   {
     path: 'mariage',
@@ -72,7 +65,6 @@ const routes: Routes = [
       {
         path: "hebergement",
         component: HebergementComponent,
-        canActivate: [AuthGuardService],
         pathMatch: 'full'
       },
       {

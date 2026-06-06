@@ -1,12 +1,9 @@
-import { ChangeDetectionStrategy, Component, computed, effect, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { FormBuilder, Validators } from '@angular/forms';
 import { cilEnvelopeClosed } from '@coreui/icons';
 import { UsersApi } from '../../shared/apis/users.api';
 import { DiscordNotificationService } from '../../shared/services/discord-notification.service';
-import { AccommodationApi } from '../../shared/apis/accommodation.api';
-import { catchError, of } from 'rxjs';
-import { BookingModel } from '../../shared/models/accommodation.model';
 
 @Component({
   standalone: false,
@@ -18,7 +15,6 @@ import { BookingModel } from '../../shared/models/accommodation.model';
 export class ProfilComponent {
   private readonly usersApi = inject(UsersApi);
   private readonly discord = inject(DiscordNotificationService);
-  private readonly accommodationApi = inject(AccommodationApi);
   private readonly fb = inject(FormBuilder);
 
   readonly icon = { cilEnvelopeClosed };
@@ -28,15 +24,8 @@ export class ProfilComponent {
     stream: () => this.usersApi.getUserProfils(),
   });
 
-  readonly bookingsResource = rxResource({
-    stream: () => this.accommodationApi.getMyBookings().pipe(
-      catchError(() => of({ bookings: [] }))
-    ),
-  });
-
   readonly profil = computed(() => this.profilResource.value() ?? null);
   readonly isLoading = computed(() => this.profilResource.isLoading());
-  readonly myBookings = computed(() => this.bookingsResource.value()?.bookings ?? []);
 
   readonly profilForm = this.fb.nonNullable.group({
     email: ['', Validators.required],
@@ -66,19 +55,6 @@ export class ProfilComponent {
     this.usersApi.changeEmail(newEmail).subscribe(updated => {
       this.profilResource.set(updated);
     });
-  }
-
-  onCancelBooking(booking: BookingModel): void {
-    this.accommodationApi.cancelBooking(booking.accommodationId, booking.id)
-      .subscribe(() => this.bookingsResource.reload());
-  }
-
-  getBookingStatusLabel(status: string): string {
-    switch (status) {
-      case 'Confirmed': return 'Confirmé';
-      case 'Cancelled': return 'Annulé';
-      default: return 'En attente de paiement';
-    }
   }
 }
 

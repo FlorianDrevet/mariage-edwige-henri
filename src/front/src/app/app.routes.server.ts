@@ -24,7 +24,7 @@ export const serverRoutes: ServerRoute[] = [
   },
   {
     path: 'mariage/hebergement',
-    renderMode: RenderMode.Client,
+    renderMode: RenderMode.Server,
   },
   {
     path: 'mariage/photos',
@@ -50,10 +50,6 @@ export const serverRoutes: ServerRoute[] = [
   },
   {
     path: 'utilisateurs',
-    renderMode: RenderMode.Client,
-  },
-  {
-    path: 'hebergements',
     renderMode: RenderMode.Client,
   },
   {

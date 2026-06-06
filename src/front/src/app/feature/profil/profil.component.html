@@ -32,33 +32,6 @@
       }
     </div>
 
-    @if (myBookings().length > 0) {
-      <app-title-wedding class="mt-14">Vos réservations</app-title-wedding>
-      <div class="w-4/5 lg:w-2/5 flex flex-col gap-4">
-        @for (booking of myBookings(); track booking.id) {
-          <div class="p-4 rounded-lg border border-gold/20">
-            <div class="flex justify-between items-start">
-              <div>
-                <h4 class="font-gfsdidot text-lg text-gold">{{ booking.accommodationTitle }}</h4>
-                <p class="font-montserrat text-xs text-gold-light">
-                  {{ booking.numberOfPersons }} pers. — {{ booking.totalAmount }} €
-                </p>
-                <p class="font-montserrat text-xs mt-1"
-                   [class]="booking.status === 'Confirmed' ? 'text-green-500' : 'text-yellow-500'">
-                  {{ getBookingStatusLabel(booking.status) }}
-                </p>
-              </div>
-              @if (booking.status === 'Pending') {
-                <button class="text-xs text-red-400 underline font-montserrat" (click)="onCancelBooking(booking)">
-                  Annuler
-                </button>
-              }
-            </div>
-          </div>
-        }
-      </div>
-    }
-
     <!--<p class="font-montserrat text-sm w-4/5 text-center mb-24 mt-14">Si une des réponses a changé, envoyer nous un mail à <a href="mailto:mariage.ehv@gmail.com">mariage.ehv&#64;gmail.com</a></p>-->
   </div>
 }

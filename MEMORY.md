@@ -241,6 +241,8 @@ All in `Mariage.Domain/Common/Errors/` as `partial class Errors`.
 | `/accommodations/my` | GET | GetMyAccommodationQuery | Auth |
 | `/accommodations/my/response` | PUT | RespondToAccommodationCommand | Auth |
 
+- **2026-06-06 update**: `Mariage.Api` n'enregistre plus `UseAccommodationController()`. Les entrées `/accommodations*` ci-dessus sont désormais **legacy** pour mémoire historique uniquement; la feature n'est plus exposée publiquement par l'API.
+
 ### Routing conventions
 - Minimal API via static `Use{Feature}Controller()` extension methods on `IApplicationBuilder`
 - `UseEndpoints()` pattern with `MapGet`/`MapPost`/`MapPut`/`MapDelete`
@@ -310,8 +312,8 @@ All in `Mariage.Domain/Common/Errors/` as `partial class Errors`.
 - **Hydration**: `provideClientHydration(withIncrementalHydration())` in `AppModule` — enables incremental hydration + event replay + **HTTP Transfer Cache** (activé par défaut en Angular 19+, désactiver avec `withNoHttpTransferCache()` si besoin)
 - **Server engine**: `AngularNodeAppEngine` in `server.ts` (modern pattern, replaces `CommonEngine`)
 - **Server routing**: `app.routes.server.ts` with `provideServerRendering(withRoutes(serverRoutes))` in `AppServerModule`
-  - **Static SSR pages**: `/accueil`, `/mariage`, `/mariage/ceremonie-religieuse`, `/mariage/vin-honneur`, `/mariage/photos`, `/staff-officiel`, `/contact`
-  - **CSR**: `/login`, `/profils`, `/utilisateurs`, `/photos`, `/hebergements`, `/mariage/reception`, `/mariage/hebergement` (auth-dependent pages)
+  - **Static SSR pages**: `/accueil`, `/mariage`, `/mariage/ceremonie-religieuse`, `/mariage/vin-honneur`, `/mariage/hebergement`, `/mariage/photos`, `/staff-officiel`, `/contact`
+  - **CSR**: `/login`, `/profils`, `/utilisateurs`, `/photos`, `/mariage/reception` (auth-dependent pages)
   - **SSR**: `/liste-de-mariage`, `/liste-de-mariage/cadeau/:id` (dynamic data)
   - Catch-all `**` → SSR
 - **Incremental hydration**: `@defer (on viewport; hydrate on viewport)` used in `wedding-list.component.html` for below-fold category sections
@@ -350,16 +352,16 @@ src/app/
 | `/mariage/ceremonie-religieuse` | CeremonieComponent | Religious ceremony |
 | `/mariage/vin-honneur` | VinHonneurComponent | Cocktail hour |
 | `/mariage/reception` | ReceptionComponent | Reception (auth required) |
-| `/mariage/hebergement` | HebergementComponent | Accommodation info (auth required) |
+| `/mariage/hebergement` | HebergementComponent | Static accommodation info with clickable contact email |
 | `/mariage/photos` | PhotosComponent | Photo info |
 | `/staff-officiel` | MariesComponent | Official staff / witnesses page |
 | `/contact` | ContactComponent | Contact page |
 | `/photos` | PhotosMariageComponent | Photo gallery |
 | `/profil` | ProfilComponent | User profile |
-| `/hebergements` | AccommodationsComponent | Admin accommodation management |
+| `/hebergements` | Removed (legacy) | Admin accommodation management route removed on 2026-06-06 |
 
 - `CeremonieComponent` remains a static card layout for `/mariage/ceremonie-religieuse`: church location, schedule/consent information, dress-code reminder, and musician/singer call-to-action, all sourced from local template copy and assets in `src/front/src/assets/icons/`.
-- `ReceptionComponent` and `HebergementComponent` are protected wedding timeline routes: `canActivate: [AuthGuardService]` in `app-routing.module.ts` and `RenderMode.Client` in `app.routes.server.ts`, so dinner and accommodation details only render for authenticated users after client routing.
+- `ReceptionComponent` remains protected via `AuthGuardService`, while `HebergementComponent` is now a static SSR route whose only CTA is a clickable `mailto:` link to `mariage.ehv@gmail.com`.
 - `MariesComponent` is a data-driven static page: introduction + engagement image (`assets/pictures/fiancaille.png`) + two witness groups sourced from local readonly arrays and witness portraits in `assets/pictures/témoins/`.
 - On desktop, `MariesComponent` keeps one background panel per witness group and stretches both panels to the same height; each panel list uses equal-height rows so the left/right witness cards stay visually aligned, and portrait gold frames are intentionally thinner than the hero frame.
 
@@ -368,6 +370,7 @@ src/app/
 - `PicturesApi` — Picture CRUD, favorites, photo booth/photograph
 - `ProfilApi` — Guest isComing update
 - `UsersApi` — User list, profile, add guests
+- `AccommodationApi` was removed on 2026-06-06 together with the admin/profile booking UI.
 
 ### 9.5 HTTP & Auth
 - **Axios** wrapped in `AxiosService` (not Angular HttpClient) — utilisé pour toutes les mutations et appels authentifiés
@@ -518,6 +521,7 @@ cd src/back && dotnet ef database update --project Mariage.Infrastructure --star
 - [2026-03-26] **No upload validation** beyond `Length == 0` check — no content-type or size limit
 - [2026-03-26] **UserId extraction** from JWT claims repeated in every endpoint — no shared middleware
 - [2026-03-26] **Custom password hashing** — not standard ASP.NET Identity
+- [2026-06-06] **Accommodation backend is now legacy-only** — frontend admin/profile/timeline booking flows and API controller were removed, but the domain/application/infrastructure accommodation types and migrations still exist in the backend for historical data compatibility.
 - [2026-03-26] **Hardcoded CORS origins** in `Program.cs`
 - [2026-03-26] **Angular Module-based** (not standalone) — requires explicit `standalone: false` on ALL components/directives/pipes since Angular 19+ changed the default to `true`
 - [2026-04-02] **Angular 21 + CoreUI 5.x migration**: CoreUI 5.x is standalone-only. Use standalone components in NgModule `imports[]` (not `declarations[]`). `@angular/ssr` CommonEngine moved to `@angular/ssr/node`. `moduleResolution` must be `"bundler"` (not `"node"`) to resolve subpath exports.
@@ -573,3 +577,4 @@ cd src/back && dotnet ef database update --project Mariage.Infrastructure --star
 | 2026-05-27 | **Timeline mariage : cocktail nettoyé + dîner/hébergement protégés** — Le texte entre parenthèses a été retiré des pages cocktail et dîner. Les routes `/mariage/reception` et `/mariage/hebergement` utilisent maintenant `AuthGuardService` et `RenderMode.Client`, et la page hébergement affiche le tarif familial de 35 à 70€ par personne avec draps et serviettes compris. |
 | 2026-05-27 | **Refresh token (full-stack)** — JWT access token réduit à 15 min, refresh token 30 jours. Backend : `User` entity (RefreshToken + RefreshTokenExpiryTime), `IJwtGenerator.GenerateRefreshToken()` + `GetPrincipalFromExpiredToken()`, `RefreshTokenCommand` + handler, endpoint `POST /auth/refresh` (anonyme), Login/Register handlers émettent le refresh token, `AuthenticationResult`/`AuthenticationResponse` étendus, migration `AddRefreshToken`. Frontend : `AuthService.getRefreshToken()`/`setRefreshToken()`/`setTokens()`, `auth.interceptor.ts` catch 401 → appel `/auth/refresh` → retry ou redirect `/login`, `AxiosService` idem avec `attemptRefresh()` + retry, `LoginComponent` stocke les deux tokens. |
 | 2026-05-27 | **Refonte hébergements : self-service booking + paiement RIB** — Remplacement du modèle "admin assigne des utilisateurs" par un modèle "invité réserve lui-même". Domain : `AccommodationAssignment` supprimé, remplacé par `AccommodationBooking` (owned entity) avec `NumberOfPersons`, `TotalAmount` (calculé), `BookingStatus` (Pending/Confirmed/Cancelled), `BookerFirstName/LastName/Email`. Aggregate `Accommodation` étendu : `PricePerPersonPerNight`, `NumberOfNights`, `Capacity`, `RemainingCapacity` (computed). Méthodes : `Book()`, `ConfirmBooking()`, `CancelBooking()`. Application : 3 nouvelles commands (BookAccommodation, ConfirmBooking, CancelBooking) + 2 queries (GetAvailableAccommodations, GetMyBookings). API : 9 endpoints REST. Migration `RedesignAccommodationBooking`. Frontend : page guest `/mariage/hebergement` avec stepper (liste dispo → formulaire personnes → RIB → confirmation), page profil affiche les réservations, page admin simplifiée (plus d'assignation, vue bookings). Pattern de paiement : RIB (IBAN FR76 2823 3000 0137 4424 8513 031, BIC REVOFRP2, Henri Vidal & Edwige Veniat), l'invité déclare "j'ai viré" → booking auto-confirmé. |
+| 2026-06-06 | **Retrait fonctionnel hébergement** — suppression des parcours hébergement côté frontend (route admin `/hebergements`, réservations profil, UI de réservation dans `/mariage/hebergement`) et remplacement de la page timeline par un texte statique avec lien cliquable `mailto:mariage.ehv@gmail.com`. Côté API, `UseAccommodationController()` et `AccommodationController` ont été retirés; les types métier/persistence restent présents comme legacy interne. |
