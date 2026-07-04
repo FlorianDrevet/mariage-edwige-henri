@@ -31,29 +31,29 @@ export class MariesComponent {
         {
           name: 'Astrid',
           role: 'Responsable qualité & contrôle émotionnel',
-          description: 'Sœur de la mariée, attentive et redoutablement efficace sur les détails.',
-          mission: 'Mission : surveiller que tout soit parfait (ou presque)',
+          description: "Organisée, attentive et redoutablement efficace, rien n'échappe à son radar. Capable de repérer un détail oublié à 50 mètres et un début de panique avant même qu'il ne commence.",
+          mission: "Mission : maintenir le niveau de sérénité réglementaire et s'assurer que tout roule.",
           image: 'assets/pictures/témoins/astrid.png'
         },
         {
           name: 'Matthieu',
           role: 'Responsable de la protection fraternelle',
-          description: 'Frère de la mariée, présent depuis toujours (ou presque) pour veiller, discrètement... ou pas.',
-          mission: 'Mission : assurer que tout roule... et intervenir si besoin.',
+          description: "Présent depuis toujours (ou presque), il veille discrètement sur les opérations. Il parle peu, observe beaucoup et intervient uniquement lorsque la situation l'exige.",
+          mission: "Mission : assurer que tout se déroule comme prévu et sortir de l'ombre en cas d'urgence.",
           image: 'assets/pictures/témoins/matthieu.jpg'
         },
         {
           name: 'Brune',
-          role: 'Responsable bonne humeur & gestion des urgences',
-          description: 'Énergie contagieuse et gestion des situations critiques... même à 2h du matin.',
-          mission: 'Mission : accompagner la mariée du premier sourire au dernier pas de danse',
+          role: 'Responsable bonne humeur & spontanéité',
+          description: "Toujours partante, jamais très loin d'une bonne idée ou d'une aventure improvisée. Son énergie est communicative et elle a le don de transformer n'importe quel moment en souvenir mémorable.",
+          mission: "Mission : maintenir l'ambiance à son maximum du premier verre au dernier pas de danse.",
           image: 'assets/pictures/témoins/brune.png'
         },
         {
           name: 'Stéphanie',
-          role: 'Responsable des souvenirs & des fous rires',
-          description: 'Amie de longue date, experte en moments mémorables et discussions interminables.',
-          mission: 'Mission : rappeler à la mariée de profiter (et rire encore plus)',
+          role: 'Responsable des souvenirs',
+          description: 'Mémoire vivante du groupe, elle conserve anecdotes, dossiers et souvenirs avec précision. Rien ne lui échappe! Son talent : rendre chaque instant un peu plus mémorable.',
+          mission: 'Mission : capturer les meilleurs moments et fournir un stock inépuisable d\'anecdotes pour les années à venir.',
           image: 'assets/pictures/témoins/stéphanie.jpg'
         }
       ]
@@ -65,29 +65,29 @@ export class MariesComponent {
         {
           name: 'Thomas',
           role: 'Responsable flexibilité & opportunités',
-          description: "Expert en adaptation et en gestion de son temps, il n'exige rien d'autre qu'un peu de réconfort après l'effort. Toujours disponible pour les grandes occasions !",
-          mission: "Mission : répondre présent dès qu'il faut célébrer, aider ou trinquer",
+          description: "Expert en adaptation et en gestion de son temps, il sait toujours trouver une solution, une disponibilité ou un bon prétexte pour rejoindre la fête. Son seul besoin : un peu de réconfort après l'effort.",
+          mission: "Mission : répondre présent au bon moment, surtout quand il faut célébrer, aider et surtout trinquer.",
           image: 'assets/pictures/témoins/thomas.jpg'
         },
         {
           name: 'Léonard',
           role: 'Responsable discipline & gestion des débordements',
-          description: 'Sait parfaitement quand faire respecter les règles... et quand les oublier.',
+          description: 'Maître incontesté du débit, il connaît parfaitement les règles, mais aussi les circonstances exceptionnelles qui permettent de les oublier temporairement.',
           mission: 'Mission : assurer que chaque verre soit rempli.',
           image: 'assets/pictures/témoins/leonard.jpg'
         },
         {
           name: 'Hugues',
-          role: 'Responsable qualité terroir',
-          description: "Gardien des poules et maître de la farine, c'est aussi un grand spécialiste de la Chartreuse et des bons repas. Un homme de goût... sauf, étrangement, concernant un fromage...",
-          mission: 'Mission : s\'assurer que personne ne manque de pain, de vin ou de bonne humeur.',
+          role: 'Responsable qualité',
+          description: "Gardien des poules et maître de la farine, il cultive le goût des choses bien faites, que ce soit à travers la photographie ou les bons produits du quotidien. Un expert du détail en toute discrétion.",
+          mission: 'Mission : garder un œil sur les détails et s\'assurer que tout se déroule dans les meilleures conditions.',
           image: 'assets/pictures/témoins/hugues.jpg'
         },
         {
           name: 'Ambroise',
           role: "Responsable de l'art de vivre",
-          description: "Toujours très chic et élégant, jamais en reste quand il s'agit de célébrer. Défenseur du bon goût, du bon vin et des traditions françaises, il savoure autant les grandes tablées que les grands moments.",
-          mission: 'Mission : mettre l\'ambiance tout en savourant chaque instant',
+          description: "Toujours chic et élégant, défenseur du bon goût, du bon vin et des traditions françaises. Aussi à l'aise autour d'une grande table que sur une piste de danse, il sait apprécier chaque instant comme il se doit.",
+          mission: 'Mission : mettre l\'ambiance tout en savourant chaque instant.',
           image: 'assets/pictures/témoins/ambroise.jpg'
         }
       ]
