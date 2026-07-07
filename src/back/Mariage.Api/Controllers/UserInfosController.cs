@@ -102,8 +102,7 @@ public static class UserInfosController
                         }
                         var query = new GetUserByIdQuery(UserId.Create(Guid.Parse(userId)));
                         var getUserByIdInfosResult = await mediator.Send(query);
-                        Console.WriteLine(getUserByIdInfosResult);
-                        
+
                         return getUserByIdInfosResult.Match(
                             getUserByIdInfosResult =>
                             {

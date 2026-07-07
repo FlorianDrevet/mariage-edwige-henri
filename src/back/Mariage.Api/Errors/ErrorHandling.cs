@@ -6,11 +6,25 @@ public static class ErrorHandling
 {
     public static IApplicationBuilder UseErrorHandling(this IApplicationBuilder builder)
     {
-        return builder.UseExceptionHandler(exceptionHandlerApp 
-            => exceptionHandlerApp.Run(async context 
+        return builder.UseExceptionHandler(exceptionHandlerApp
+            => exceptionHandlerApp.Run(async context
                     =>
                 {
-                    var (statusCode, message) = context.Features.Get<IExceptionHandlerFeature>()?.Error switch
+                    var exception = context.Features.Get<IExceptionHandlerFeature>()?.Error;
+
+                    if (exception is not null)
+                    {
+                        var logger = context.RequestServices
+                            .GetRequiredService<ILoggerFactory>()
+                            .CreateLogger("GlobalExceptionHandler");
+
+                        logger.LogError(exception,
+                            "Unhandled exception on {Method} {Path}",
+                            context.Request.Method,
+                            context.Request.Path);
+                    }
+
+                    var (statusCode, message) = exception switch
                     {
                         _ => (StatusCodes.Status500InternalServerError, "An error occurred.")
                     };
