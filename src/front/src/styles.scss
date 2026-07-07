@@ -110,6 +110,12 @@
   pointer-events: none;
   z-index: 9999;
   overflow: hidden;
+  /* Force its own GPU compositor layer so scrolling content underneath
+     doesn't get repainted/recomposited on every frame alongside it —
+     a fixed full-screen overlay without layer promotion is a known
+     cause of janky/truncated momentum scroll on mobile Safari. */
+  transform: translateZ(0);
+  will-change: transform;
 }
 
 .snowflake {
