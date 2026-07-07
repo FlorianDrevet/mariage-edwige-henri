@@ -9,10 +9,18 @@
   <!-- ═══ Barre de recherche globale ═══ -->
   <input
     type="text"
-    class="search-input mb-8"
+    class="search-input mb-4"
     placeholder="Rechercher un identifiant ou un invité..."
     [value]="search()"
     (input)="search.set($any($event.target).value)">
+
+  <label class="flex items-center gap-2 mb-8 cursor-pointer">
+    <input
+      type="checkbox"
+      [checked]="onlyNeverLoggedIn()"
+      (change)="onlyNeverLoggedIn.set($any($event.target).checked)">
+    <span class="font-montserrat text-xs text-gold-light">Afficher uniquement les identifiants jamais connectés</span>
+  </label>
 
   <!-- ═══ Liste Identifiants + Invités ═══ -->
   <div class="w-11/12 lg:w-2/3 flex flex-col gap-4">

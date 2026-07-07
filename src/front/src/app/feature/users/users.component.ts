@@ -27,18 +27,23 @@ export class UsersComponent {
 
   // ── Search ─────────────────────────────────────────────────────────────
   readonly search = signal('');
+  readonly onlyNeverLoggedIn = signal(false);
 
   readonly filteredUsers = computed(() => {
     const q = this.search().toLowerCase().trim();
-    if (!q) return this.users();
-    return this.users().filter(u =>
-      u.username.toLowerCase().includes(q) ||
-      (u.email ?? '').toLowerCase().includes(q) ||
-      u.guests.some(g =>
-        g.firstName.toLowerCase().includes(q) ||
-        g.lastName.toLowerCase().includes(q)
-      )
-    );
+    const onlyNeverLoggedIn = this.onlyNeverLoggedIn();
+    return this.users().filter(u => {
+      if (onlyNeverLoggedIn && u.hasLoggedIn) return false;
+      if (!q) return true;
+      return (
+        u.username.toLowerCase().includes(q) ||
+        (u.email ?? '').toLowerCase().includes(q) ||
+        u.guests.some(g =>
+          g.firstName.toLowerCase().includes(q) ||
+          g.lastName.toLowerCase().includes(q)
+        )
+      );
+    });
   });
 
   // ── Accordion ──────────────────────────────────────────────────────────
