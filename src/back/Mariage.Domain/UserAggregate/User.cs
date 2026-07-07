@@ -20,6 +20,7 @@ public sealed class User : AggregateRoot<UserId>
     public List<PictureId> PictureIds { get; private set; } = new();
     public string? RefreshToken { get; private set; }
     public DateTime? RefreshTokenExpiryTime { get; private set; }
+    public bool HasLoggedIn { get; private set; }
     
     public IReadOnlyList<Guest> Guests => _guests.AsReadOnly();
 
@@ -100,5 +101,10 @@ public sealed class User : AggregateRoot<UserId>
     {
         RefreshToken = null;
         RefreshTokenExpiryTime = null;
+    }
+
+    public void MarkAsLoggedIn()
+    {
+        HasLoggedIn = true;
     }
 }

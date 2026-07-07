@@ -27,6 +27,8 @@
           <span class="font-montserrat text-xs text-gold-light shrink-0">
             {{ user.guests.length }} invité{{ user.guests.length > 1 ? 's' : '' }}
           </span>
+          <app-tag class="shrink-0" [confirmed]="user.hasLoggedIn"
+            confirmedText="Connecté" refusedText="Jamais connecté"></app-tag>
           <div class="flex gap-2 shrink-0 ml-auto">
             <app-button (click)="onModalGuestClick(user.id)"
               [cModalToggle]="verticallyCenteredModalGuests.id">+ Invité</app-button>

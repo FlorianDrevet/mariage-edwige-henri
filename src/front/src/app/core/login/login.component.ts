@@ -8,6 +8,7 @@ import {AuthService} from "../../shared/services/auth.service";
 import {NavigationEnd, Router} from "@angular/router";
 import {ScreenService} from "../../shared/services/screen.service";
 import {ErrorsEnum} from "../../shared/enums/errors.enum";
+import {DiscordNotificationService} from "../../shared/services/discord-notification.service";
 
 @Component({
   standalone: false,
@@ -28,6 +29,7 @@ export class LoginComponent implements AfterViewInit{
               private router: Router,
               private location: Location,
               private cdr: ChangeDetectorRef,
+              private discord: DiscordNotificationService,
               @Inject(PLATFORM_ID) private platformId: Object) {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
@@ -73,6 +75,7 @@ export class LoginComponent implements AfterViewInit{
         .then(
           (response) => {
             this.authService.setTokens(response.token, response.refreshToken);
+            this.discord.sendNotification(`${response.username} logged in`).subscribe();
             this.router.navigate(['/accueil']);
           }
         )

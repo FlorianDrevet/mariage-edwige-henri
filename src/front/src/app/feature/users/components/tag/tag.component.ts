@@ -8,6 +8,8 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class TagComponent implements OnInit {
   @Input() confirmed!: boolean;
+  @Input() confirmedText = 'Accepté';
+  @Input() refusedText = 'Refusé';
 
   isConfirmed!: boolean
   isRefused!: boolean
@@ -15,9 +17,9 @@ export class TagComponent implements OnInit {
 
   tagText = (confirmed: boolean) => {
     if (confirmed) {
-      return "Accepté"
+      return this.confirmedText
     } else {
-      return "Refusé"
+      return this.refusedText
     }
   }
 

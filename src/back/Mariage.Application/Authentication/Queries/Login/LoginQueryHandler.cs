@@ -28,6 +28,7 @@ public class LoginQueryHandler(IJwtGenerator jwtGenerator, IUserRepository userR
         var refreshToken = jwtGenerator.GenerateRefreshToken();
         
         user.SetRefreshToken(refreshToken, DateTime.UtcNow.AddDays(30));
+        user.MarkAsLoggedIn();
         userRepository.UpdateUser(user);
         
         return new AuthenticationResult(user, token, refreshToken);

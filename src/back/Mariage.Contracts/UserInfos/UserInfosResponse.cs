@@ -4,6 +4,7 @@ public record UserInfosResponse(
     Guid Id,
     string Username,
     string Email,
+    bool HasLoggedIn,
     List<GuestResponse> Guests);
     
 public record GuestResponse(
