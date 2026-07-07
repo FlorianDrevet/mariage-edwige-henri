@@ -9,11 +9,13 @@
     min-height: 100% !important;
     height: auto !important;
     font-size: 16px;
+    overscroll-behavior-y: contain;
   }
   body {
     overflow-x: hidden !important;
     min-height: 100% !important;
     height: auto !important;
+    overscroll-behavior-y: contain;
     @apply m-0 p-0;
     color: #dabb7f;
     position: relative;
