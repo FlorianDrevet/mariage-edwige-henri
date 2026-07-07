@@ -29,6 +29,7 @@
     "@coreui/coreui": "^5.6.1",
     "@coreui/icons": "^3.0.1",
     "@coreui/icons-angular": "^5.6.21",
+    "@microsoft/applicationinsights-web": "^3.4.3",
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "axios": "^1.14.0",
     "express": "^4.22.1",

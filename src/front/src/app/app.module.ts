@@ -40,6 +40,8 @@ import { TimelineMariageMobileComponent } from './feature/mariage/timeline-maria
 import { ExplanationModalComponent } from './feature/mariage/explanation-modal/explanation-modal.component';
 import {provideHttpClient, withFetch, withInterceptors} from "@angular/common/http";
 import {authInterceptor} from "./shared/interceptors/auth.interceptor";
+import {APP_INITIALIZER} from "@angular/core";
+import {AppInsightsService} from "./shared/services/app-insights.service";
 
 @NgModule({
   declarations: [
@@ -88,6 +90,13 @@ import {authInterceptor} from "./shared/interceptors/auth.interceptor";
     provideClientHydration(withIncrementalHydration()),
     provideAnimationsAsync(),
     provideHttpClient(withFetch(), withInterceptors([authInterceptor])),
+    // Forces eager instantiation so the browser starts tracking as soon as the app boots.
+    {
+      provide: APP_INITIALIZER,
+      useFactory: (service: AppInsightsService) => () => service,
+      deps: [AppInsightsService],
+      multi: true,
+    },
   ],
   bootstrap: [AppComponent]
 })
