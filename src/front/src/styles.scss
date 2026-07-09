@@ -5,6 +5,10 @@
 @tailwind base;
 @layer base {
   html {
+    /* Seul scroll-container de la page = le viewport (html).
+       overflow-x:hidden clippe l'horizontal ET se propage au viewport.
+       overscroll-behavior-y:contain empêche le pull-to-refresh mobile
+       SANS bloquer le scroll, car html peut réellement défiler. */
     overflow-x: hidden !important;
     min-height: 100% !important;
     height: auto !important;
@@ -12,10 +16,15 @@
     overscroll-behavior-y: contain;
   }
   body {
-    overflow-x: hidden !important;
+    /* NE PAS mettre overflow-x:hidden ici : hidden force overflow-y à `auto`,
+       ce qui transforme <body> en scroll-container imbriqué. Comme body ne peut
+       pas défiler (height:auto), les gestes molette/doigt le ciblent, n'ont aucun
+       effet, et overscroll-behavior:contain empêchait alors le chaînage vers le
+       viewport → scroll mort partout. `clip` clippe l'horizontal sans créer de
+       scroll-container, et on retire overscroll-behavior (inutile ici). */
+    overflow-x: clip;
     min-height: 100% !important;
     height: auto !important;
-    overscroll-behavior-y: contain;
     @apply m-0 p-0;
     color: #dabb7f;
     position: relative;
