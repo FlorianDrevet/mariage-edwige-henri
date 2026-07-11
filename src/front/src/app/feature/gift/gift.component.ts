@@ -20,7 +20,7 @@ export class GiftComponent implements OnInit {
   value: number = 0;
   choosingAmount: boolean = true;
   clickedLydia: boolean = false;
-  paymentMethod: 'lydia' | 'virement' | null = null;
+  paymentMethod: 'wero' | 'virement' | null = null;
   ibanCopied = false;
   icon = {cilGift, cilMoney};
   editGiftForm: FormGroup;
@@ -56,7 +56,7 @@ export class GiftComponent implements OnInit {
     this.giftState.loadCategories();
   }
 
-  selectPaymentMethod(method: 'lydia' | 'virement') {
+  selectPaymentMethod(method: 'wero' | 'virement') {
     this.paymentMethod = method;
     this.clickedLydia = false;
   }
