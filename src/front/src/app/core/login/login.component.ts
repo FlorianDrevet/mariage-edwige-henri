@@ -63,12 +63,13 @@ export class LoginComponent implements AfterViewInit{
     if (this.loginForm.valid) {
       this.isLoading = true;
       this.error = null;
-      const login = this.loginForm.value
+      const login = this.loginForm.value;
+      const username = this.normalizeUsername(login.username);
       this.axiosService.request(
         MethodEnum.POST,
         "/auth/login",
         {
-          "username": login.username,
+          "username": username,
           "password": login.password
         }
       )
@@ -106,5 +107,11 @@ export class LoginComponent implements AfterViewInit{
     } else {
       console.error("Form is invalid");
     }
+  }
+
+  private normalizeUsername(username: string): string {
+    return username
+      .normalize('NFKC')
+      .replace(/[‘’‛′＇]/g, "'");
   }
 }

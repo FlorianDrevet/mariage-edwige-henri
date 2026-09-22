@@ -11,9 +11,16 @@ export class InputComponent {
   @Input() icon: string[] = [];
   @Input() placeholder: string = '';
   @Input() isPassword: boolean = false;
+  @Input() isUsername: boolean = false;
   @Input() controlName: string = '';
   @Input() required: boolean = false;
   @Input() form!: FormGroup;
   @Input() disabled: boolean = false;
   @Input() valueInput: string | null | undefined = null;
+
+  showPassword = false;
+
+  public togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
+  }
 }

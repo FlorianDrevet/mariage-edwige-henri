@@ -8,8 +8,34 @@
     [formControlName]="controlName"
     [placeholder]="placeholder"
     [required]="required"
-    [type]="isPassword ? 'password' : 'text'"
+    [attr.autocomplete]="isUsername ? 'username' : isPassword ? 'current-password' : null"
+    [attr.autocapitalize]="isUsername ? 'none' : null"
+    [attr.autocorrect]="isUsername ? 'off' : null"
+    [attr.spellcheck]="isUsername ? 'false' : null"
+    [type]="isPassword && !showPassword ? 'password' : 'text'"
     [value]="valueInput"
   >
+  @if (isPassword) {
+    <button
+      (click)="togglePasswordVisibility()"
+      [attr.aria-label]="showPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'"
+      [attr.aria-pressed]="showPassword"
+      [attr.title]="showPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'"
+      class="password-toggle"
+      type="button"
+    >
+      @if (showPassword) {
+        <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/>
+          <path d="M2 2l20 20M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a16.16 16.16 0 0 1-3.2 4.19M6.61 6.61A13.53 13.53 0 0 0 2 12s3 7 10 7a10.43 10.43 0 0 0 2.1-.21" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/>
+        </svg>
+      } @else {
+        <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7S2 12 2 12Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/>
+          <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/>
+        </svg>
+      }
+    </button>
+  }
 </div>
 
