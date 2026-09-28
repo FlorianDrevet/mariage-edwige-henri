@@ -43,13 +43,6 @@ export class MariesComponent {
           image: 'assets/pictures/témoins/matthieu.jpg'
         },
         {
-          name: 'Brune',
-          role: 'Responsable bonne humeur & spontanéité',
-          description: "Toujours partante, jamais très loin d'une bonne idée ou d'une aventure improvisée. Son énergie est communicative et elle a le don de transformer n'importe quel moment en souvenir mémorable.",
-          mission: "Mission : maintenir l'ambiance à son maximum du premier verre au dernier pas de danse.",
-          image: 'assets/pictures/témoins/brune.png'
-        },
-        {
           name: 'Stéphanie',
           role: 'Responsable des souvenirs',
           description: 'Mémoire vivante du groupe, elle conserve anecdotes, dossiers et souvenirs avec précision. Rien ne lui échappe! Son talent : rendre chaque instant un peu plus mémorable.',
