@@ -10,7 +10,7 @@
 - **Technology stack**:
   - Backend: **.NET 10** (C# with `extension` methods syntax), **ASP.NET Core Minimal API**
   - Frontend: **Angular 21.2** with **SSR** (`@angular/ssr`)
-  - Database: **PostgreSQL** via EF Core 10 + Npgsql
+  - Database: **Microsoft SQL Server** via EF Core 10 + `Microsoft.EntityFrameworkCore.SqlServer`
   - Orchestration: **.NET Aspire 13.2.1** (AppHost + ServiceDefaults)
   - Blob storage: **Azure Blob Storage** (pictures & gift images)
   - Mapping: **Mapster 7.4**
@@ -19,8 +19,8 @@
   - Error handling: **ErrorOr 2.0** (result pattern)
   - Auth: **JWT Bearer** (custom implementation)
   - CSS: **Tailwind CSS 3.4** + custom fonts (Viga `font-viga`, GFSDidot `font-gfsdidot`, Montserrat `font-montserrat`)
-  - UI libs: **CoreUI Angular 5.6** (standalone) + **Angular Material 21.2**
-  - HTTP client (front): **Axios** (wrapped in `AxiosService`)
+  - UI libs: **CoreUI Angular 5.6** (standalone UI components imported by NgModules) + **Angular Material 21.2**
+  - HTTP clients (front): **Angular `HttpClient`** for refactored API calls and SSR state; legacy calls remain on **Axios** via `AxiosService`
   - Auth (front): **@auth0/angular-jwt** + **ngx-cookie-service**
   - Notifications: **Discord webhook**
 - **Architecture**: Clean Architecture + DDD + CQRS
@@ -37,7 +37,7 @@ src/
 │   ├── global.json                     — SDK .NET 10
 │   ├── Directory.Packages.props        — Central package management
 │   ├── Mariage.Api/                    — Presentation layer (Minimal API endpoints, Mapster mapping, error handling)
-│   ├── Mariage.AppHost/                — .NET Aspire orchestrator (PostgreSQL + API + Frontend)
+│   ├── Mariage.AppHost/                — .NET Aspire orchestrator (SQL Server + Blob emulator + API + Frontend)
 │   ├── Mariage.Application/            — Application layer (CQRS handlers, validators, interfaces)
 │   ├── Mariage.Contracts/              — DTOs/Requests/Responses (incl. PaginatedResponse<T>)
 │   ├── Mariage.Domain/                 — Domain layer (Aggregates, Entities, Value Objects, Errors)
@@ -61,7 +61,7 @@ docs/                                   — Learning wiki (pagination, lazy load
 
 | Aggregate | Class | Key Properties |
 |-----------|-------|----------------|
-| **User** | `UserAggregate/User.cs` | Username, Email?, Password, Salt, Role, PictureIds (favorites), Guests (owned) |
+| **User** | `UserAggregate/User.cs` | Username, Email?, Password, Salt, Role, PictureIds (favorites), RefreshToken + expiry, HasLoggedIn, Guests (owned) |
 | └ Guest | `UserAggregate/Entities/Guest.cs` | FirstName, LastName, IsComing |
 | **Gift** | `GiftAggregate/Gift.cs` | Name, Price, Participation, UrlImage, Category (string), GiftGivers (owned) |
 | **GiftCategory** | `GiftAggregate/GiftCategory.cs` | Name (unique) — dynamic categories managed via admin UI |
@@ -109,6 +109,7 @@ All in `Mariage.Domain/Common/Errors/` as `partial class Errors`.
 | Type | Class | Location |
 |------|-------|----------|
 | Command | `RegisterCommand` + Handler + Validator | `Application/Authentication/Commands/Register/` |
+| Command | `RefreshTokenCommand` + Handler | `Application/Authentication/Commands/RefreshToken/` |
 | Query | `LoginQuery` + Handler | `Application/Authentication/Queries/Login/` |
 | Result | `AuthenticationResult` | `Application/Authentication/Common/` |
 
@@ -116,6 +117,8 @@ All in `Mariage.Domain/Common/Errors/` as `partial class Errors`.
 | Type | Class | Location |
 |------|-------|----------|
 | Command | `CreateGiftCommand` | `Application/Gifts/Commands/CreateGift/` |
+| Command | `UpdateGiftCommand` | `Application/Gifts/Commands/UpdateGift/` |
+| Command | `DeleteGiftCommand` | `Application/Gifts/Commands/DeleteGift/` |
 | Command | `CreateGiftParticipationCommand` | `Application/Gifts/Commands/CreateGiftParticipation/` |
 | Command | `CreateGiftCategoryCommand` | `Application/Gifts/Commands/CreateGiftCategory/` |
 | Command | `DeleteGiftCategoryCommand` | `Application/Gifts/Commands/DeleteGiftCategory/` |
@@ -142,10 +145,16 @@ All in `Mariage.Domain/Common/Errors/` as `partial class Errors`.
 | Command | `ChangeEmailCommand` | `Application/UserInfos/Commands/Email/` |
 | Command | `ChangeIsComingCommand` | `Application/UserInfos/Commands/IsComing/` |
 | Command | `AddGuestsCommand` | `Application/UserInfos/Commands/AddGuests/` |
+| Command | `DeleteUserCommand` | `Application/UserInfos/Commands/DeleteUser/` |
+| Command | `UpdateGuestCommand` | `Application/UserInfos/Commands/UpdateGuest/` |
+| Command | `DeleteGuestCommand` | `Application/UserInfos/Commands/DeleteGuest/` |
 | Query | `GetAllUsersInfosQuery` | `Application/UserInfos/Queries/AllUsers/` |
 | Query | `GetUserByIdQuery` | `Application/UserInfos/Queries/GetUserById/` |
 
 ### 4.5 Accommodations
+
+These domain/application operations and persistence types remain for historical data compatibility; the API no longer registers the accommodation controller.
+
 | Type | Class | Location |
 |------|-------|----------|
 | Command | `CreateAccommodationCommand` | `Application/Accommodations/Commands/CreateAccommodation/` |
@@ -179,8 +188,9 @@ All in `Mariage.Domain/Common/Errors/` as `partial class Errors`.
 ## 5. Contracts / DTOs
 
 ### 5.1 Authentication
-- `RegisterRequest(Username, Password)` → `AuthenticationResponse(Id, Username, Token)`
-- `LoginRequest(Username, Password)` → `AuthenticationResponse(Id, Username, Token)`
+- `RegisterRequest(Username, Password)` → `AuthenticationResponse(Id, Username, Token, RefreshToken)`
+- `LoginRequest(Username, Password)` → `AuthenticationResponse(Id, Username, Token, RefreshToken)`
+- `RefreshTokenRequest(Token, RefreshToken)` → `AuthenticationResponse`
 
 ### 5.2 Gifts
 - `CreateGiftRequest(Name, Price, ImageFile, Category)` → `GiftResponse(Id, Name, Price, Participation, UrlImage, Category, GiftGivers[])`
@@ -214,10 +224,16 @@ All in `Mariage.Domain/Common/Errors/` as `partial class Errors`.
 | `/healthz` | POST | HealthCheck | None |
 | `/auth/register` | POST | RegisterCommand | Admin |
 | `/auth/login` | POST | LoginQuery | None (rate limited) |
+| `/auth/refresh` | POST | RefreshTokenCommand | None |
 | `/wedding-list` | GET | GetGiftQuery | None |
 | `/wedding-list/gift/{giftId}` | GET | GetGiftByIdQuery | None |
 | `/wedding-list` | POST | CreateGiftCommand | Admin |
+| `/wedding-list/{giftId}` | PUT | UpdateGiftCommand | Admin |
+| `/wedding-list/{giftId}` | DELETE | DeleteGiftCommand | Admin |
 | `/wedding-list/{giftId}/participation` | POST | CreateGiftParticipationCommand | None |
+| `/wedding-list/categories` | GET | GetGiftCategoriesQuery | None |
+| `/wedding-list/categories` | POST | CreateGiftCategoryCommand | Admin |
+| `/wedding-list/categories/{categoryId}` | DELETE | DeleteGiftCategoryCommand | Admin |
 | `/pictures` | POST | CreatePictureCommand | Auth |
 | `/pictures/{id}` | DELETE | RemovePictureCommand | Auth |
 | `/pictures` | GET | GetPictureQuery (paginated) | Auth |
@@ -232,6 +248,9 @@ All in `Mariage.Domain/Common/Errors/` as `partial class Errors`.
 | `/user-infos` | GET | GetAllUsersInfosQuery | Admin |
 | `/user-infos/profils` | GET | GetUserByIdQuery | Auth |
 | `/user-infos/guests` | POST | AddGuestsCommand | Admin |
+| `/user-infos/{userId}` | DELETE | DeleteUserCommand | Admin |
+| `/user-infos/{userId}/guests/{guestId}` | PUT | UpdateGuestCommand | Admin |
+| `/user-infos/{userId}/guests/{guestId}` | DELETE | DeleteGuestCommand | Admin |
 | `/accommodations` | GET | GetAccommodationsQuery | Admin |
 | `/accommodations` | POST | CreateAccommodationCommand | Admin |
 | `/accommodations/{id}` | PUT | UpdateAccommodationCommand | Admin |
@@ -254,19 +273,22 @@ All in `Mariage.Domain/Common/Errors/` as `partial class Errors`.
 ## 7. Persistence
 
 ### 7.1 ORM
-- **EF Core 10** with **Npgsql** (PostgreSQL)
+- **EF Core 10** with the **SQL Server** provider (`Microsoft.EntityFrameworkCore.SqlServer`)
 
 ### 7.2 DbContext
 - `MariageDbContext` in `Infrastructure/Persistence/`:
   - `DbSet<Gift> Gifts`
+  - `DbSet<GiftCategory> GiftCategories`
   - `DbSet<User> Users`
   - `DbSet<Picture> Pictures`
   - `DbSet<Accommodation> Accommodations`
 
 ### 7.3 Configurations (Fluent API)
 - `UserConfiguration.cs` — UserId conversion, PictureIds as comma-separated string, Guests owned collection
-- `GiftConfiguration.cs` — GiftId conversion, GiftGivers owned collection, Category as ComplexProperty
+- `GiftConfiguration.cs` — GiftId conversion, GiftGivers owned collection, Category as a string property
+- `GiftCategoryConfiguration.cs` — GiftCategoryId conversion and unique category name
 - `PictureConfiguration.cs` — PictureId/UserId conversions
+- `AccommodationConfiguration.cs` — legacy booking collection mapping
 
 ### 7.4 Repositories
 - `UserRepository`, `GiftRepository`, `PictureRepository`, `AccommodationRepository` in `Infrastructure/Persistence/Repositories/`
@@ -277,8 +299,8 @@ All in `Mariage.Domain/Common/Errors/` as `partial class Errors`.
 - `DateTimeProvider` — `IDateTimeProvider` implementation
 
 ### 7.6 Migrations
-- `20251125124802_Initial` — single migration
-- Auto-migration via `MigrateDbContextExtensions` (runs on startup as `IHostedService`)
+- Migrations live in `Infrastructure/Migrations/` and currently include `InitialCreate`, `AddCategoryToGifts`, `Gifts`, `AddRefreshToken`, `RedesignAccommodationBooking`, and `AddHasLoggedInToUser`.
+- `MigrateDbContextExtensions` registers an `IHostedService`; `DependencyInjection.AddInfrastructure()` calls `AddMigration<MariageDbContext>()`, so migrations run at API startup.
 
 ### 7.7 Known Persistence Pitfalls
 - **PictureIds stored as comma-separated string** in Users table — fragile, no FK constraint
@@ -373,11 +395,12 @@ src/app/
 - `AccommodationApi` was removed on 2026-06-06 together with the admin/profile booking UI.
 
 ### 9.5 HTTP & Auth
-- **Axios** wrapped in `AxiosService` (not Angular HttpClient) — utilisé pour toutes les mutations et appels authentifiés
-- **HttpClient** (`provideHttpClient(withFetch())`) — utilisé par `GiftStateService` pour les GET publics SSR avec TransferCache automatique
-- `AuthService` — **WritableSignals** `isAuthenticated`, `isAdmin`, `isModerator` (plus de BehaviorSubject). Méthode `refreshAuth()` (anciennement `isAuthenticated()`). Dans les templates : `authService.isAuthenticated()` (appel du signal getter).
-- Token stocké en cookie avec `ngx-cookie-service`
-- `GiftStateService` — service SSR-aware : HttpClient pour les GET publics, signals pour l'état partagé, `SERVER_API_URL` token pour URL absolue côté serveur
+- `provideHttpClient(withFetch(), withInterceptors([authInterceptor]))` is registered in `AppModule`.
+- `HttpClient` is used by the refactored `UsersApi`, `ProfilApi`, and selected `GiftApi` operations; `rxResource` and `WritableSignal` hold async state in the updated profile/user screens.
+- Legacy calls remain on Axios through `AxiosService` (for example login, pictures, and several gift operations). That service owns its own refresh/retry flow and avoids forcing a multipart `Content-Type` boundary.
+- `AuthService` exposes **WritableSignals** `isAuthenticated`, `isAdmin`, and `isModerator`; call them as signals in templates. `refreshAuth()` recalculates their values from the token cookies.
+- The functional `authInterceptor` adds the JWT header to `HttpClient` requests and attempts `/auth/refresh` after a 401.
+- Access and refresh tokens are stored in cookies through `ngx-cookie-service`.
 
 ### 9.6 Design system
 - **Tailwind CSS 3.4** + SCSS + custom fonts (Viga `font-viga` → accents, GFSDidot `font-gfsdidot` → titres élégants, Montserrat `font-montserrat` → corps/nav)
@@ -405,13 +428,13 @@ src/app/
 - CoreUI overrides globaux dans `styles.scss` (modals, selects, close buttons)
 
 ### 9.7 Environments
-- Dev: `''` (empty string = relative URL) — Angular dev-server proxy in `proxy.conf.js` forwards API calls to Aspire-injected backend URL
-- Prod: `https://mariage-backend-on8u.onrender.com`
+- `src/front/src/environments/environment.development.ts` uses an empty `API_URL`; `proxy.conf.js` forwards requests to the Aspire-discovered API and falls back to the local API when Aspire is not running.
+- Production API base URL is configured in `src/front/src/environments/environment.ts`. Read that file when changing deployment settings; do not duplicate the URL in feature code.
 
 ### 9.8 Aspire Integration (dev)
 - `proxy.conf.js` reads `services__api__https__0` / `services__api__http__0` env vars injected by Aspire
-- Proxied routes: `/auth`, `/wedding-list`, `/pictures`, `/pictures-photo-booth`, `/pictures-photograph`, `/user-infos`, `/healthz`, `/accommodations`
-- Angular dev server runs on port 4200 (hardcoded in AppHost)
+- Angular dev server runs on port **4010** (AppHost `WithHttpEndpoint(port: 4010, targetPort: 4010, env: "NG_PORT")`).
+- The proxy still includes `/accommodations` for legacy compatibility, but the API no longer registers accommodation endpoints.
 - `moduleResolution: "bundler"` in tsconfig.json (required for subpath exports)
 
 ---
@@ -420,53 +443,41 @@ src/app/
 
 ### .NET Aspire (AppHost)
 - **Version**: 13.2.1
-- **ACR**: `wedding-acr` (Azure Container Registry)
-- **ACA**: `aca-wedding-env` (Azure Container Apps Environment)
-- **PostgreSQL** with DbGate UI, persistent data volume → database `postgresdb`
-- **API project** references `postgresdb`
-- **Frontend**: `AddJavaScriptApp("frontend", "./../../front", "dev")` with `WithHttpEndpoint(port: 4200)` and `WithExternalHttpEndpoints()`
-- Aspire injects `services__api__https__0` / `services__api__http__0` into the npm process
+- Declares Azure Container Registry `wedding-acr` and Container Apps environment `aca-wedding-env` for Azure publishing.
+- Local development declares SQL Server resource `sql` with a persistent data volume and database `sqldb`.
+- Blob storage runs as a persistent local emulator; the API references both `sqldb` and the `blobs` resource.
+- Frontend is `AddJavaScriptApp("frontend", "./../../front", "dev")`, references the API, and listens on port **4010**.
+- Aspire injects `services__api__https__0` / `services__api__http__0` for frontend proxy discovery.
 
 ### Deployment
-- **Render.com** (production frontend)
-- **Azure Container Apps** (backend via Aspire `azure.yaml`)
-
-### Secrets Management
-- **Azure Key Vault** `kv-weh` (RBAC-based, francecentral)
-- ACA `aca-backend-weh` uses **System Assigned Managed Identity** (principalId: `6d76d2ed-c8fd-4c3e-b822-b533c8ac9854`)
-- Identity has **Key Vault Secrets User** role on `kv-weh`
-- All 6 env vars use ACA `secretRef` → Key Vault references (no plain-text secrets)
-- Secrets in KV: `ConnectionStrings--postgresdb`, `JwtSettings--Secret`, `BlobSettings--ConnectionString`, `BlobSettings--ConnectionStringPictures`, `AppInsights--ConnectionString`, `DiscordWebhookSettings--WebhookUrl`
-- To update a secret: `az keyvault secret set --vault-name kv-weh --name <secret-name> --value <new-value>` then restart the container app
+- GitHub Actions workflows in `.github/workflows/` build and push frontend/backend container images to ACR, then update the corresponding Azure Container Apps.
+- The workflow files are the source of truth for deployment triggers, target app names, resource group, and required GitHub secret names. Do not copy secret values into repository documentation.
 
 ---
 
 ## 11. Build & Run Commands
 
-```bash
+```powershell
+# Run commands from the repository root
 # Backend — Build
-cd src/back && dotnet build Mariage.slnx
+dotnet build .\src\back\Mariage.slnx
 
 # Backend — Run API only
-cd src/back/Mariage.Api && dotnet run
+dotnet run --project .\src\back\Mariage.Api
 
-# Frontend — Install
-cd src/front && npm install
+# Frontend — Install, development, and build
+Push-Location .\src\front
+npm ci --legacy-peer-deps
+npm run dev
+npm run build
+Pop-Location
 
-# Frontend — Dev
-cd src/front && npm run dev
+# Full stack — Aspire
+dotnet run --project .\src\back\Mariage.AppHost
 
-# Frontend — Build
-cd src/front && npm run build
-
-# Full stack — Aspire (ask user to run)
-cd src/back/Mariage.AppHost && dotnet run
-
-# Migrations — Add
-cd src/back && dotnet ef migrations add <Name> --project Mariage.Infrastructure --startup-project Mariage.Api
-
-# Migrations — Update
-cd src/back && dotnet ef database update --project Mariage.Infrastructure --startup-project Mariage.Api
+# EF Core migration commands
+dotnet ef migrations add <Name> --project .\src\back\Mariage.Infrastructure --startup-project .\src\back\Mariage.Api
+dotnet ef database update --project .\src\back\Mariage.Infrastructure --startup-project .\src\back\Mariage.Api
 ```
 
 ---
@@ -504,12 +515,15 @@ cd src/back && dotnet ef database update --project Mariage.Infrastructure --star
 |-------------|-------------|------|
 | `dev` | Orchestrateur principal | `.github/agents/dev.agent.md` |
 | `dotnet-dev` | Expert C# .NET 10 | `.github/agents/dotnet-dev.agent.md` |
+| `angular-front` | Expert Angular 21 frontend | `.github/agents/angular-front.agent.md` |
 | `architect` | Architecte senior — analyse, challenge, plan d'implémentation | `.github/agents/architect.agent.md` |
 | `aspire-debug` | Diagnostic runtime .NET Aspire | `.github/agents/aspire-debug.agent.md` |
 | `memory-bootstrap` | Explore et génère MEMORY.md | `.github/agents/memory-bootstrap.agent.md` |
 | `merge-main` | Merge main avec résolution conflits | `.github/agents/merge-main.agent.md` |
 | `pr-manager` | Conventions de Pull Request | `.github/agents/pr-manager.agent.md` |
 | `cqrs-feature` (skill) | Génération de features CQRS | `.github/skills/cqrs-feature/SKILL.md` |
+| `ci-cd` (skill) | Pipelines GitHub Actions et déploiement ACA/ACR | `.github/skills/ci-cd/SKILL.md` |
+| `documentation` (skill) | Documentation technique du dépôt | `.github/skills/documentation/SKILL.md` |
 
 ---
 
@@ -531,13 +545,13 @@ cd src/back && dotnet ef database update --project Mariage.Infrastructure --star
 - [2026-04-20] **`az acr build` crash colorama/cp1252 sur Windows** — Erreur `UnicodeEncodeError: 'charmap' codec can't encode character '\u276f'`. Fix : `$env:PYTHONUTF8 = "1"` avant la commande `az acr build`. La build ACR elle-même peut réussir malgré le crash du log streamer — vérifier avec `az acr task list-runs`.
 - [2026-04-20] **ACA ne crée pas de nouvelle révision si le tag image est identique** — `az containerapp update` avec le même tag ne redéploie pas. Solution : utiliser `:latest` (si la build a écrasé le tag `:latest`) ou un tag différent pour forcer une nouvelle révision.
 - [2026-04-20] **EF Core `NullReferenceException` dans MigrationsModelDiffer** — Causé par une propriété `List<T>` avec `ValueConverter` mais sans `ValueComparer`. Fix : ajouter `.Metadata.SetValueComparer(new ValueComparer<List<T>>(...))` dans la config EF.
-- [2026-04-20] **Migration SQL Server incompatible avec Npgsql** — Le snapshot d'une migration créée avec SQL Server (`nvarchar(max)`, etc.) cause un crash lors de l'application avec Npgsql. Fix : supprimer toutes les migrations et recréer `InitialCreate` avec Npgsql activé.
+- [Historique 2026-04-20] Une tentative intermédiaire de migration vers Npgsql a été annulée. **L'état courant est SQL Server** (`UseSqlServer` + `Microsoft.EntityFrameworkCore.SqlServer`); ne pas appliquer les notes de cet essai à la base actuelle.
 - [2026-03-26] **No test projects** in the solution
 - [2026-03-26] **`/healthz` POST** endpoint exists to wake up Render.com free plan instances
 - [2026-05-11] **Mobile scroll trap on long pages** — Forcer `html` à `height: 100%` dans `src/front/src/styles.scss` peut bloquer le retour de scroll après le bas de page sur certains téléphones/tablettes. Garder `html` en `height: auto`, laisser `body` porter la `min-height` (`100vh`/`100svh`/`100dvh`) et éviter de rigidifier le root scroller mobile.
 - [2026-05-11] **Axios + FormData** — Ne jamais forcer `Content-Type: multipart/form-data` sur les requêtes navigateur. Le navigateur doit générer lui-même la boundary ; sinon le binding `[FromForm]` ASP.NET peut recevoir des mises à jour cadeaux incomplètes ou incorrectes.
 - [2026-05-11] **Cartes liste de mariage** — `ProductComponent` doit étirer sa carte sur toute la hauteur de la cellule (`:host` + carte en `height: 100%`) et réserver 2 lignes au titre (`-webkit-line-clamp: 2`) ; sinon les noms de cadeaux trop longs désalignent le prix et donnent des cadres de hauteurs visuellement incohérentes.
-- [2026-04-29] **Infra Flow Sculptor draft is too generic by default for this repo** — `draft_project_from_prompt` inferred `WebApp` and `SqlServer` for the current Aspire/PostgreSQL architecture and defaulted to `Development` in `westeurope` until explicit overrides were applied. Project creation only auto-created `KeyVault` and `ContainerRegistry`; `StorageAccount`, `SqlServer`, `ContainerApp`, and `WebApp` remained unresolved, and `generate_project_bicep` failed afterward. Prefer explicit environment overrides (`Production`, `francecentral`) and expect manual completion in the platform.
+- [Historique 2026-04-29] **Infra Flow Sculptor draft** — À cette date, l'outil a inféré `WebApp` et `SqlServer` pour le draft, puis a échoué à générer le projet complet. Ce constat décrit ce draft et non l'état actuel de l'infrastructure Azure; vérifier la plateforme avant toute action.
 - [2026-04-29] **Infra Flow Sculptor requires validate-then-create immediately for this repo** — Fresh drafts still mis-parse the project name and environment (`named`, `Development`, `westeurope`) until `validate_project_draft` overrides are applied. Creating the project immediately after validation succeeded, and `generate_project_bicep` produced only the `KeyVault` and `ContainerRegistry` modules because `ContainerApp` was skipped when `ContainerAppEnvironment` was not auto-created.
 
 ---
@@ -564,7 +578,7 @@ cd src/back && dotnet ef database update --project Mariage.Infrastructure --star
 | 2026-04-20 | **Fix "Cannot GET /accueil" en production** — `AngularNodeAppEngine.handle()` retourne `null` pour les routes CSR ou quand SSRF bloque le hostname ; l'ancien code appelait `next()` sans middleware suivant → "Cannot GET". Fix : fallback `res.sendFile('index.html', { root: browserDistFolder })` dans le handler Express + `readFile(join(browserDistFolder, 'index.html'))` dans `createNodeRequestHandler` (raw Node `ServerResponse`, pas d'Express `sendFile`). Toutes les routes `RenderMode.Prerender` → `RenderMode.Server` (Prerender non supporté avec NgModules). Piège ACA : si on redéploie avec le même image tag et qu'un `az containerapp update` sans `--revision-suffix` retourne une révision existante dont le container a été créé AVANT le nouveau push → la vieille image tourne encore. Solution : forcer une nouvelle révision avec `--revision-suffix`. Build ACR `ddd`, révision `fix-cannotget` déployée. Toutes les routes testées 200 OK. |
 | 2026-04-20 | **Feature hébergements (Accommodation)** — Nouvel agrégat DDD `Accommodation` + `AccommodationAssignment` (owned). 6 commands + 2 queries CQRS (create, update, delete, assign, unassign, respond, getAll, getMy). 8 endpoints API REST (`/accommodations/*`). EF Core config + migration `AddAccommodation`. Frontend : page admin `/hebergements` (CRUD chambres + assign/unassign utilisateurs), section profil utilisateur (voir chambre assignée + accepter/refuser). AccommodationsModule + routing + navigation admin. |
 | 2026-04-21 | **Dynamic gift categories + remove Honeymoon** — `GiftCategory` converted from enum VO to `AggregateRoot<GiftCategoryId>` (Name, unique index). `Gift.Category` changed from `GiftCategory` VO to `string`. 3 new CQRS operations: `GetGiftCategories`, `CreateGiftCategory`, `DeleteGiftCategory` (blocked if in use). 3 new API endpoints (`GET/POST/DELETE /wedding-list/categories`). `IGiftCategoryRepository` + EF config + migration `DynamicGiftCategories`. Frontend: `CategoryEnum` removed, replaced by dynamic categories from API. Admin UI panel to add/delete categories. All Honeymoon special-case code removed (product, gift detail, category-gift components). `FormsModule` added to `WeddingListModule`. |
-| 2026-04-20 | **Fix Angular SSR manifest + Aspire/Azure infrastructure** — (1) `angular.json` builder changé de `@angular-devkit/build-angular:application` vers `@angular/build:application` (nécessaire pour générer `angular-app-engine-manifest.mjs` et résoudre "Angular app engine manifest is not set"). (2) `server.ts` réécrit : lazy manifest init via IIFE Promise, `app.set('trust proxy', true)`, `allowedHosts` depuis `NG_ALLOWED_HOSTS` env var. (3) `@angular/build` installé avec `--legacy-peer-deps` ; `Dockerfile` mis à jour (`npm ci --legacy-peer-deps`) ; `package-lock.json` régénéré. (4) `Program.cs` : `UseSqlServer` → `UseNpgsql`. (5) `UserConfiguration.cs` : `ValueComparer<List<PictureId>>` ajouté (corrige NullReferenceException dans MigrationsModelDiffer). (6) Migration `InitialSqlServer` supprimée, `InitialCreate` recréée avec types PostgreSQL. (7) `AppHost.cs` + `package.json` : port frontend 4200→4010. (8) Azure ACA `aca-frontend-weh` : `NG_ALLOWED_HOSTS` env var configurée, image déployée (révision 0000012), serveur opérationnel sans erreur. |
+| 2026-04-20 | **Fix Angular SSR manifest + Aspire/Azure infrastructure** — (1) `angular.json` builder changé de `@angular-devkit/build-angular:application` vers `@angular/build:application` (nécessaire pour générer `angular-app-engine-manifest.mjs` et résoudre "Angular app engine manifest is not set"). (2) `server.ts` réécrit : lazy manifest init via IIFE Promise, `app.set('trust proxy', true)`, `allowedHosts` depuis `NG_ALLOWED_HOSTS` env var. (3) `@angular/build` installé avec `--legacy-peer-deps` ; `Dockerfile` mis à jour (`npm ci --legacy-peer-deps`) ; `package-lock.json` régénéré. (4) Une migration vers Npgsql a alors été tentée; le dépôt courant utilise de nouveau SQL Server (voir section 7). (5) `UserConfiguration.cs` : `ValueComparer<List<PictureId>>` ajouté (corrige NullReferenceException dans MigrationsModelDiffer). (6) Migration initiale recréée pendant cet essai. (7) `AppHost.cs` + `package.json` : port frontend 4200→4010. (8) Azure ACA `aca-frontend-weh` : `NG_ALLOWED_HOSTS` env var configurée, image déployée (révision 0000012), serveur opérationnel sans erreur. |
 | 2026-04-29 | **Infra Flow Sculptor project creation attempted** — Created platform project `mariage-edwige-henri` in `AllInOne` layout with `Production` / `francecentral` overrides. Platform auto-created `KeyVault` and `ContainerRegistry`, but left `StorageAccount`, `SqlServer`, `ContainerApp`, and `WebApp` unresolved; `generate_project_bicep` returned a generic failure afterward. |
 | 2026-04-29 | **Infra Flow Sculptor project created + Bicep generated** — Re-created a fresh draft, forced `mariage-edwige-henri` + `AllInOne` + `Production` / `francecentral` via `validate_project_draft`, then created the platform project successfully. `generate_project_bicep` produced 8 files: common modules/functions, `Common/modules/KeyVault/*`, `Common/modules/ContainerRegistry/*`, `main.bicep`, and `parameters/main.prod.bicepparam`. `ContainerApp` was skipped because `ContainerAppEnvironment` was not auto-created. |
 | 2026-04-23 | **Timeline mariage : étape hébergement dédiée** — L'information d'hébergement n'est plus affichée sous la réception. Une étape finale `/mariage/hebergement` a été ajoutée dans la frise desktop et mobile avec l'icône existante `assets/icons/lit-double.png`, et la frise desktop conserve l'alternance haut/bas des étapes. |
@@ -582,3 +596,4 @@ cd src/back && dotnet ef database update --project Mariage.Infrastructure --star
 | 2026-09-22 | **Connexion iPhone : apostrophes intelligentes** — le champ identifiant désactive la correction automatique et normalise les apostrophes typographiques iOS (`’`) en apostrophe simple (`'`) avant l'appel `/auth/login`, afin de conserver la compatibilité avec les identifiants comme `dum's`. |
 | 2026-09-22 | **Zoom automatique iOS** — les champs de formulaire sur appareils tactiles utilisent au moins `16px`, seuil requis par Safari iOS pour éviter le zoom au focus et le conserver lors d'une navigation SPA. |
 | 2026-09-28 | **Staff officiel : retrait d'une témoin** — La fiche de Brune et son portrait dédié ont été retirés du panneau des témoins de la mariée. |
+| 2026-10-14 | **Rebootstrap de la mémoire et des guides agents** — Vérification du dépôt courant : SQL Server/EF Core, Angular 21.2 avec NgModules + signals/`inject()`/`HttpClient` et Axios legacy, port frontend Aspire 4010; correction des guides auparavant datés et ajout des skills CI/CD et documentation. |

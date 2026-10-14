@@ -60,7 +60,7 @@ Tu identifies la cause racine rapidement en priorisant l'observabilité (état r
 
 1. Vérifier la ressource échouée et sa dépendance immédiate
 2. Lire structured logs de la ressource
-3. Lire console logs de la dépendance (ex: PostgreSQL, API)
+3. Lire console logs de la dépendance (ex: SQL Server local, stockage blob, API)
 4. Corriger la config ou redémarrer l'ordre de dépendances
 
 ### Incident : API répond 500

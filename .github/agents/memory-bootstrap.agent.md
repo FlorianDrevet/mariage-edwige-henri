@@ -156,7 +156,10 @@ Ne **pas** créer un agent ou skill si le projet n'utilise pas la technologie co
 
 ### Agents à générer conditionnellement
 
-#### Si un frontend est détecté → Créer `.github/agents/front-dev.agent.md`
+#### Si un frontend est détecté → Créer l'agent qui suit la convention du dépôt
+
+- Angular → `.github/agents/angular-front.agent.md`
+- Autre framework → `.github/agents/front-dev.agent.md` ou nom spécialisé déjà adopté par le dépôt
 
 Adapter l'agent au framework réel :
 
@@ -178,7 +181,7 @@ Contenu adapté au framework. Les templates ci-dessous sont **des guides de gén
 
 ### Template de génération — Agent Angular (toutes versions)
 
-> Ce template guide la génération de l'agent `front-dev.agent.md` pour un projet Angular.
+> Ce template guide la génération de l'agent frontend Angular (dans ce dépôt : `angular-front.agent.md`).
 > **Lire le code source réel** pour détecter les conventions et adapter chaque section.
 
 **Étape 1 — Détecter la version et les patterns du projet**
@@ -213,7 +216,7 @@ Lire `package.json` → `@angular/core` version. Puis :
 **Étape 3 — Générer l'agent avec les sections suivantes** (TOUTES obligatoires) :
 
 ```
-## Sections obligatoires de l'agent front-dev
+## Sections obligatoires de l'agent frontend
 
 1. DESCRIPTION (header YAML)
    → description: 'Expert {Framework} {Version} frontend developer. Use this agent for ALL frontend tasks.'
@@ -385,7 +388,7 @@ Lire `package.json` → `@angular/core` version. Puis :
 Agent de diagnostic runtime avec :
 - Protocole MCP Aspire (list resources, structured logs, console logs, traces)
 - Triage par priorité (config, dépendances, migrations, auth, code)
-- Escalade vers dotnet-dev ou front-dev
+- Escalade vers `dotnet-dev` ou l'agent frontend spécialisé déjà présent dans le dépôt
 
 #### Sinon → Ne PAS créer d'agents superflus
 
@@ -500,7 +503,7 @@ Le fichier **DOIT** contenir ces sections (adapter les noms au projet réel) :
 |-------------|-------------|------|
 | dev | Orchestrateur principal | .github/agents/dev.agent.md |
 | dotnet-dev | Expert C# .NET | .github/agents/dotnet-dev.agent.md |
-| front-dev | Expert {Framework} {Version} | .github/agents/front-dev.agent.md |
+| {frontend-agent} | Expert {Framework} {Version} | chemin réel de l'agent frontend détecté |
 | (autres agents générés) | ... | ... |
 
 ## 14. Known Pitfalls & Lessons Learned

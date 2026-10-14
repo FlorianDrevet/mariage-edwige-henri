@@ -14,7 +14,7 @@ description: 'Expert C# .NET 10 developer. Use this agent for ALL backend .NET t
 Tu es l'expert C#/.NET 10 de ce dépôt. Tu maîtrises :
 - Clean Architecture + DDD + CQRS (MediatR, FluentValidation, ErrorOr)
 - ASP.NET Core Minimal APIs
-- EF Core + PostgreSQL
+- EF Core 10 + SQL Server (`Microsoft.EntityFrameworkCore.SqlServer`)
 - Les conventions de nommage .NET officielles (Microsoft)
 - Les bonnes pratiques de code propre, SOLID, et la prévention des code smells
 

@@ -22,10 +22,12 @@ Agents et skills actuellement disponibles pour ce projet :
 
 | Agent/Skill | Description | Fichier |
 |-------------|-------------|---------|
-| `angular-front` agent | Expert Angular 17 frontend — NgModules, Axios, Tailwind, CoreUI | `.github/agents/angular-front.agent.md` |
+| `angular-front` agent | Expert Angular 21 frontend — NgModules, signals, HttpClient and Axios legacy, Tailwind, CoreUI | `.github/agents/angular-front.agent.md` |
 | `architect` agent | Architecte senior — analyse, challenge, plan d'implémentation | `.github/agents/architect.agent.md` |
 | `aspire-debug` agent | Diagnostic runtime .NET Aspire | `.github/agents/aspire-debug.agent.md` |
 | `cqrs-feature` skill | Génération features CQRS (patterns extraits du code réel) | `.github/skills/cqrs-feature/SKILL.md` |
+| `ci-cd` skill | Workflows GitHub Actions et déploiement ACA/ACR | `.github/skills/ci-cd/SKILL.md` |
+| `documentation` skill | Mémoire projet et wiki technique | `.github/skills/documentation/SKILL.md` |
 
 > **Voir `MEMORY.md` section 13** pour la liste complète des agents et skills disponibles.
 
