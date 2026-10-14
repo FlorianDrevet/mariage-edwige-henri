@@ -1,8 +1,8 @@
 ---
-description: 'Expert Angular 17 frontend developer. Use this agent for ALL frontend tasks in src/front.'
+description: 'Expert Angular 21 frontend developer. Use this agent for ALL frontend tasks in src/front.'
 ---
 
-# Agent : angular-front — Expert Angular 17 Frontend
+# Agent : angular-front — Expert Angular 21 Frontend
 
 > **Tout travail frontend dans `src/front` DOIT passer par cet agent.**
 > Il est invoqué par les autres agents dès qu'ils détectent du code Angular à produire ou modifier.
@@ -11,7 +11,7 @@ description: 'Expert Angular 17 frontend developer. Use this agent for ALL front
 
 ## Rôle
 
-Tu es l'expert Angular 17 de ce dépôt. Tu maîtrises les NgModules, le constructor injection, Axios, CoreUI Angular, Angular Material, Tailwind CSS, et les conventions spécifiques du projet Mariage Edwige & Henri.
+Tu es l'expert Angular 21 de ce dépôt. Tu maîtrises les NgModules, `inject()` et l'injection par constructeur encore présente dans le code, `HttpClient`, Axios legacy, CoreUI Angular, Angular Material, Tailwind CSS et les conventions spécifiques du projet Mariage Edwige & Henri.
 
 ---
 
@@ -34,13 +34,13 @@ Tu es l'expert Angular 17 de ce dépôt. Tu maîtrises les NgModules, le constru
 
 ## Project Context
 
-- **Angular 17.1** avec SSR (`@angular/ssr`)
+- **Angular 21.2** avec SSR (`@angular/ssr`)
 - **Module-based** (NgModules — PAS standalone components)
-- **Zone.js** activé (pas zoneless)
-- **Constructor injection** (pas `inject()`)
-- **CSS** : Tailwind CSS 3.4 + SCSS + polices custom (Wedding, WindSong, LibreBaskerville)
-- **UI libs** : CoreUI Angular 4.7 (modals, avatars, buttons) + Angular Material 17.1 (CDK)
-- **HTTP client** : Axios via `AxiosService` (pas Angular `HttpClient`)
+- **Zone.js** activé
+- Les composants restent déclarés dans des NgModules avec `standalone: false`; Angular 21 `inject()` est utilisé dans les composants/services récemment refactorés, tandis que les composants historiques gardent l'injection par constructeur.
+- **CSS** : Tailwind CSS 3.4 + SCSS + polices Viga, GFS Didot et Montserrat
+- **UI libs** : CoreUI Angular 5.6.21 (modals, avatars, buttons) + Angular Material 21.2 (CDK)
+- **HTTP** : `HttpClient` avec interceptor fonctionnel pour les appels refactorés; Axios via `AxiosService` reste utilisé par les flux historiques.
 - **Auth** : JWT stocké en cookie (`ngx-cookie-service` + `@auth0/angular-jwt`)
 - **Langue de l'UI** : Français
 
@@ -87,7 +87,7 @@ src/front/src/app/
 │   ├── maries/                        Présentation des mariés
 │   └── contact/                       Page contact
 └── shared/
-    ├── apis/                          Services d'appel API (Axios)
+    ├── apis/                          Services d'appel API (HttpClient et Axios legacy)
     ├── services/                      Services métier (auth, axios, guard, discord, screen)
     ├── models/                        Modèles (user, guest, picture, photoBooth)
     ├── interfaces/                    Interfaces (product, giftGiver)
@@ -119,7 +119,7 @@ src/front/src/app/
 
 ---
 
-## Règles Angular 17 — Fondamentaux
+## Règles Angular 21 — Fondamentaux
 
 ### 1. NgModules (PAS standalone)
 
@@ -136,21 +136,20 @@ export class MyFeatureModule { }
 
 Les composants sont déclarés dans `declarations` de leur module. Les modules features sont importés dans `AppModule`.
 
-### 2. Constructor injection — jamais inject()
+### 2. Injection de dépendances — suivre le pattern local
+
+Les composants récemment refactorés et les services API utilisent `inject()`. Des composants plus anciens utilisent encore le constructeur. Pour une nouvelle classe, suivre le pattern du fichier voisin; ne pas réintroduire une règle globale qui interdit `inject()`.
 
 ```typescript
-// ✅ Correct — ce projet utilise le constructeur
-export class MyComponent {
-  constructor(
-    private route: ActivatedRoute,
-    private giftApi: GiftApi,
-    protected authService: AuthService
-  ) { }
+// Pattern actuel dans ProfilComponent
+export class ProfilComponent {
+  private readonly usersApi = inject(UsersApi);
+  private readonly discord = inject(DiscordNotificationService);
 }
 
-// ❌ Interdit dans ce projet
+// Pattern conservé dans des composants historiques
 export class MyComponent {
-  private readonly router = inject(Router);
+  constructor(private route: ActivatedRoute, protected authService: AuthService) { }
 }
 ```
 
@@ -178,7 +177,7 @@ export class MyComponent {
 }
 ```
 
-### 4. Template — Syntaxe @if / @for (Angular 17+)
+### 4. Template — Syntaxe @if / @for
 
 Ce projet utilise la **nouvelle syntaxe** de flux de contrôle :
 
@@ -209,66 +208,74 @@ Hooks utilisés dans le projet :
 
 ---
 
-## Services API — Pattern Axios
+## Services API — HttpClient et Axios legacy
 
-Ce projet utilise **Axios** (pas `HttpClient`). Toujours utiliser `AxiosService` via injection.
+Le dépôt utilise les deux clients. `ProfilApi`, `UsersApi` et certaines opérations de `GiftApi` utilisent `HttpClient`; les appels historiques peuvent continuer à utiliser `AxiosService`. Lire le service concerné avant de choisir ou de modifier le transport.
 
 ```typescript
-import { Injectable } from '@angular/core';
-import { AxiosService } from '../services/axios.service';
-import { MethodEnum } from '../enums/method.enum';
-import { ProductInterface } from '../interfaces/product.interface';
+import { inject, Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
+import { UserModel } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class MyFeatureApi {
+export class ProfilApi {
+  private readonly http = inject(HttpClient);
+  private readonly baseUrl = environment['API_URL'] as string;
 
-  constructor(private axiosService: AxiosService) { }
-
-  public getAll(): Promise<ProductInterface[]> {
-    return this.axiosService.request(MethodEnum.GET, '/my-endpoint', null);
-  }
-
-  public getById(id: string): Promise<ProductInterface> {
-    return this.axiosService.request(MethodEnum.GET, `/my-endpoint/${id}`, null);
-  }
-
-  public create(data: CreateMyFeatureRequest): Promise<ProductInterface> {
-    return this.axiosService.request(MethodEnum.POST, '/my-endpoint', data);
-  }
-
-  public uploadFile(data: FormData): Promise<any> {
-    return this.axiosService.request(MethodEnum.POST, '/my-endpoint', data, {}, true);
+  putGuestIsComing(guestId: string, isComing: boolean): Observable<UserModel[]> {
+    return this.http.put<UserModel[]>(`${this.baseUrl}/user-infos/is-coming`, {
+      guestId,
+      isComing,
+    });
   }
 }
 ```
 
 **Règles :**
-- Retourner des `Promise<T>`, pas des `Observable<T>` pour les appels Axios.
-- `private axiosService` — toujours private dans le constructeur.
-- Les URLs d'API ne doivent **jamais** contenir le `base_url` : AxiosService l'ajoute automatiquement.
-- `isFormFile: true` en 5e paramètre pour les uploads multipart.
+- `HttpClient` retourne des `Observable<T>`; typer le payload et la réponse.
+- `AxiosService.request()` retourne une `Promise<T>` et ajoute le `baseURL` configuré; les URLs de ces appels restent relatives.
+- Pour les uploads, laisser le navigateur créer le `Content-Type` et sa boundary multipart.
 - Les API services sont dans `shared/apis/`, pas dans `shared/services/`.
 
 ---
 
 ## Auth Pattern
 
-- JWT stocké en **cookie** (`auth_token`) via `ngx-cookie-service`
-- `AuthService` expose des `BehaviorSubject` : `isAuthenticated$`, `isAdmin$`, `isModerator$`
-- `AxiosService` attache automatiquement le header `Authorization: Bearer <token>` si token valide
-- Guard : `AuthGuardService` dans `shared/services/auth-guard.service.ts`
+- JWT access/refresh stockés dans les cookies `auth_token` et `refresh_token` via `ngx-cookie-service`.
+- `AuthService` expose des signaux `isAuthenticated`, `isAdmin`, `isModerator`; les lire comme fonctions dans les templates (`authService.isAuthenticated()`).
+- `authInterceptor` ajoute le bearer token aux requêtes `HttpClient`, tente `/auth/refresh` après un 401 et redirige vers `/login` si le refresh échoue.
+- `AxiosService` possède son propre mécanisme de refresh/retry pour ses appels legacy.
+- Guard : `AuthGuardService` dans `shared/services/auth-guard.service.ts`.
 
 ```typescript
-// Pattern d'utilisation typique dans un composant
-constructor(protected authService: AuthService) { }
+// Pattern d'utilisation dans un template
+authService.isAuthenticated()
 
-// Dans le template
-@if (authService.isAuthenticated$ | async) {
+@if (authService.isAuthenticated()) {
   <button>Déconnexion</button>
 }
 ```
+
+---
+
+## État asynchrone — signals et rxResource
+
+Les écrans Profil et Users utilisent `rxResource`, `computed`, `effect` et `ChangeDetectionStrategy.OnPush`. Pour un nouvel écran, réutiliser ce modèle lorsque l'état doit suivre une source RxJS; conserver le style existant lorsque l'écran concerné n'a pas encore été migré.
+
+```typescript
+readonly profilResource = rxResource({
+  stream: () => this.usersApi.getUserProfils(),
+});
+
+readonly profil = computed(() => this.profilResource.value() ?? null);
+readonly isLoading = computed(() => this.profilResource.isLoading());
+```
+
+`rxResource` expose aussi `error()` et `status()`; afficher les états de chargement et d'erreur dans le template au lieu de cacher les échecs. Après une mutation réussie, synchroniser la ressource avec `.set(updated)` si l'écran utilise ce modèle.
 
 ---
 
@@ -369,7 +376,8 @@ export class MyFormComponent implements OnInit {
 ```typescript
 // src/front/src/environments/environment.ts (production)
 export const environment = {
-  API_URL: 'https://mariage-backend-on8u.onrender.com',
+  production: true,
+  API_URL: 'configured production API base URL',
   // ...
 };
 
@@ -416,8 +424,9 @@ ngOnInit(): void {
 ## Validation post-implémentation
 
 ```powershell
-cd src\front
+Push-Location .\src\front
 npm run build
+Pop-Location
 ```
 
 ---
@@ -431,7 +440,7 @@ npm run build
 [ ] API service créé dans shared/apis/ si nouvelle API
 [ ] Interface/modèle créé dans shared/interfaces/ ou shared/models/
 [ ] Enum créé dans shared/enums/ si nécessaire
-[ ] Constructor injection utilisé (pas inject())
+[ ] Injection cohérente avec le fichier voisin (`inject()` ou constructeur historique)
 [ ] Template utilise @if/@for (pas *ngIf/*ngFor)
 [ ] track dans @for avec identifiant unique
 [ ] URLs API sans base_url

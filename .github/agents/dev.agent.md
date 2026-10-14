@@ -79,8 +79,8 @@ Utiliser les outils disponibles. Déléguer aux agents spécialisés si la tâch
   Déléguer directement à `dotnet-dev` — il a toutes les règles de qualité .NET.
 
 - **Code Angular isolé** (composant, service, interface, route) :
-  Déléguer directement à `angular-front` — il a toutes les règles Angular 17.
-  L'agent angular-front connaît les conventions du projet (NgModules, Axios, CoreUI, Tailwind).
+  Déléguer directement à `angular-front` — il connaît Angular 21 et les conventions courantes du projet.
+  L'agent angular-front connaît les NgModules, signals, `inject()`, `HttpClient`, Axios legacy, CoreUI et Tailwind.
 
 - **Backend + Frontend ensemble** (feature avec contrats API qui changent) :
   1. Générer le backend (dotnet-dev / skill cqrs-feature)
@@ -129,6 +129,16 @@ Un skill est **différent d'un agent** :
 - **Quand le charger :** dès que tu génères un nouvel agrégat, une nouvelle feature CQRS, ou que tu modifies la structure d'un agrégat existant
 - **Fichier :** `.github/skills/cqrs-feature/SKILL.md`
 - **Contenu :** les 9 étapes pour générer un agrégat DDD complet (Domain → Application → Infrastructure → Contracts → API → Migration), les patterns de code avec exemples, la checklist de validation
+
+#### `ci-cd`
+- **Quand le charger :** avant de modifier ou diagnostiquer les workflows GitHub Actions, ACR ou Azure Container Apps
+- **Fichier :** `.github/skills/ci-cd/SKILL.md`
+- **Contenu :** déclencheurs, identité Azure, secrets requis et règles de déploiement décrits depuis les workflows présents
+
+#### `documentation`
+- **Quand le charger :** avant de créer ou mettre à jour la mémoire projet ou la wiki technique
+- **Fichier :** `.github/skills/documentation/SKILL.md`
+- **Contenu :** sources de vérité, format des guides et vérifications des liens et secrets
 
 ---
 

@@ -168,7 +168,7 @@ L'architecte doit maîtriser l'intégralité de `MEMORY.md` et connaître :
 - Le pattern CQRS : Command/Query → Handler → Repository → Domain → EF Core
 - Le pattern ErrorOr pour le result handling
 - La séparation API / Application / Domain / Infrastructure / Contracts
-- Le frontend Angular 17 (NgModules, constructor injection, Axios, CoreUI + Tailwind)
+- Le frontend Angular 21.2 (NgModules, signals, `inject()` et constructeur historique, `HttpClient` + Axios legacy, CoreUI + Tailwind)
 - Les skills disponibles (`cqrs-feature`)
 
 ---

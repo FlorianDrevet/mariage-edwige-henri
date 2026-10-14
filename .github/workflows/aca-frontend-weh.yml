@@ -17,8 +17,8 @@ jobs:
       id-token: write
       contents: read
     env:
-      ACR_NAME: ${{ secrets.ACABACKENDWEH_ACR_NAME }}
-      REGISTRY_LOGIN_SERVER: ${{ secrets.ACABACKENDWEH_ACR_NAME }}.azurecr.io
+      ACR_NAME: ${{ vars.ACR_NAME }}
+      REGISTRY_LOGIN_SERVER: ${{ vars.ACR_NAME }}.azurecr.io
       CONTAINER_APP_NAME: aca-frontend-weh
       RESOURCE_GROUP: rg-wedding-edwige-henri
       IMAGE_NAME: aca-frontend-weh
@@ -31,25 +31,15 @@ jobs:
       - name: Azure Login
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.ACABACKENDWEH_AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.ACABACKENDWEH_AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.ACABACKENDWEH_AZURE_SUBSCRIPTION_ID }}
+          client-id: ${{ vars.ACR_CI_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
 
       - name: Validate deployment settings
         shell: bash
         run: |
           if [ -z "${ACR_NAME}" ]; then
-            echo "ACABACKENDWEH_ACR_NAME GitHub secret is missing or empty."
-            exit 1
-          fi
-
-          if [ -z "${{ secrets.ACABACKENDWEH_ACR_ADMIN_USERNAME }}" ]; then
-            echo "ACABACKENDWEH_ACR_ADMIN_USERNAME GitHub secret is missing or empty."
-            exit 1
-          fi
-
-          if [ -z "${{ secrets.ACABACKENDWEH_ACR_ADMIN_PASSWORD }}" ]; then
-            echo "ACABACKENDWEH_ACR_ADMIN_PASSWORD GitHub secret is missing or empty."
+            echo "The ACR_NAME GitHub repository variable is missing or empty."
             exit 1
           fi
 
@@ -57,12 +47,9 @@ jobs:
         shell: bash
         run: az extension add --name containerapp --upgrade --allow-preview true
 
-      - name: Log in to ACR with admin account
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ env.REGISTRY_LOGIN_SERVER }}
-          username: ${{ secrets.ACABACKENDWEH_ACR_ADMIN_USERNAME }}
-          password: ${{ secrets.ACABACKENDWEH_ACR_ADMIN_PASSWORD }}
+      - name: Log in to the shared ACR with workload identity
+        shell: bash
+        run: az acr login --name "$ACR_NAME"
 
       - name: Build and push container image
         uses: docker/build-push-action@v6

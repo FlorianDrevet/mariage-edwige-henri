@@ -1,95 +1,61 @@
-# Copilot Instructions
+# Instructions Copilot — Mariage Edwige & Henri
 
-## Getting started
+> Première utilisation ? Lancer `@memory-bootstrap` pour explorer le projet et synchroniser sa mémoire, ses agents et ses skills.
 
-> **Première utilisation ?** Lancez l'agent `@memory-bootstrap` pour qu'il explore le projet,
-> rédige `MEMORY.md`, et génère les agents et skills adaptés à la stack réelle.
+## Avant de travailler
 
-Ce fichier est le point d'entrée pour **tous** les agents Copilot du projet.
-Il est volontairement léger — la connaissance détaillée vit dans `MEMORY.md` et dans les
-agents/skills qui sont **générés automatiquement** par `memory-bootstrap` en fonction du projet.
+- Lire `MEMORY.md` pour les décisions, conventions et pièges du dépôt.
+- Router les changements backend vers `dotnet-dev`, frontend vers `angular-front`, l'analyse d'architecture vers `architect`, et les incidents Aspire vers `aspire-debug`.
+- Lire le skill applicable avant de produire du code ou de la documentation spécialisée.
+- Ne jamais recopier des secrets depuis les fichiers d'environnement, les GitHub Secrets ou Azure vers la documentation.
 
----
-
-## Agents de base (toujours présents)
+## Agents disponibles
 
 | Agent | Rôle | Fichier |
-|-------|------|---------|
-| `dev` | Orchestrateur principal — lit MEMORY.md, route vers les spécialistes, charge les skills | `.github/agents/dev.agent.md` |
-| `memory-bootstrap` | Explore le projet, génère MEMORY.md, crée et adapte les agents/skills à la stack | `.github/agents/memory-bootstrap.agent.md` |
-| `dotnet-dev` | Expert C# .NET 10 pour tout le code backend | `.github/agents/dotnet-dev.agent.md` |
-| `merge-main` | Merge la branche main avec résolution de conflits guidée par MEMORY.md | `.github/agents/merge-main.agent.md` |
-| `pr-manager` | Conventions de Pull Request (titre, description, checklist) | `.github/agents/pr-manager.agent.md` |
+|---|---|---|
+| `dev` | Orchestration et routage | `.github/agents/dev.agent.md` |
+| `dotnet-dev` | Backend C#/.NET 10 | `.github/agents/dotnet-dev.agent.md` |
+| `angular-front` | Frontend Angular 21.2 | `.github/agents/angular-front.agent.md` |
+| `architect` | Analyse et plan d'architecture | `.github/agents/architect.agent.md` |
+| `aspire-debug` | Diagnostic .NET Aspire | `.github/agents/aspire-debug.agent.md` |
+| `memory-bootstrap` | Exploration et mise à jour de la mémoire projet | `.github/agents/memory-bootstrap.agent.md` |
+| `merge-main` | Synchronisation de la branche principale | `.github/agents/merge-main.agent.md` |
+| `pr-manager` | Conventions de Pull Request | `.github/agents/pr-manager.agent.md` |
 
-## Agents générés (stack détectée : .NET 10 + Angular 21 + Aspire 13.2.1)
+## Skills disponibles
 
-| Agent | Rôle | Fichier |
-|-------|------|---------|
-| `architect` | Architecte senior — analyse, challenge, plan d'implémentation | `.github/agents/architect.agent.md` |
-| `aspire-debug` | Diagnostic runtime .NET Aspire (logs, traces, resources) | `.github/agents/aspire-debug.agent.md` |
+| Skill | Quand le charger | Fichier |
+|---|---|---|
+| `cqrs-feature` | Créer/modifier une feature CQRS | `.github/skills/cqrs-feature/SKILL.md` |
+| `ci-cd` | Modifier ou diagnostiquer les déploiements GitHub Actions, ACA ou ACR | `.github/skills/ci-cd/SKILL.md` |
+| `documentation` | Créer ou mettre à jour la documentation du dépôt | `.github/skills/documentation/SKILL.md` |
 
-## Skills générés
+## Commandes courantes (PowerShell depuis la racine)
 
-| Skill | Description | Fichier |
-|-------|-------------|---------|
-| `cqrs-feature` | Génération de features CQRS (command, query, handler, validator, endpoint) — patterns extraits du code réel | `.github/skills/cqrs-feature/SKILL.md` |
+```powershell
+dotnet build .\src\back\Mariage.slnx
+dotnet run --project .\src\back\Mariage.AppHost
+dotnet run --project .\src\back\Mariage.Api
 
----
+Push-Location .\src\front
+npm ci --legacy-peer-deps
+npm run dev
+npm run build
+Pop-Location
+```
 
-## Skills — Concept
+Le backend enregistre les migrations EF Core au démarrage. Les commandes manuelles de migration sont décrites dans `MEMORY.md`.
 
-Les Skills sont des fichiers Markdown (`SKILL.md`) contenant une connaissance spécialisée, chargés à la demande par un agent via `read_file`.
+## Charger les skills
 
-- Pas d'outils — connaissance pure
-- Lazy-loaded — chargé uniquement quand pertinent
-- Composable — plusieurs agents peuvent charger le même skill
-- Mis à jour indépendamment des agents
-
-> **BLOCKING REQUIREMENT:** Quand un skill s'applique à la demande, le lire avec `read_file` AVANT de générer du code.
-
-Les skills disponibles sont listés dans `MEMORY.md` section "Available Skills" après le bootstrap.
-
----
+Les skills sont des fichiers Markdown sans outils, chargés à la demande. Lorsqu'un skill s'applique, lire son `SKILL.md` avant de produire du code ou un document spécialisé. Les skills disponibles sont listés ci-dessus et dans `MEMORY.md`, section 13.
 
 ## Conventions Pull Request
 
-Tout PR fait par un agent Copilot **doit** suivre `.github/agents/pr-manager.agent.md`.
+Tout PR préparé par un agent suit `.github/agents/pr-manager.agent.md` et le modèle `.github/PULL_REQUEST_TEMPLATE.md`.
 
-### Format du titre
+Format du titre : `type(scope): description courte du but principal`.
 
-```
-type(scope): description courte du but principal
-```
-
-- **type** : `feat` | `fix` | `refactor` | `perf` | `docs` | `test` | `chore` | `ci` | `style` | `revert`
-- **scope** : composant en kebab-case (recommandé)
-- **description** : phrase courte au présent, sans majuscule initiale, sans point final
-
-Le titre décrit le **but principal**, jamais la dernière tâche effectuée.
-
-### Template PR
-
-Utiliser `.github/PULL_REQUEST_TEMPLATE.md`. Chaque fichier créé/modifié doit apparaître dans la description.
-
----
-
-## Conventions spécifiques au projet
-
-> **Voir `MEMORY.md`** pour toutes les conventions détectées.
-
-### Build & Run
-
-```bash
-# Backend
-cd src/back && dotnet build Mariage.slnx
-cd src/back/Mariage.Api && dotnet run
-
-# Frontend
-cd src/front && npm install && npm run dev
-
-# Aspire (full stack)
-cd src/back/Mariage.AppHost && dotnet run
-
-# Migrations
-cd src/back && dotnet ef migrations add <Name> --project Mariage.Infrastructure --startup-project Mariage.Api
-```
+- Types autorisés : `feat`, `fix`, `refactor`, `perf`, `docs`, `test`, `chore`, `ci`, `style`, `revert`.
+- Décrire le but principal au présent, sans majuscule initiale ni point final; le scope kebab-case est recommandé.
+- Inclure chaque fichier créé ou modifié dans la description du PR.
