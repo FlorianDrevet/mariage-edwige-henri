@@ -10,8 +10,8 @@ on:
     - 'src/back/**'
     - '.github/workflows/aca-backend-weh-AutoDeployTrigger-88059d7b-60b0-4b0e-b1a6-ac9aa1195e0d.yml'
 
-  # Allow manual trigger 
-  workflow_dispatch:      
+  # Allow manual trigger
+  workflow_dispatch:
 
 jobs:
   build-and-deploy:
@@ -20,8 +20,8 @@ jobs:
       id-token: write #This is required for requesting the OIDC JWT Token
       contents: read #Required when GH token is used to authenticate with private repo
     env:
-      ACR_NAME: ${{ secrets.ACABACKENDWEH_ACR_NAME }}
-      REGISTRY_LOGIN_SERVER: ${{ secrets.ACABACKENDWEH_ACR_NAME }}.azurecr.io
+      ACR_NAME: ${{ vars.ACR_NAME }}
+      REGISTRY_LOGIN_SERVER: ${{ vars.ACR_NAME }}.azurecr.io
       CONTAINER_APP_NAME: aca-backend-weh
       RESOURCE_GROUP: rg-wedding-edwige-henri
       IMAGE_NAME: aca-backend-weh
@@ -42,17 +42,7 @@ jobs:
         shell: bash
         run: |
           if [ -z "${ACR_NAME}" ]; then
-            echo "ACABACKENDWEH_ACR_NAME GitHub secret is missing or empty."
-            exit 1
-          fi
-
-          if [ -z "${{ secrets.ACABACKENDWEH_ACR_ADMIN_USERNAME }}" ]; then
-            echo "ACABACKENDWEH_ACR_ADMIN_USERNAME GitHub secret is missing or empty."
-            exit 1
-          fi
-
-          if [ -z "${{ secrets.ACABACKENDWEH_ACR_ADMIN_PASSWORD }}" ]; then
-            echo "ACABACKENDWEH_ACR_ADMIN_PASSWORD GitHub secret is missing or empty."
+            echo "The ACR_NAME GitHub repository variable is missing or empty."
             exit 1
           fi
 
@@ -60,12 +50,9 @@ jobs:
         shell: bash
         run: az extension add --name containerapp --upgrade --allow-preview true
 
-      - name: Log in to ACR with admin account
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ env.REGISTRY_LOGIN_SERVER }}
-          username: ${{ secrets.ACABACKENDWEH_ACR_ADMIN_USERNAME }}
-          password: ${{ secrets.ACABACKENDWEH_ACR_ADMIN_PASSWORD }}
+      - name: Log in to the shared ACR with workload identity
+        shell: bash
+        run: az acr login --name "$ACR_NAME"
 
       - name: Build and push container image
         uses: docker/build-push-action@v6
@@ -78,6 +65,15 @@ jobs:
       - name: Update Container App image
         shell: bash
         run: |
+          az containerapp identity assign \
+            --name "${CONTAINER_APP_NAME}" \
+            --resource-group "${RESOURCE_GROUP}" \
+            --system-assigned
+          az containerapp registry set \
+            --name "${CONTAINER_APP_NAME}" \
+            --resource-group "${RESOURCE_GROUP}" \
+            --server "${REGISTRY_LOGIN_SERVER}" \
+            --identity system
           az containerapp update \
             --name "${CONTAINER_APP_NAME}" \
             --resource-group "${RESOURCE_GROUP}" \
