@@ -34,9 +34,9 @@ jobs:
       - name: Azure Login
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.ACABACKENDWEH_AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.ACABACKENDWEH_AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.ACABACKENDWEH_AZURE_SUBSCRIPTION_ID }}
+          client-id: ${{ vars.ACR_CI_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
 
       - name: Validate deployment settings
         shell: bash
