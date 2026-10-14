@@ -65,15 +65,6 @@ jobs:
       - name: Update Container App image
         shell: bash
         run: |
-          az containerapp identity assign \
-            --name "${CONTAINER_APP_NAME}" \
-            --resource-group "${RESOURCE_GROUP}" \
-            --system-assigned
-          az containerapp registry set \
-            --name "${CONTAINER_APP_NAME}" \
-            --resource-group "${RESOURCE_GROUP}" \
-            --server "${REGISTRY_LOGIN_SERVER}" \
-            --identity system
           az containerapp update \
             --name "${CONTAINER_APP_NAME}" \
             --resource-group "${RESOURCE_GROUP}" \

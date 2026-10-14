@@ -15,7 +15,7 @@ Les workflows publient une image taguée avec le SHA GitHub, puis appellent `az 
 
 - Les workflows accordent `id-token: write` et se connectent à Azure avec `azure/login@v2`, en utilisant les variables GitHub `ACR_CI_CLIENT_ID`, `AZURE_TENANT_ID` et `AZURE_SUBSCRIPTION_ID` pour l'authentification fédérée de l'identité dédiée du projet.
 - `ACR_NAME` est une variable GitHub Actions (`vars.ACR_NAME`), partagée par les deux workflows. Après la connexion Azure, `az acr login` authentifie la publication d'image dans cet ACR; aucun secret admin ACR n'est utilisé par ces workflows.
-- Avant le déploiement, chaque workflow attribue une identité système à la Container App et configure son registry avec `--identity system`. Vérifier dans Azure que l'identité du pipeline peut pousser vers l'ACR et que l'identité de chaque app peut tirer les images; le YAML seul ne confirme pas les attributions de rôles effectives.
+- L'identité système de chaque Container App et sa référence `vpdacrshared.azurecr.io` sont configurées une fois dans Azure avec `--identity system`; les workflows ne réécrivent pas cette configuration à chaque livraison. Vérifier dans Azure que l'identité du pipeline peut pousser vers l'ACR et que l'identité de chaque app peut tirer les images; le YAML seul ne confirme pas les attributions de rôles effectives.
 - Ne jamais afficher, copier dans un rapport, committer ou remplacer les valeurs de secrets. Documenter seulement les noms de secrets si nécessaire.
 - Avant de modifier l'authentification ou le modèle de permissions, vérifier les paramètres GitHub et Azure concernés sans exposer leur valeur.
 
